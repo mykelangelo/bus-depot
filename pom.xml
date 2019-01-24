@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>final-project</groupId>
+    <artifactId>bus-depot</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>war</packaging>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!--<mysql.connector.version>8.0.13</mysql.connector.version>   &lt;!&ndash;for jdbc:mysql browser     &ndash;&gt;-->
+        <!--<dbcp2.version>2.5.0</dbcp2.version>                          &lt;!&ndash;for connection pooling    &ndash;&gt;-->
+        <!--<jbcrypt.version>0.4</jbcrypt.version>                      &lt;!&ndash;for password encryption   &ndash;&gt;-->
+        <!--<annotations.version>16.0.2</annotations.version>           &lt;!&ndash;for @Nullable & @NotNull  &ndash;&gt;-->
+        <commons-lang3.version>3.7</commons-lang3.version>          <!--for StringUtils           -->
+        <junit.version>5.3.2</junit.version>
+        <maven.compiler.source>1.11</maven.compiler.source>
+        <maven.compiler.target>1.11</maven.compiler.target>
+
+        <failOnMissingWebXml>false</failOnMissingWebXml>
+    </properties>
+
+    <repositories>
+        <repository>
+            <id>central</id>
+            <url>http://central.maven.org/maven2/</url>
+        </repository>
+        <repository>
+            <id>embedded-tomcat</id>
+            <url>https://artifacts.alfresco.com/nexus/content/repositories/public/</url>
+        </repository>
+    </repositories>
+    <dependencies>
+        <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+            <version>3.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.wix</groupId>
+            <artifactId>wix-embedded-mysql</artifactId>
+            <version>4.2.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${commons-lang3.version}</version>
+        </dependency>
+        <!-- MySQL Connectivity BEGIN -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.12</version>
+        </dependency>
+        <!--Unit testing BEGIN-->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-junit-jupiter</artifactId>
+            <version>2.23.4</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- Unit Testing END-->
+        <!-- E2E Testing BEGIN -->
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-java</artifactId>
+            <version>3.141.59</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-chrome-driver</artifactId>
+            <version>3.141.59</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.github.bonigarcia</groupId>
+            <artifactId>webdrivermanager</artifactId>
+            <version>3.1.1</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- E2E Testing END -->
+        <!-- Embedded Tomcat BEGIN -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.1.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.2</version>
+            <scope>runtime</scope>
+        </dependency>
+        <!-- Embedded Tomcat END -->
+        <!-- Logging BEGIN -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.25</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.2.3</version>
+        </dependency>
+        <!-- Logging END -->
+        <!-- Password Hashing library BEGIN -->
+        <dependency>
+            <groupId>org.mindrot</groupId>
+            <artifactId>jbcrypt</artifactId>
+            <version>0.4</version>
+        </dependency>
+        <!-- Password Hashing library END -->
+    </dependencies>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>embedded-tomcat</id>
+            <url>https://artifacts.alfresco.com/nexus/content/repositories/public/</url>
+        </pluginRepository>
+        <pluginRepository>
+            <id>central</id>
+            <url>http://central.maven.org/maven2/</url>
+        </pluginRepository>
+    </pluginRepositories>
+    <build>
+        <plugins>
+            <!-- Database using docker-compose.yml -->
+            <plugin>
+                <groupId>com.dkanejs.maven.plugins</groupId>
+                <artifactId>docker-compose-maven-plugin</artifactId>
+                <version>2.3.0</version>
+                <configuration>
+                    <detachedMode>true</detachedMode>
+                    <composeFile>${project.basedir}/docker-compose.yml</composeFile>
+                </configuration>
+            </plugin>
+            <!-- Database migration with flyway -->
+            <plugin>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-maven-plugin</artifactId>
+                <version>5.2.4</version>
+                <configuration>
+                    <url>jdbc:mysql://localhost:3306/depot_database?useSSL=false&amp;allowPublicKeyRetrieval=true</url>
+                    <user>depot_user</user>
+                    <password>depot_password</password>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat8-maven-plugin</artifactId>
+                <version>3.0-r1756463</version>
+                <configuration>
+                    <charset>UTF-8</charset>
+                    <path>/</path>
+                    <port>8080</port>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>2.22.1</version>
+                <configuration>
+                    <includes>
+                        <include>**/*E2ETest.java</include>
+                    </includes>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>default</id>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.0</version>
+                <configuration>
+                    <source>11</source>
+                    <target>11</target>
+                </configuration>
+            </plugin>
+            <!--<executions>-->
+            <!--<execution>-->
+            <!--<id>tomcat-run</id>-->
+            <!--<goals>-->
+            <!--<goal>run-war-only</goal>-->
+            <!--</goals>-->
+            <!--<phase>pre-integration-test</phase>-->
+            <!--<configuration>-->
+            <!--....-->
+            <!--<fork>true</fork>-->
+            <!--....-->
+            <!--</configuration>-->
+            <!--</execution>-->
+            <!--<execution>-->
+            <!--<id>tomcat-shutdown</id>-->
+            <!--<goals>-->
+            <!--<goal>shutdown</goal>-->
+            <!--</goals>-->
+            <!--<phase>post-integration-test</phase>-->
+            <!--</execution>-->
+            <!--</executions>-->
+        </plugins>
+    </build>
+</project>
