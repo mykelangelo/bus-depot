@@ -44,9 +44,10 @@ public class LoginAction extends HttpServlet {
         LOGGER.debug("POST");
         String email = request.getParameter("email");
         String password = request.getParameter("password");
+        String landingPage = loginService.getLandingAdminOrDriverPageDependingOnTypeOfUser(email);
         if (loginService.checkCredentials(email, password)) {
             request.getSession().setAttribute("email", email);
-            response.sendRedirect("/landing.jsp");
+            response.sendRedirect(landingPage);
         } else {
             request.setAttribute("loginErrorMessage", "Invalid email or password");
             this.getServletContext().getRequestDispatcher("/login.jsp").forward(request, response);

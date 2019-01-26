@@ -29,7 +29,7 @@ public interface ScreenShotGeneratingE2ETest {
             String screenShotFileName = this.getClass().getSimpleName() + "_" + testInfo.getTestMethod().map(Method::getName).get() + ".png";
             Path screenShotPath = SCREENSHOTS_DIRECTORY.resolve(screenShotFileName);
             LOGGER.info("Generating screen shot {}", screenShotPath.toAbsolutePath());
-            Files.write(screenShotPath, getDriver().getScreenshotAs(BYTES));
+            Files.write(screenShotPath, getWebDriver().getScreenshotAs(BYTES));
         } catch (IOException e) {
             LOGGER.error("Couldn't make screen shot", e);
         }
@@ -46,5 +46,5 @@ public interface ScreenShotGeneratingE2ETest {
         }
     }
 
-    TakesScreenshot getDriver();
+    TakesScreenshot getWebDriver();
 }

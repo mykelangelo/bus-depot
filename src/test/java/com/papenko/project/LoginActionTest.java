@@ -62,16 +62,32 @@ class LoginActionTest {
     }
 
     @Test
-    void doPost_shouldRedirectToLandingPage_andSetEmailToSession_whenCorrectCredentialsSubmitted() throws ServletException, IOException {
+    void doPost_shouldRedirectAdminToAdminLandingPage_andSetEmailToSession_whenCorrectCredentialsSubmitted() throws ServletException, IOException {
         //GIVEN
         doReturn("correct@email.yes").when(httpServletRequest).getParameter("email");
         doReturn("correct_password").when(httpServletRequest).getParameter("password");
         doReturn(true).when(loginService).checkCredentials("correct@email.yes", "correct_password");
         doReturn(session).when(httpServletRequest).getSession();
+        doReturn("/admin.jsp").when(loginService).getLandingAdminOrDriverPageDependingOnTypeOfUser("correct@email.yes");
         //WHEN
         loginAction.doPost(httpServletRequest, httpServletResponse);
         //THEN
-        verify(httpServletResponse).sendRedirect("/landing.jsp");
+        verify(httpServletResponse).sendRedirect("/admin.jsp");
+        verify(session).setAttribute("email", "correct@email.yes");
+    }
+
+    @Test
+    void doPost_shouldRedirectDriverToDriverLandingPage_andSetEmailToSession_whenCorrectCredentialsSubmitted() throws ServletException, IOException {
+        //GIVEN
+        doReturn("correct@email.yes").when(httpServletRequest).getParameter("email");
+        doReturn("correct_password").when(httpServletRequest).getParameter("password");
+        doReturn(true).when(loginService).checkCredentials("correct@email.yes", "correct_password");
+        doReturn(session).when(httpServletRequest).getSession();
+        doReturn("/driver.jsp").when(loginService).getLandingAdminOrDriverPageDependingOnTypeOfUser("correct@email.yes");
+        //WHEN
+        loginAction.doPost(httpServletRequest, httpServletResponse);
+        //THEN
+        verify(httpServletResponse).sendRedirect("/driver.jsp");
         verify(session).setAttribute("email", "correct@email.yes");
     }
 

@@ -6,10 +6,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class LoginServiceTest {
@@ -48,5 +48,25 @@ class LoginServiceTest {
         boolean credentialsAreCorrect = loginService.checkCredentials("noUserWithSuch@Email.exists", "anyPassword");
         // THEN
         assertFalse(credentialsAreCorrect);
+    }
+
+    @Test
+    void getLandingAdminOrDriverPageDependingOnTypeOfUser_shouldReturnDriverLandingPage_whenDriversEmailIsPassed() {
+        // GIVEN
+        given(userRepository.findUserTypeByEmail("driver@gmail.com")).willReturn("driver");
+        // WHEN
+        String landingPage = loginService.getLandingAdminOrDriverPageDependingOnTypeOfUser("driver@gmail.com");
+        // THEN
+        assertEquals("/driver.jsp",landingPage);
+    }
+
+    @Test
+    void getLandingAdminOrDriverPageDependingOnTypeOfUser_shouldReturnAdminLandingPage_whenAdminsEmailIsPassed() {
+        // GIVEN
+        given(userRepository.findUserTypeByEmail("admin@gmail.com")).willReturn("admin");
+        // WHEN
+        String landingPage = loginService.getLandingAdminOrDriverPageDependingOnTypeOfUser("admin@gmail.com");
+        // THEN
+        assertEquals("/admin.jsp",landingPage);
     }
 }

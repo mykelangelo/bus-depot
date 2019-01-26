@@ -4,11 +4,11 @@
 
 <html>
 <head>
-    <title>Index</title>
+    <title>Bus Driver's Haven</title>
 </head>
 <body>
-<h1 class="landing__greetingMessage" style="color: indigo">
-    Hi, <c:out value="${email}"/>
+<h1 class="driver__greetingMessage" style="color: indigo">
+    Hi, bus driver with email <c:out value="${email}"/>!
 </h1>
 
 </body>

@@ -26,6 +26,7 @@
                 <label for="input-email">Email:</label>
             </td>
             <td>
+                <%--todo чому без поля name воно падає?--%>
                 <input id="input-email" type="email" name="email" class="login__email">
             </td>
         </tr>

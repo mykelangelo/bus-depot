@@ -44,8 +44,8 @@ class UserRepositoryTest {
     void findUserPasswordHashByEmail_shouldReturnPasswordHashOfUser_whenUserExistsWithGivenEmail() {
         // GIVEN
         embeddedMysql.executeScripts("depot_database",
-                () -> "INSERT INTO depot_user (email, password_hash) " +
-                        "VALUES ('existing_user_email@yes', '$2a$10$rRsTiuqd3V5hQJwsLi3CneRCcKxK0eiKKO1JlGIxAnx9NIP4GsHbG');");
+                () -> "INSERT INTO depot_user (email, user_type, password_hash) " +
+                        "VALUES ('existing_user_email@yes', 'driver', '$2a$10$rRsTiuqd3V5hQJwsLi3CneRCcKxK0eiKKO1JlGIxAnx9NIP4GsHbG');");
         // WHEN
         String passwordHash = userRepository.findUserPasswordHashByEmail("existing_user_email@yes");
         // THEN
@@ -59,5 +59,29 @@ class UserRepositoryTest {
         String passwordHash = userRepository.findUserPasswordHashByEmail("non_existing_user_email@nope");
         // THEN
         assertNull(passwordHash);
+    }
+
+    @Test
+    void findUserTypeByEmail_shouldReturnAdmin_whenAdminsEmailIsGiven() {
+        // GIVEN
+        embeddedMysql.executeScripts("depot_database",
+                () -> "INSERT INTO depot_user (email, user_type, password_hash) " +
+                        "VALUES ('depot.admin@yes', 'admin', '$2a$10$rRsTiuqd3V5hQJwsLi3CneRCcKxK0eiKKO1JlGIxAnx9NIP4GsHbG');");
+        // WHEN
+        String userType = userRepository.findUserTypeByEmail("depot.admin@yes");
+        // THEN
+        assertEquals("admin", userType);
+    }
+
+    @Test
+    void findUserTypeByEmail_shouldReturnDriver_whenDriversEmailIsGiven() {
+        // GIVEN
+        embeddedMysql.executeScripts("depot_database",
+                () -> "INSERT INTO depot_user (email, user_type, password_hash) " +
+                        "VALUES ('bus.driver@yes', 'driver', '$2a$10$rRsTiuqd3V5hQJwsLi3CneRCcKxK0eiKKO1JlGIxAnx9NIP4GsHbG');");
+        // WHEN
+        String userType = userRepository.findUserTypeByEmail("bus.driver@yes");
+        // THEN
+        assertEquals("driver", userType);
     }
 }
