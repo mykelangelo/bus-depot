@@ -45,7 +45,7 @@ class UserRepositoryTest {
         // GIVEN
         embeddedMysql.executeScripts("depot_database",
                 () -> "INSERT INTO depot_user (email, user_type, password_hash) " +
-                        "VALUES ('existing_user_email@yes', 'driver', '$2a$10$rRsTiuqd3V5hQJwsLi3CneRCcKxK0eiKKO1JlGIxAnx9NIP4GsHbG');");
+                        "VALUES ('existing_user_email@yes', 'BUS_DRIVER', '$2a$10$rRsTiuqd3V5hQJwsLi3CneRCcKxK0eiKKO1JlGIxAnx9NIP4GsHbG');");
         // WHEN
         String passwordHash = userRepository.findUserPasswordHashByEmail("existing_user_email@yes");
         // THEN
@@ -62,26 +62,26 @@ class UserRepositoryTest {
     }
 
     @Test
-    void findUserTypeByEmail_shouldReturnAdmin_whenAdminsEmailIsGiven() {
+    void findUserTypeByEmail_shouldReturnDepotAdmin_whenAdminsEmailIsGiven() {
         // GIVEN
         embeddedMysql.executeScripts("depot_database",
                 () -> "INSERT INTO depot_user (email, user_type, password_hash) " +
-                        "VALUES ('depot.admin@yes', 'admin', '$2a$10$rRsTiuqd3V5hQJwsLi3CneRCcKxK0eiKKO1JlGIxAnx9NIP4GsHbG');");
+                        "VALUES ('depot.admin@yes', 'DEPOT_ADMIN', '$2a$10$rRsTiuqd3V5hQJwsLi3CneRCcKxK0eiKKO1JlGIxAnx9NIP4GsHbG');");
         // WHEN
         String userType = userRepository.findUserTypeByEmail("depot.admin@yes");
         // THEN
-        assertEquals("admin", userType);
+        assertEquals("DEPOT_ADMIN", userType);
     }
 
     @Test
-    void findUserTypeByEmail_shouldReturnDriver_whenDriversEmailIsGiven() {
+    void findUserTypeByEmail_shouldReturnBusDriver_whenDriversEmailIsGiven() {
         // GIVEN
         embeddedMysql.executeScripts("depot_database",
                 () -> "INSERT INTO depot_user (email, user_type, password_hash) " +
-                        "VALUES ('bus.driver@yes', 'driver', '$2a$10$rRsTiuqd3V5hQJwsLi3CneRCcKxK0eiKKO1JlGIxAnx9NIP4GsHbG');");
+                        "VALUES ('bus.driver@yes', 'BUS_DRIVER', '$2a$10$rRsTiuqd3V5hQJwsLi3CneRCcKxK0eiKKO1JlGIxAnx9NIP4GsHbG');");
         // WHEN
         String userType = userRepository.findUserTypeByEmail("bus.driver@yes");
         // THEN
-        assertEquals("driver", userType);
+        assertEquals("BUS_DRIVER", userType);
     }
 }

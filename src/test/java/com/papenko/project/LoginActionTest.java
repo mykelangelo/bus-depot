@@ -68,7 +68,7 @@ class LoginActionTest {
         doReturn("correct_password").when(httpServletRequest).getParameter("password");
         doReturn(true).when(loginService).checkCredentials("correct@email.yes", "correct_password");
         doReturn(session).when(httpServletRequest).getSession();
-        doReturn("/admin.jsp").when(loginService).getLandingAdminOrDriverPageDependingOnTypeOfUser("correct@email.yes");
+        doReturn(UserType.DEPOT_ADMIN).when(loginService).getUserType("correct@email.yes");
         //WHEN
         loginAction.doPost(httpServletRequest, httpServletResponse);
         //THEN
@@ -83,7 +83,7 @@ class LoginActionTest {
         doReturn("correct_password").when(httpServletRequest).getParameter("password");
         doReturn(true).when(loginService).checkCredentials("correct@email.yes", "correct_password");
         doReturn(session).when(httpServletRequest).getSession();
-        doReturn("/driver.jsp").when(loginService).getLandingAdminOrDriverPageDependingOnTypeOfUser("correct@email.yes");
+        doReturn(UserType.BUS_DRIVER).when(loginService).getUserType("correct@email.yes");
         //WHEN
         loginAction.doPost(httpServletRequest, httpServletResponse);
         //THEN

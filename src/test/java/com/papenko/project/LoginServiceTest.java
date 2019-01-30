@@ -51,22 +51,22 @@ class LoginServiceTest {
     }
 
     @Test
-    void getLandingAdminOrDriverPageDependingOnTypeOfUser_shouldReturnDriverLandingPage_whenDriversEmailIsPassed() {
+    void getUserType_shouldReturnDriverUserType_whenDriversEmailIsPassed() {
         // GIVEN
-        given(userRepository.findUserTypeByEmail("driver@gmail.com")).willReturn("driver");
+        given(userRepository.findUserTypeByEmail("driver@gmail.com")).willReturn("BUS_DRIVER");
         // WHEN
-        String landingPage = loginService.getLandingAdminOrDriverPageDependingOnTypeOfUser("driver@gmail.com");
+        UserType userType = loginService.getUserType("driver@gmail.com");
         // THEN
-        assertEquals("/driver.jsp",landingPage);
+        assertEquals(UserType.BUS_DRIVER, userType);
     }
 
     @Test
-    void getLandingAdminOrDriverPageDependingOnTypeOfUser_shouldReturnAdminLandingPage_whenAdminsEmailIsPassed() {
+    void getUserType_shouldReturnAdminsUserType_whenAdminsEmailIsPassed() {
         // GIVEN
-        given(userRepository.findUserTypeByEmail("admin@gmail.com")).willReturn("admin");
+        given(userRepository.findUserTypeByEmail("admin@gmail.com")).willReturn("DEPOT_ADMIN");
         // WHEN
-        String landingPage = loginService.getLandingAdminOrDriverPageDependingOnTypeOfUser("admin@gmail.com");
+        UserType userType = loginService.getUserType("admin@gmail.com");
         // THEN
-        assertEquals("/admin.jsp",landingPage);
+        assertEquals(UserType.DEPOT_ADMIN, userType);
     }
 }

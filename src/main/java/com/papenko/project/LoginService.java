@@ -21,8 +21,8 @@ class LoginService {
     }
 
 
-    String getLandingAdminOrDriverPageDependingOnTypeOfUser(String email) {
+    UserType getUserType(String email) {
         String userType = userRepository.findUserTypeByEmail(email);
-        return StringUtils.join('/', userType,".jsp");
+        return UserType.valueOf(userType);
     }
 }
