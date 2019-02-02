@@ -1,0 +1,108 @@
+buildscript {
+    repositories {
+        jcenter()
+        maven { url 'https://plugins.gradle.org/m2/' }
+    }
+    dependencies {
+        classpath 'org.gretty:gretty:2.3.1'
+        classpath "com.avast.gradle:gradle-docker-compose-plugin:0.8.12"
+    }
+}
+plugins {
+    id 'org.unbroken-dome.test-sets' version '2.0.3'
+    id "org.flywaydb.flyway" version "5.2.4"
+}
+
+apply plugin: 'idea'
+apply plugin: 'java'
+apply plugin: 'war'
+apply plugin: 'org.gretty'
+apply plugin: 'docker-compose'
+
+defaultTasks 'clean', 'build'
+
+dockerCompose {
+    useComposeFiles = ['docker-compose.yml']
+    forceRecreate = true
+}
+
+sourceCompatibility = 11
+targetCompatibility = 11
+
+testSets {
+    e2e { dirName = 'e2e' }
+}
+
+gretty {
+    servletContainer = 'tomcat9'
+    contextPath = ""
+    springBoot = false
+    fastReload
+    integrationTestTask = 'e2e'
+}
+
+wrapper {
+    gradleVersion = '5.1.1'
+    distributionType = Wrapper.DistributionType.ALL
+}
+
+project.afterEvaluate {
+    tasks.build.dependsOn tasks.e2e
+    tasks.e2e.dependsOn tasks.composeUp, tasks.flywayMigrate
+    tasks.composeDown.shouldRunAfter(tasks.e2e)
+    tasks.check.dependsOn tasks.e2e
+}
+
+flyway {
+    cleanDisabled = true
+    configFiles = ['src/main/resources/db/flyway.properties']
+}
+
+dependencies {
+/* Apache Commons BEGIN */
+    compile "org.apache.commons:commons-lang3:3.8.1"
+    compile "org.apache.commons:commons-collections4:4.2"
+    compile "commons-io:commons-io:2.6"
+/* Apache Commons END */
+
+/* JEE dependencies BEGIN */
+    compile "javax.servlet:jstl:1.2"
+    compile "javax.servlet:javax.servlet-api:4.0.1"
+/* JEE dependencies END */
+
+/* Logging BEGIN */
+    compile "org.slf4j:slf4j-api:1.7.25"
+    compile "org.slf4j:jul-to-slf4j:1.7.25"
+    compile "ch.qos.logback:logback-classic:1.2.3"
+/* Logging END */
+
+/* Database Connectivity BEGIN */
+    compile "mysql:mysql-connector-java:8.0.12"
+    compile "com.zaxxer:HikariCP:3.1.0"
+/* Database Connectivity END */
+
+/* Password Hashing library BEGIN */
+    compile "org.mindrot:jbcrypt:0.4"
+/* Password Hashing library END */
+
+/* Unit testing BEGIN */
+    testImplementation "org.junit.jupiter:junit-jupiter-api:+"
+    testCompile "org.junit.jupiter:junit-jupiter-params:+"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:+"
+    testCompile "org.mockito:mockito-junit-jupiter:2.23.4"
+    // For Repository tests
+    testCompile "com.wix:wix-embedded-mysql:4.2.0"
+/* Unit testing END */
+
+/* E2E testing BEGIN */
+    testCompile "org.seleniumhq.selenium:selenium-java:3.141.59"
+    testCompile "io.github.bonigarcia:webdrivermanager:3.1.1"
+    testCompile "org.seleniumhq.selenium:selenium-chrome-driver:3.141.59"
+/* E2E testing END */
+}
+repositories {
+    jcenter()
+}
+tasks.withType(Test) {
+    useJUnitPlatform()
+}

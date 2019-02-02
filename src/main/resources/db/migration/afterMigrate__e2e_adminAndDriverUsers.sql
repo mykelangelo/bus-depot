@@ -1,4 +1,4 @@
-INSERT INTO depot_user
+INSERT IGNORE INTO depot_user
   (email, user_type, password_hash)
 VALUES
   ('administrator@company.com', 'DEPOT_ADMIN','$2a$10$IjbakaL8jaGveRFlWFHcLuU00Dc0z3LsUkjrCRNtUia7pSzp3nnyy'),

@@ -23,7 +23,7 @@ class UserRepositoryTest {
         embeddedMysql = anEmbeddedMysql(
                 aMysqldConfig(v5_7_latest)
                         .withUser("depot_user", "depot_password")
-                        .withPort(3306)
+                        .withPort(4406)
                         .build()
         ).addSchema("depot_database", classPathScripts("db/migration/*.sql")
         ).start();

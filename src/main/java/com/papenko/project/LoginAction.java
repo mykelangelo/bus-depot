@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.io.IOException;
 
+import static java.util.Arrays.asList;
+
 @WebServlet(urlPatterns = "/login")
 public class LoginAction extends HttpServlet {
     private static final Logger LOGGER = LoggerFactory.getLogger(LoginAction.class);
@@ -44,9 +46,9 @@ public class LoginAction extends HttpServlet {
         LOGGER.debug("POST");
         String email = request.getParameter("email");
         String password = request.getParameter("password");
-        UserType userType = loginService.getUserType(email);
-        String landingPage = generateLandingPagePath(userType);
         if (loginService.checkCredentials(email, password)) {
+            UserType userType = loginService.getUserType(email);
+            String landingPage = generateLandingPagePath(userType);
             request.getSession().setAttribute("email", email);
             response.sendRedirect(landingPage);
         } else {
@@ -61,7 +63,7 @@ public class LoginAction extends HttpServlet {
         } else if (userType == UserType.BUS_DRIVER) {
             return "/driver.jsp";
         } else {
-            return "/login.jsp";
+            throw new IllegalStateException("Only " + asList(UserType.values()) + " user types have landing pages");
         }
     }
 }
