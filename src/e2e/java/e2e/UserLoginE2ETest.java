@@ -5,6 +5,7 @@ import org.junit.jupiter.api.*;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -22,7 +23,11 @@ public class UserLoginE2ETest implements ScreenShotGeneratingE2ETest {
     @BeforeEach
     void setupBrowser() {
         ChromeDriverManager.getInstance(ChromeDriver.class).setup();
-        webDriver = new ChromeDriver();
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--headless");
+        options.addArguments("--disable-gpu");
+
+        webDriver = new ChromeDriver(options);
         loginPage = new LoginPage(webDriver);
         adminPage = new DepotAdminPage(webDriver);
         busDriverPage = new BusDriverPage(webDriver);

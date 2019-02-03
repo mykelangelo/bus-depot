@@ -86,9 +86,9 @@ dependencies {
 /* Password Hashing library END */
 
 /* Unit testing BEGIN */
-    testImplementation "org.junit.jupiter:junit-jupiter-api:+"
-    testCompile "org.junit.jupiter:junit-jupiter-params:+"
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:+"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:5.3.2"
+    testCompile "org.junit.jupiter:junit-jupiter-params:5.3.2"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.3.2"
     testCompile "org.mockito:mockito-junit-jupiter:2.23.4"
     // For Repository tests
     testCompile "com.wix:wix-embedded-mysql:4.2.0"
