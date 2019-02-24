@@ -47,6 +47,9 @@ wrapper {
 }
 
 project.afterEvaluate {
+    tasks.flywayMigrate.dependsOn tasks.processResources
+    tasks.appRun.dependsOn tasks.composeUp, tasks.flywayMigrate
+
     tasks.build.dependsOn tasks.e2e
     tasks.e2e.dependsOn tasks.composeUp, tasks.flywayMigrate
     tasks.composeDown.shouldRunAfter(tasks.e2e)
@@ -56,6 +59,7 @@ project.afterEvaluate {
 flyway {
     cleanDisabled = true
     configFiles = ['src/main/resources/db/flyway.properties']
+    
 }
 
 dependencies {
@@ -90,6 +94,7 @@ dependencies {
     testCompile "org.junit.jupiter:junit-jupiter-params:5.3.2"
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.3.2"
     testCompile "org.mockito:mockito-junit-jupiter:2.23.4"
+    testCompile "org.assertj:assertj-core:3.11.1"
     // For Repository tests
     testCompile "com.wix:wix-embedded-mysql:4.2.0"
 /* Unit testing END */

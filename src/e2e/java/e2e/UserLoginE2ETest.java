@@ -12,12 +12,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class UserLoginE2ETest implements ScreenShotGeneratingE2ETest {
     private WebDriver webDriver;
     private LoginPage loginPage;
-    private DepotAdminPage adminPage;
-    private BusDriverPage busDriverPage;
+    private AdminPage adminPage;
+    private DriverPage driverPage;
 
     @BeforeAll
-    static void doClearScreenShotsDirectory() {
-        ScreenShotGeneratingE2ETest.clearScreenShotsDirectory();
+    static void doClearScreenShotsDirectory(TestInfo testInfo) {
+        ScreenShotGeneratingE2ETest.clearScreenShotsDirectory(testInfo);
     }
 
     @BeforeEach
@@ -29,8 +29,8 @@ public class UserLoginE2ETest implements ScreenShotGeneratingE2ETest {
 
         webDriver = new ChromeDriver(options);
         loginPage = new LoginPage(webDriver);
-        adminPage = new DepotAdminPage(webDriver);
-        busDriverPage = new BusDriverPage(webDriver);
+        adminPage = new AdminPage(webDriver);
+        driverPage = new DriverPage(webDriver);
         loginPage.goToPage();
     }
 
@@ -68,28 +68,30 @@ public class UserLoginE2ETest implements ScreenShotGeneratingE2ETest {
     }
 
     @Test
-    @DisplayName("Administrator flow: successful log-in")
+    @DisplayName("Administrator flow: successful login")
     void shouldLetDepotAdministratorLogIn_andDisplayGreetingMessage_whenCredentialsAreCorrect() {
         loginPage.findEmailField().sendKeys("administrator@company.com");
         loginPage.findPasswordField().sendKeys("correctPasswordWhyNotItsAGreatOne");
         loginPage.findSubmitButton().click();
 
-        assertEquals(DepotAdminPage.getPageUrl(), webDriver.getCurrentUrl(), "Didn't redirected to admin's landing page");
+        LOGGER.debug(webDriver.getCurrentUrl());
+        assertEquals(AdminPage.getPageUrl(), webDriver.getCurrentUrl(), "Didn't redirected to admin's landing page");
         assertEquals("Hi, administrator with email administrator@company.com!",
                 adminPage.findGreetingMessage().getText(),
                 "Greeting is missing email (or is malformed)");
     }
 
     @Test
-    @DisplayName("Bus Driver flow: successful log-in")
+    @DisplayName("Bus Driver flow: successful login")
     void shouldLetBusDriverLogIn_andDisplayGreetingMessage_whenCredentialsAreCorrect() {
         loginPage.findEmailField().sendKeys("driver@company.com");
         loginPage.findPasswordField().sendKeys("correctPasswordWhyNotItsAGreatOne");
         loginPage.findSubmitButton().click();
 
-        assertEquals(BusDriverPage.getPageUrl(), webDriver.getCurrentUrl(), "Didn't redirected to driver's landing page");
+        LOGGER.debug(webDriver.getCurrentUrl());
+        assertEquals(DriverPage.getPageUrl(), webDriver.getCurrentUrl(), "Didn't redirected to driver's landing page");
         assertEquals("Hi, bus driver with email driver@company.com!",
-                busDriverPage.findGreetingMessage().getText(),
+                driverPage.findGreetingMessage().getText(),
                 "Greeting is missing email (or is malformed)");
     }
 }

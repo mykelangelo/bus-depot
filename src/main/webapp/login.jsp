@@ -1,6 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page contentType="text/html;charset=UTF-8"%>
-<jsp:useBean id="loginErrorMessage" scope="request" class="java.lang.String"/>
+<%@ page contentType="text/html;charset=UTF-8" %>
+<c:set var="loginErrorMessage" value="${requestScope.get('loginErrorMessage')}"/>
 <html>
 <head>
     <title>Login</title>
@@ -19,14 +19,13 @@
     </div>
 </c:if>
 
-<form action="login" method="post">
+<form action="${pageContext.request.contextPath}/login" method="post">
     <table>
         <tr>
             <td>
                 <label for="input-email">Email:</label>
             </td>
             <td>
-                <%--todo чому без поля name воно падає?--%>
                 <input id="input-email" type="email" name="email" class="login__email">
             </td>
         </tr>
@@ -38,8 +37,12 @@
                 <input id="input-password" type="password" name="password" class="login__password">
             </td>
         </tr>
+        <tr>
+            <td colspan="2">
+                <input type="submit" class="login__submit" value="Submit">
+            </td>
+        </tr>
     </table>
-    <input type="submit" class="login__submit" value="Submit">
 </form>
 
 </body>

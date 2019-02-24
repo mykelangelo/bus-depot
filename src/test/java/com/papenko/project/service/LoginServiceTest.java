@@ -1,5 +1,8 @@
-package com.papenko.project;
+package com.papenko.project.service;
 
+import com.papenko.project.entity.User;
+import com.papenko.project.entity.UserType;
+import com.papenko.project.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -9,7 +12,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class LoginServiceTest {
@@ -21,8 +23,8 @@ class LoginServiceTest {
     @Test
     void checkCredentials_shouldReturnTrue_whenPasswordMatchesPasswordHashForExistingUserWithEmailGiven() {
         // GIVEN
-        given(userRepository.findUserPasswordHashByEmail("correct_email@company.yes"))
-                .willReturn("$2a$10$IjbakaL8jaGveRFlWFHcLuU00Dc0z3LsUkjrCRNtUia7pSzp3nnyy");
+        User user = new User("correct_email@company.yes", UserType.BUS_DRIVER, "$2a$10$IjbakaL8jaGveRFlWFHcLuU00Dc0z3LsUkjrCRNtUia7pSzp3nnyy");
+        given(userRepository.findUserByEmail("correct_email@company.yes")).willReturn(user);
         // WHEN
         boolean credentialsAreCorrect = loginService.checkCredentials("correct_email@company.yes", "correctPasswordWhyNotItsAGreatOne");
         // THEN
@@ -32,8 +34,8 @@ class LoginServiceTest {
     @Test
     void checkCredentials_shouldReturnFalse_whenPasswordDoesNotMatchPasswordHashForExistingUserWithEmailGiven() {
         // GIVEN
-        given(userRepository.findUserPasswordHashByEmail("correct_email@yes"))
-                .willReturn("$2a$10$rRsTiuqd3V5hQJwsLi3CneRCcKxK0eiKKO1JlGIxAnx9NIP4GsHbG");
+        User user = new User("driver@gmail.com", UserType.BUS_DRIVER, "$2a$10$rRsTiuqd3V5hQJwsLi3CneRCcKxK0eiKKO1JlGIxAnx9NIP4GsHbG");
+        given(userRepository.findUserByEmail("correct_email@yes")).willReturn(user);
         // WHEN
         boolean credentialsAreCorrect = loginService.checkCredentials("correct_email@yes", "wrongPassword");
         // THEN
@@ -43,7 +45,7 @@ class LoginServiceTest {
     @Test
     void checkCredentials_shouldReturnFalse_whenNoUserFoundWithEmailGiven() {
         // GIVEN
-        given(userRepository.findUserPasswordHashByEmail(anyString())).willReturn(null);
+        given(userRepository.findUserByEmail(anyString())).willReturn(null);
         // WHEN
         boolean credentialsAreCorrect = loginService.checkCredentials("noUserWithSuch@Email.exists", "anyPassword");
         // THEN
@@ -53,7 +55,8 @@ class LoginServiceTest {
     @Test
     void getUserType_shouldReturnDriverUserType_whenDriversEmailIsPassed() {
         // GIVEN
-        given(userRepository.findUserTypeByEmail("driver@gmail.com")).willReturn("BUS_DRIVER");
+        User driverUser = new User("driver@gmail.com", UserType.BUS_DRIVER, "$2a$10$rRsTiuqd3V5hQJwsLi3CneRCcKxK0eiKKO1JlGIxAnx9NIP4GsHbG");
+        given(userRepository.findUserByEmail("driver@gmail.com")).willReturn(driverUser);
         // WHEN
         UserType userType = loginService.getUserType("driver@gmail.com");
         // THEN
@@ -63,9 +66,10 @@ class LoginServiceTest {
     @Test
     void getUserType_shouldReturnAdminsUserType_whenAdminsEmailIsPassed() {
         // GIVEN
-        given(userRepository.findUserTypeByEmail("admin@gmail.com")).willReturn("DEPOT_ADMIN");
+        User adminUser = new User("admin@gmail.com", UserType.DEPOT_ADMIN, "$2a$10$rRsTiuqd3V5hQJwsLi3CneRCcKxK0eiKKO1JlGIxAnx9NIP4GsHbG");
+        given(userRepository.findUserByEmail("adminPage@gmail.com")).willReturn(adminUser);
         // WHEN
-        UserType userType = loginService.getUserType("admin@gmail.com");
+        UserType userType = loginService.getUserType("adminPage@gmail.com");
         // THEN
         assertEquals(UserType.DEPOT_ADMIN, userType);
     }

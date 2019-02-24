@@ -1,6 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<jsp:useBean id="email" scope="session" type="java.lang.String"/>
 
 <html>
 <head>
@@ -8,7 +7,7 @@
 </head>
 <body>
 <h1 class="driver__greetingMessage" style="color: indigo">
-    Hi, bus driver with email <c:out value="${email}"/>!
+    Hi, bus driver with email ${sessionScope.get('email')}!
 </h1>
 
 </body>

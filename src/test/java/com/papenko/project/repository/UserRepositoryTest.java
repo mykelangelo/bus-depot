@@ -1,11 +1,15 @@
-package com.papenko.project;
+package com.papenko.project.repository;
 
+import com.papenko.project.entity.User;
+import com.papenko.project.entity.UserType;
 import com.wix.mysql.EmbeddedMysql;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
 
 import static com.wix.mysql.EmbeddedMysql.anEmbeddedMysql;
 import static com.wix.mysql.ScriptResolver.classPathScripts;
@@ -25,12 +29,12 @@ class UserRepositoryTest {
                         .withUser("depot_user", "depot_password")
                         .withPort(4406)
                         .build()
-        ).addSchema("depot_database", classPathScripts("db/migration/*.sql")
+        ).addSchema("depot_database", classPathScripts("db/schema/migration/*.sql")
         ).start();
 
         userRepository = new UserRepository(
                 new HikariDataSource(
-                        new HikariConfig("/db/connection-pool.properties")
+                        new HikariConfig("src/test/resources/db/connection-pool.properties")
                 )
         );
     }
@@ -41,47 +45,41 @@ class UserRepositoryTest {
     }
 
     @Test
-    void findUserPasswordHashByEmail_shouldReturnPasswordHashOfUser_whenUserExistsWithGivenEmail() {
+    void findUserByEmail_shouldReturnUser_whenUserExistsWithGivenEmail() {
         // GIVEN
         embeddedMysql.executeScripts("depot_database",
                 () -> "INSERT INTO depot_user (email, user_type, password_hash) " +
                         "VALUES ('existing_user_email@yes', 'BUS_DRIVER', '$2a$10$rRsTiuqd3V5hQJwsLi3CneRCcKxK0eiKKO1JlGIxAnx9NIP4GsHbG');");
         // WHEN
-        String passwordHash = userRepository.findUserPasswordHashByEmail("existing_user_email@yes");
+        User user = userRepository.findUserByEmail("existing_user_email@yes");
         // THEN
-        assertEquals("$2a$10$rRsTiuqd3V5hQJwsLi3CneRCcKxK0eiKKO1JlGIxAnx9NIP4GsHbG", passwordHash);
+        assertEquals(new User("existing_user_email@yes", UserType.BUS_DRIVER,
+                "$2a$10$rRsTiuqd3V5hQJwsLi3CneRCcKxK0eiKKO1JlGIxAnx9NIP4GsHbG"), user);
     }
-
     @Test
-    void findUserPasswordHashByEmail_shouldReturnNull_whenNoUserExistsWithGivenEmail() {
-        // GIVEN
-        // WHEN
-        String passwordHash = userRepository.findUserPasswordHashByEmail("non_existing_user_email@nope");
-        // THEN
-        assertNull(passwordHash);
-    }
-
-    @Test
-    void findUserTypeByEmail_shouldReturnDepotAdmin_whenAdminsEmailIsGiven() {
+    void findUserByEmail_shouldReturnNull_whenUserDoesNotExistsWithGivenEmail() {
         // GIVEN
         embeddedMysql.executeScripts("depot_database",
                 () -> "INSERT INTO depot_user (email, user_type, password_hash) " +
-                        "VALUES ('depot.admin@yes', 'DEPOT_ADMIN', '$2a$10$rRsTiuqd3V5hQJwsLi3CneRCcKxK0eiKKO1JlGIxAnx9NIP4GsHbG');");
+                        "VALUES ('existing_user_email@yes', 'BUS_DRIVER', '$2a$10$rRsTiuqd3V5hQJwsLi3CneRCcKxK0eiKKO1JlGIxAnx9NIP4GsHbG');");
         // WHEN
-        String userType = userRepository.findUserTypeByEmail("depot.admin@yes");
+        User user = userRepository.findUserByEmail("non_existing_user_email@yes");
         // THEN
-        assertEquals("DEPOT_ADMIN", userType);
+        assertNull(user);
     }
 
     @Test
-    void findUserTypeByEmail_shouldReturnBusDriver_whenDriversEmailIsGiven() {
+    void findAllDrivers_shouldReturnListWithAllDrivers() {
         // GIVEN
         embeddedMysql.executeScripts("depot_database",
-                () -> "INSERT INTO depot_user (email, user_type, password_hash) " +
-                        "VALUES ('bus.driver@yes', 'BUS_DRIVER', '$2a$10$rRsTiuqd3V5hQJwsLi3CneRCcKxK0eiKKO1JlGIxAnx9NIP4GsHbG');");
+                () -> "INSERT INTO depot_user (email, user_type, password_hash) VALUES " +
+                        "('bob.driver@yes',  'BUS_DRIVER', '$2a$10$rRsTiuqd3V5hQJwsLi3CneRCcKxK0eiKKO1JlGIxAnx9NIP4GsHbG')," +
+                        "('alex.driver@yes', 'BUS_DRIVER', '$2a$10$rRsTiuqd3V5hQJwsLi3CneRCcKxK0eiKKO1JlGIxAnx9NIP4GsHbG');");
         // WHEN
-        String userType = userRepository.findUserTypeByEmail("bus.driver@yes");
+        List<User> driverUsers = userRepository.findAllDrivers();
         // THEN
-        assertEquals("BUS_DRIVER", userType);
+        User driverUser0 = new User("alex.driver@yes", UserType.BUS_DRIVER, "$2a$10$rRsTiuqd3V5hQJwsLi3CneRCcKxK0eiKKO1JlGIxAnx9NIP4GsHbG");
+        User driverUser1 = new User("bob.driver@yes", UserType.BUS_DRIVER, "$2a$10$rRsTiuqd3V5hQJwsLi3CneRCcKxK0eiKKO1JlGIxAnx9NIP4GsHbG");
+        assertEquals(List.of(driverUser0, driverUser1), driverUsers);
     }
 }

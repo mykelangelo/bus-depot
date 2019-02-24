@@ -1,7 +1,9 @@
-package com.papenko.project;
+package com.papenko.project.servlet;
 
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
+import com.papenko.project.DataSourceHolder;
+import com.papenko.project.entity.UserType;
+import com.papenko.project.repository.UserRepository;
+import com.papenko.project.service.LoginService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,9 +18,9 @@ import java.io.IOException;
 import static java.util.Arrays.asList;
 
 @WebServlet(urlPatterns = "/login")
-public class LoginAction extends HttpServlet {
-    private static final Logger LOGGER = LoggerFactory.getLogger(LoginAction.class);
-    LoginService loginService;
+public class LoginPageServlet extends HttpServlet {
+    private static final Logger LOGGER = LoggerFactory.getLogger(LoginPageServlet.class);
+    private LoginService loginService;
 
     @Override
     public void init() {
@@ -30,9 +32,8 @@ public class LoginAction extends HttpServlet {
     }
 
     DataSource getDataSource() {
-        return new HikariDataSource(
-                new HikariConfig("/db/connection-pool.properties")
-        );
+        LOGGER.debug("about to get dataSource");
+        return DataSourceHolder.getInstance();
     }
 
     @Override
@@ -59,9 +60,9 @@ public class LoginAction extends HttpServlet {
 
     private String generateLandingPagePath(UserType userType) {
         if (userType == UserType.DEPOT_ADMIN) {
-            return "/admin.jsp";
+            return "/admin";
         } else if (userType == UserType.BUS_DRIVER) {
-            return "/driver.jsp";
+            return "/driver";
         } else {
             throw new IllegalStateException("Only " + asList(UserType.values()) + " user types have landing pages");
         }

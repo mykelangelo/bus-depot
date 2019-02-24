@@ -24,25 +24,26 @@ public interface ScreenShotGeneratingE2ETest {
             )
     );
 
+    static void clearScreenShotsDirectory(TestInfo testInfo) {
+        try {
+            LOGGER.info("Deleting old screenshots' directory");
+            Path testClassDir = SCREENSHOTS_DIRECTORY.resolve(testInfo.getTestClass().get().getSimpleName());
+            FileUtils.deleteDirectory(testClassDir.toFile());
+            LOGGER.info("Creating screenshots' directory anew");
+            Files.createDirectories(testClassDir);
+        } catch (IOException e) {
+            LOGGER.error("Couldn't clear screenshot directory", e);
+        }
+    }
+
     default void makeScreenShot(TestInfo testInfo) {
         try {
-            String screenShotFileName = this.getClass().getSimpleName() + "_" + testInfo.getTestMethod().map(Method::getName).get() + ".png";
-            Path screenShotPath = SCREENSHOTS_DIRECTORY.resolve(screenShotFileName);
+            String screenShotFileName = testInfo.getTestMethod().map(Method::getName).get() + ".png";
+            Path screenShotPath = SCREENSHOTS_DIRECTORY.resolve(this.getClass().getSimpleName()).resolve(screenShotFileName);
             LOGGER.info("Generating screen shot {}", screenShotPath.toAbsolutePath());
             Files.write(screenShotPath, getWebDriver().getScreenshotAs(BYTES));
         } catch (IOException e) {
             LOGGER.error("Couldn't make screen shot", e);
-        }
-    }
-
-    static void clearScreenShotsDirectory() {
-        try {
-            LOGGER.info("Deleting old screenshots' directory");
-            FileUtils.deleteDirectory(SCREENSHOTS_DIRECTORY.toFile());
-            LOGGER.info("Creating screenshots' directory anew");
-            Files.createDirectories(SCREENSHOTS_DIRECTORY);
-        } catch (IOException e) {
-            LOGGER.error("Couldn't clear screenshot directory", e);
         }
     }
 

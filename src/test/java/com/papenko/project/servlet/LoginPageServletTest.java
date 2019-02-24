@@ -1,9 +1,12 @@
-package com.papenko.project;
+package com.papenko.project.servlet;
 
+import com.papenko.project.entity.UserType;
+import com.papenko.project.service.LoginService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -13,17 +16,15 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.sql.DataSource;
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class LoginActionTest {
+class LoginPageServletTest {
     @Spy
     @InjectMocks
-    LoginAction loginAction;
+    LoginPageServlet loginPageServlet;
     @Mock
     LoginService loginService;
     @Mock
@@ -38,24 +39,12 @@ class LoginActionTest {
     HttpSession session;
 
     @Test
-    void init_createsLoginService() {
-        DataSource dataSourceMock = mock(DataSource.class);
-        // GIVEN
-        loginAction.loginService = null;
-        doReturn(dataSourceMock).when(loginAction).getDataSource();
-        // WHEN
-        loginAction.init();
-        // THEN
-        assertNotNull(loginAction.loginService);
-    }
-
-    @Test
     void doGet_shouldForwardToLoginPage() throws Exception {
         // GIVEN
-        doReturn(servletContext).when(loginAction).getServletContext();
+        doReturn(servletContext).when(loginPageServlet).getServletContext();
         doReturn(requestDispatcher).when(servletContext).getRequestDispatcher(anyString());
         // WHEN
-        loginAction.doGet(httpServletRequest, httpServletResponse);
+        loginPageServlet.doGet(httpServletRequest, httpServletResponse);
         // THEN
         verify(servletContext).getRequestDispatcher("/login.jsp");
         verify(requestDispatcher).forward(httpServletRequest, httpServletResponse);
@@ -68,11 +57,11 @@ class LoginActionTest {
         doReturn("correct_password").when(httpServletRequest).getParameter("password");
         doReturn(true).when(loginService).checkCredentials("correct@email.yes", "correct_password");
         doReturn(session).when(httpServletRequest).getSession();
-        doReturn(UserType.DEPOT_ADMIN).when(loginService).getUserType("correct@email.yes");
+        Mockito.doReturn(UserType.DEPOT_ADMIN).when(loginService).getUserType("correct@email.yes");
         //WHEN
-        loginAction.doPost(httpServletRequest, httpServletResponse);
+        loginPageServlet.doPost(httpServletRequest, httpServletResponse);
         //THEN
-        verify(httpServletResponse).sendRedirect("/admin.jsp");
+        verify(httpServletResponse).sendRedirect("/admin");
         verify(session).setAttribute("email", "correct@email.yes");
     }
 
@@ -85,9 +74,9 @@ class LoginActionTest {
         doReturn(session).when(httpServletRequest).getSession();
         doReturn(UserType.BUS_DRIVER).when(loginService).getUserType("correct@email.yes");
         //WHEN
-        loginAction.doPost(httpServletRequest, httpServletResponse);
+        loginPageServlet.doPost(httpServletRequest, httpServletResponse);
         //THEN
-        verify(httpServletResponse).sendRedirect("/driver.jsp");
+        verify(httpServletResponse).sendRedirect("/driver");
         verify(session).setAttribute("email", "correct@email.yes");
     }
 
@@ -96,11 +85,11 @@ class LoginActionTest {
         // GIVEN
         doReturn("wrong@email.yes").when(httpServletRequest).getParameter("email");
         doReturn("wrong_password").when(httpServletRequest).getParameter("password");
-        doReturn(servletContext).when(loginAction).getServletContext();
+        doReturn(servletContext).when(loginPageServlet).getServletContext();
         doReturn(requestDispatcher).when(servletContext).getRequestDispatcher(anyString());
         doReturn(false).when(loginService).checkCredentials(anyString(), anyString());
         //WHEN
-        loginAction.doPost(httpServletRequest, httpServletResponse);
+        loginPageServlet.doPost(httpServletRequest, httpServletResponse);
         //THEN
         verify(servletContext).getRequestDispatcher("/login.jsp");
         verify(requestDispatcher).forward(httpServletRequest, httpServletResponse);

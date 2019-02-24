@@ -4,18 +4,19 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-class DepotAdminPage {
+class DriverPage {
+    private static final String DRIVER_PAGE_URL = "http://localhost:8080/driver";
     private final WebDriver webDriver;
 
-    DepotAdminPage(WebDriver webDriver) {
+    DriverPage(WebDriver webDriver) {
         this.webDriver = webDriver;
     }
 
     static String getPageUrl() {
-        return "http://localhost:8080/admin.jsp";
+        return DRIVER_PAGE_URL;
     }
 
     WebElement findGreetingMessage() {
-        return webDriver.findElement(By.className("admin__greetingMessage"));
+        return webDriver.findElement(By.className("driver__greetingMessage"));
     }
 }

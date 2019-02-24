@@ -1,4 +1,4 @@
-package com.papenko.project;
+package com.papenko.project.entity;
 
 public enum UserType {
     DEPOT_ADMIN,

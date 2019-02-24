@@ -1,3 +1,6 @@
+#Target
+/target
+
 # Screenshots (for e2e tests, with selenium)
 /test-reports/
 

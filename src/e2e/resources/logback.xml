@@ -11,5 +11,5 @@
         <appender-ref ref="CONSOLE"/>
     </root>
 
-    <logger name="com.papenko.project" level="TRACE"/>
+    <logger name="e2e" level="TRACE"/>
 </configuration>
