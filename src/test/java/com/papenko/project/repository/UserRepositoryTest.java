@@ -56,6 +56,7 @@ class UserRepositoryTest {
         assertEquals(new User("existing_user_email@yes", UserType.BUS_DRIVER,
                 "$2a$10$rRsTiuqd3V5hQJwsLi3CneRCcKxK0eiKKO1JlGIxAnx9NIP4GsHbG"), user);
     }
+
     @Test
     void findUserByEmail_shouldReturnNull_whenUserDoesNotExistsWithGivenEmail() {
         // GIVEN
