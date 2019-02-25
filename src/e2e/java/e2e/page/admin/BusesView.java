@@ -1,4 +1,4 @@
-package e2e.page;
+package e2e.page.admin;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;

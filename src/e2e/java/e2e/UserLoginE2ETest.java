@@ -1,6 +1,6 @@
 package e2e;
 
-import e2e.page.AdminPage;
+import e2e.page.admin.AdminPage;
 import e2e.page.DriverPage;
 import e2e.page.LoginPage;
 import io.github.bonigarcia.wdm.ChromeDriverManager;
