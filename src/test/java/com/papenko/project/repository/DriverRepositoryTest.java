@@ -8,6 +8,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static com.wix.mysql.EmbeddedMysql.anEmbeddedMysql;
 import static com.wix.mysql.ScriptResolver.classPathScripts;
 import static com.wix.mysql.config.MysqldConfig.aMysqldConfig;
@@ -50,7 +52,7 @@ class DriverRepositoryTest {
                         "INSERT INTO bus (bus_serial, route_name) VALUES ('IA9669SA', '7L'), ('FI6669CT', '7L'); " +
                         "INSERT INTO depot_user (email, user_type, password_hash)" +
                         " VALUE ('bus.driver@yes', 'BUS_DRIVER', '$2a$10$rRsTiuqd3V5hQJwsLi3CneRCcKxK0eiKKO1JlGIxAnx9NIP4GsHbG');" +
-                        "INSERT INTO bus_driver (user_email, bus_serial) VALUE ('bus.driver@yes', 'IA9669SA')");
+                        "INSERT INTO bus_driver (user_email, bus_serial) VALUE ('bus.driver@yes', 'IA9669SA');");
         // WHEN
         driverRepository.updateDriver(new Driver("bus.driver@yes", "FI6669CT"));
         // THEN
@@ -65,7 +67,7 @@ class DriverRepositoryTest {
                         "INSERT INTO bus (bus_serial, route_name) VALUE ('IA9669SA', '7L'); " +
                         "INSERT INTO depot_user (email, user_type, password_hash)" +
                         " VALUE ('bus.driver@yes', 'BUS_DRIVER', '$2a$10$rRsTiuqd3V5hQJwsLi3CneRCcKxK0eiKKO1JlGIxAnx9NIP4GsHbG');" +
-                        "INSERT INTO bus_driver (user_email, bus_serial) VALUE ('bus.driver@yes', 'IA9669SA')");
+                        "INSERT INTO bus_driver (user_email, bus_serial) VALUE ('bus.driver@yes', 'IA9669SA');");
         // WHEN
         Driver driver = driverRepository.findDriverByEmail("bus.driver@yes");
         // THEN
@@ -75,15 +77,27 @@ class DriverRepositoryTest {
     @Test
     void findDriverByEmail_shouldReturnNull_whenNoDriverExistsWithSuchEmail() {
         // GIVEN
-        embeddedMysql.executeScripts("depot_database",
-                () -> "INSERT INTO route (route_name) VALUE ('7L'); " +
-                        "INSERT INTO bus (bus_serial, route_name) VALUE ('IA9669SA', '7L'); " +
-                        "INSERT INTO depot_user (email, user_type, password_hash)" +
-                        " VALUE ('bus.driver@yes', 'BUS_DRIVER', '$2a$10$rRsTiuqd3V5hQJwsLi3CneRCcKxK0eiKKO1JlGIxAnx9NIP4GsHbG');" +
-                        "INSERT INTO bus_driver (user_email, bus_serial) VALUE ('bus.driver@yes', 'IA9669SA')");
         // WHEN
         Driver driver = driverRepository.findDriverByEmail("hell.driver@yes");
         // THEN
         assertNull(driver);
+    }
+
+    @Test
+    void findAllDrivers_shouldReturnListWithAllDrivers() {
+        // GIVEN
+        embeddedMysql.executeScripts("depot_database",
+                () -> "INSERT INTO route (route_name) VALUE ('7L'); " +
+                        "INSERT INTO bus (bus_serial, route_name) VALUES ('IA9669SA', '7L'), ('GG777HH', '7L'); " +
+                        "INSERT INTO depot_user (email, user_type, password_hash)" +
+                        " VALUES ('bus.driver@yes', 'BUS_DRIVER', '$2a$10$rRsTiuqd3V5hQJwsLi3CneRCcKxK0eiKKO1JlGIxAnx9NIP4GsHbG')," +
+                        " ('hell.driver@yes', 'BUS_DRIVER', '$2a$10$rRsTiuqd3V5hQJwsLi3CneRCcKxK0eiKKO1JlGIxAnx9NIP4GsHbG');" +
+                        "INSERT INTO bus_driver (user_email, bus_serial)" +
+                        " VALUES ('bus.driver@yes', 'IA9669SA'), ('hell.driver@yes', 'GG777HH');");
+        // WHEN
+        List<Driver> drivers = driverRepository.findAllDrivers();
+        // THEN
+        assertEquals(List.of(new Driver("hell.driver@yes", "GG777HH"), new Driver("bus.driver@yes", "IA9669SA")),
+                drivers);
     }
 }

@@ -31,37 +31,33 @@ class AdminServiceTest {
     AdminService adminService;
 
     @Test
-    void getDriversEmails_shouldReturnListWithEmailsOfEveryDriver() {
+    void getDrivers_shouldReturnListWithEveryDriver() {
         // GIVEN
-        User driverUser0 = new User("alexa@company.com", UserType.BUS_DRIVER, "$2a$10$rRsTiuqd3V5hQJwsLi3CneRCcKxK0eiKKO1JlGIxAnx9NIP4GsHbG");
-        User driverUser1 = new User("bob.jenkins@gmail.com", UserType.BUS_DRIVER, "$2a$10$rRsTiuqd3V5hQJwsLi3CneRCcKxK0eiKKO1JlGIxAnx9NIP4GsHbG");
-        given(userRepository.findAllDrivers()).willReturn(List.of(driverUser0, driverUser1));
+        given(driverRepository.findAllDrivers()).willReturn(List.of(new Driver("alexa@company.com", "BB8698BB"), new Driver("bob.jenkins@gmail.com", "AA4444AA")));
         // WHEN
-        List<String> driversEmail = adminService.getDriversEmails();
+        List<Driver> driversEmail = adminService.getDrivers();
         // THEN
-        assertEquals(List.of("alexa@company.com", "bob.jenkins@gmail.com"), driversEmail);
+        assertEquals(List.of(new Driver("alexa@company.com", "BB8698BB"), new Driver("bob.jenkins@gmail.com", "AA4444AA")), driversEmail);
     }
 
     @Test
-    void getBusesSerials_shouldReturnArrayWithSerialsOfEveryBus() {
+    void getBuses_shouldReturnListEveryBus() {
         // GIVEN
-        Bus bus0 = new Bus("AA4444AA", "69");
-        Bus bus1 = new Bus("II1111II", "6k");
-        given(busRepository.findAllBuses()).willReturn(List.of(bus0, bus1));
+        given(busRepository.findAllBuses()).willReturn(List.of(new Bus("AA4444AA", "69"), new Bus("II1111II", "6k")));
         // WHEN
-        List<String> busesSerials = adminService.getBusesSerials();
+        List<Bus> busesSerials = adminService.getBuses();
         // THEN
-        assertEquals(List.of("AA4444AA", "II1111II"), busesSerials);
+        assertEquals(List.of(new Bus("AA4444AA", "69"), new Bus("II1111II", "6k")), busesSerials);
     }
 
     @Test
-    void getRoutesNames_shouldReturnArrayWithNamesOfEveryRoute() {
+    void getRoutes_shouldReturnListWithEveryRoute() {
         // GIVEN
         given(routeRepository.findAllRoutes()).willReturn(List.of(new Route("7L"), new Route("7k")));
         // WHEN
-        List<String> routesNames = adminService.getRoutesNames();
+        List<Route> routesNames = adminService.getRoutes();
         // THEN
-        assertEquals(List.of("7L", "7k"), routesNames);
+        assertEquals(List.of(new Route("7L"), new Route("7k")), routesNames);
     }
 
     @Test

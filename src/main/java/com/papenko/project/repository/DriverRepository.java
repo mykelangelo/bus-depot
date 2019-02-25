@@ -4,6 +4,8 @@ import com.papenko.project.entity.Driver;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DriverRepository {
     private final DataSource dataSource;
@@ -42,5 +44,24 @@ public class DriverRepository {
             throw new RuntimeException(e);
         }
         return null;
+    }
+
+    public List<Driver> findAllDrivers() {
+        var sql = "SELECT user_email, bus_serial FROM bus_driver;";
+        List<Driver> drivers = new ArrayList<>();
+
+        try (var connection = dataSource.getConnection();
+             var preparedStatement = connection.prepareStatement(sql);
+             var resultSet = preparedStatement.executeQuery()) {
+            while (resultSet.next()) {
+                String userEmail = resultSet.getString("user_email");
+                String busSerial = resultSet.getString("bus_serial");
+                drivers.add(new Driver(userEmail, busSerial));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return drivers;
     }
 }

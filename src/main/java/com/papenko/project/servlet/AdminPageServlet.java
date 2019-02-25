@@ -48,9 +48,9 @@ public class AdminPageServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setAttribute("lastSubmitStatusMessage", request.getParameter("lastSubmitStatusMessage"));
-        request.setAttribute("driversEmails", adminService.getDriversEmails());
-        request.setAttribute("busesSerials", adminService.getBusesSerials());
-        request.setAttribute("routesNames", adminService.getRoutesNames());
+        request.setAttribute("drivers", adminService.getDrivers());
+        request.setAttribute("buses", adminService.getBuses());
+        request.setAttribute("routes", adminService.getRoutes());
         LOGGER.debug("GET");
         getServletContext().getRequestDispatcher("/admin.jsp").forward(request, response);
     }

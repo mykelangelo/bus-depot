@@ -1,6 +1,7 @@
 package com.papenko.project.entity;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 
 public class Route {
@@ -22,5 +23,12 @@ public class Route {
         return new EqualsBuilder()
                 .append(name, route.name)
                 .isEquals();
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("name", name)
+                .toString();
     }
 }

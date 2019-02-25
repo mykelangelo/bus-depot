@@ -4,108 +4,58 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-class AdminPage {
+public class AdminPage {
     private static final String ADMIN_PAGE_URL = "http://localhost:8080/admin";
     private final WebDriver webDriver;
     private final AssignDriverToBusForm assignDriverToBusForm;
     private final VacateDriverForm vacateDriverForm;
     private final AssignBusToRouteForm assignBusToRouteForm;
+    private final BusesView busesView;
+    private final DriversView driversView;
 
-    AdminPage(WebDriver webDriver) {
+    public AdminPage(WebDriver webDriver) {
         this.webDriver = webDriver;
-        assignDriverToBusForm = new AssignDriverToBusForm();
-        assignBusToRouteForm = new AssignBusToRouteForm();
-        vacateDriverForm = new VacateDriverForm();
+        assignDriverToBusForm = new AssignDriverToBusForm(webDriver);
+        assignBusToRouteForm = new AssignBusToRouteForm(webDriver);
+        vacateDriverForm = new VacateDriverForm(webDriver);
+        busesView = new BusesView(webDriver);
+        driversView = new DriversView(webDriver);
     }
 
-    static String getPageUrl() {
+    public static String getPageUrl() {
         return ADMIN_PAGE_URL;
     }
 
-    void goToPage() {
+    public void goToPage() {
         webDriver.get(ADMIN_PAGE_URL);
     }
 
-    WebElement findGreetingMessage() {
+    public WebElement findGreetingMessage() {
         return webDriver.findElement(By.className("admin__greetingMessage"));
     }
 
-    WebElement findLastSubmitStatusMessage() {
+    public WebElement findLastSubmitStatusMessage() {
         return webDriver.findElement(By.className("admin__last-submit-status-message"));
     }
 
-    AssignDriverToBusForm driverToBusForm() {
+    public AssignDriverToBusForm driverToBusForm() {
         return assignDriverToBusForm;
     }
 
-    VacateDriverForm vacateDriverForm() {
+    public VacateDriverForm vacateDriverForm() {
         return vacateDriverForm;
     }
 
-    AssignBusToRouteForm busToRouteForm() {
+    public AssignBusToRouteForm busToRouteForm() {
         return assignBusToRouteForm;
     }
 
-    class AssignDriverToBusForm {
-
-        WebElement busDropdown() {
-            return webDriver.findElement(By.className("driver-to-bus__bus-dropdown"));
-        }
-
-        WebElement busDropdownOption(String busSerialNumber) {
-            return webDriver.findElement(By.className("driver-to-bus__bus-dropdown-option-" + busSerialNumber));
-        }
-
-        WebElement driverDropdown() {
-            return webDriver.findElement(By.className("driver-to-bus__driver-dropdown"));
-        }
-
-        WebElement driverDropdownOption(String email) {
-            return webDriver.findElement(By.className("driver-to-bus__driver-dropdown-option-" + email.replace('@', '_')));
-        }
-
-        WebElement submitButton() {
-            return webDriver.findElement(By.className("driver-to-bus__submit-button"));
-        }
+    public BusesView busesView() {
+        return busesView;
     }
 
-    class VacateDriverForm {
-
-        WebElement driverDropdown() {
-            return webDriver.findElement(By.className("vacate-driver__driver-dropdown"));
-        }
-
-        WebElement driverDropdownOption(String email) {
-            return webDriver.findElement(By.className("vacate-driver__driver-dropdown-option-" + email.replace('@', '_')));
-        }
-
-        WebElement submitButton() {
-            return webDriver.findElement(By.className("vacate-driver__submit-button"));
-        }
-
-    }
-
-    class AssignBusToRouteForm {
-
-        WebElement routeDropdown() {
-            return webDriver.findElement(By.className("bus-to-route__route-dropdown"));
-        }
-
-        WebElement routeDropdownOption(String routeName) {
-            return webDriver.findElement(By.className("bus-to-route__route-dropdown-option-" + routeName));
-        }
-
-        WebElement busDropdown() {
-            return webDriver.findElement(By.className("bus-to-route__bus-dropdown"));
-        }
-
-        WebElement busDropdownOption(String busSerialNumber) {
-            return webDriver.findElement(By.className("bus-to-route__bus-dropdown-option-" + busSerialNumber));
-        }
-
-        WebElement submitButton() {
-            return webDriver.findElement(By.className("bus-to-route__submit-button"));
-        }
+    public DriversView driversView() {
+        return driversView;
     }
 }
 

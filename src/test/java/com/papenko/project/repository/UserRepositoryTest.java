@@ -68,19 +68,4 @@ class UserRepositoryTest {
         // THEN
         assertNull(user);
     }
-
-    @Test
-    void findAllDrivers_shouldReturnListWithAllDrivers() {
-        // GIVEN
-        embeddedMysql.executeScripts("depot_database",
-                () -> "INSERT INTO depot_user (email, user_type, password_hash) VALUES " +
-                        "('bob.driver@yes',  'BUS_DRIVER', '$2a$10$rRsTiuqd3V5hQJwsLi3CneRCcKxK0eiKKO1JlGIxAnx9NIP4GsHbG')," +
-                        "('alex.driver@yes', 'BUS_DRIVER', '$2a$10$rRsTiuqd3V5hQJwsLi3CneRCcKxK0eiKKO1JlGIxAnx9NIP4GsHbG');");
-        // WHEN
-        List<User> driverUsers = userRepository.findAllDrivers();
-        // THEN
-        User driverUser0 = new User("alex.driver@yes", UserType.BUS_DRIVER, "$2a$10$rRsTiuqd3V5hQJwsLi3CneRCcKxK0eiKKO1JlGIxAnx9NIP4GsHbG");
-        User driverUser1 = new User("bob.driver@yes", UserType.BUS_DRIVER, "$2a$10$rRsTiuqd3V5hQJwsLi3CneRCcKxK0eiKKO1JlGIxAnx9NIP4GsHbG");
-        assertEquals(List.of(driverUser0, driverUser1), driverUsers);
-    }
 }

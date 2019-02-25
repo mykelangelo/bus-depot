@@ -48,11 +48,12 @@ public class AdminAssigningE2ETest implements ScreenShotGeneratingE2ETest {
         adminPage.driverToBusForm().driverDropdown().click();
         adminPage.driverToBusForm().driverDropdownOption("driver@company.com").click();
         adminPage.driverToBusForm().busDropdown().click();
-        adminPage.driverToBusForm().busDropdownOption("AI7007AA").click();
+        adminPage.driverToBusForm().busDropdownOption("OA0404OA").click();
         adminPage.driverToBusForm().submitButton().click();
 
         assertThat(webDriver.getCurrentUrl()).startsWith(AdminPage.getPageUrl());
-        assertEquals("You assigned driver with email driver@company.com to bus with serial number AI7007AA",
+        assertEquals("OA0404OA", adminPage.driversView().busSerial("driver@company.com").getText());
+        assertEquals("You assigned driver with email driver@company.com to bus with serial number OA0404OA",
                 adminPage.findLastSubmitStatusMessage().getText());
     }
 
@@ -64,6 +65,7 @@ public class AdminAssigningE2ETest implements ScreenShotGeneratingE2ETest {
         adminPage.vacateDriverForm().submitButton().click();
 
         assertThat(webDriver.getCurrentUrl()).startsWith(AdminPage.getPageUrl());
+        assertEquals("", adminPage.driversView().busSerial("driver@company.com").getText());
         assertEquals("You vacated driver with email driver@company.com",
                 adminPage.findLastSubmitStatusMessage().getText());
     }
@@ -78,6 +80,7 @@ public class AdminAssigningE2ETest implements ScreenShotGeneratingE2ETest {
         adminPage.busToRouteForm().submitButton().click();
 
         assertThat(webDriver.getCurrentUrl()).startsWith(AdminPage.getPageUrl());
+        assertEquals("7L", adminPage.busesView().routeName("AI7007AA").getText());
         assertEquals("You assigned bus with serial number AI7007AA to route with name 7L",
                 adminPage.findLastSubmitStatusMessage().getText());
     }

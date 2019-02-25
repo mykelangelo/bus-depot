@@ -25,18 +25,12 @@ public class AdminService {
         this.routeRepository = routeRepository;
     }
 
-    public List<String> getDriversEmails() {
-        return userRepository.findAllDrivers()
-                .stream()
-                .map(User::getEmail)
-                .collect(Collectors.toList());
+    public List<Driver> getDrivers() {
+        return driverRepository.findAllDrivers();
     }
 
-    public List<String> getBusesSerials() {
-        return busRepository.findAllBuses()
-                .stream()
-                .map(Bus::getSerialNumber)
-                .collect(Collectors.toList());
+    public List<Bus> getBuses() {
+        return busRepository.findAllBuses();
     }
 
     public void assignDriverToBus(String driverEmail, String busSerial) {
@@ -47,11 +41,8 @@ public class AdminService {
         driverRepository.updateDriver(new Driver(driverEmail, null));
     }
 
-    public List<String> getRoutesNames() {
-        return routeRepository.findAllRoutes()
-                .stream()
-                .map(Route::getName)
-                .collect(Collectors.toList());
+    public List<Route> getRoutes() {
+        return routeRepository.findAllRoutes();
     }
 
     public void assignBusToRoute(String busSerial, String routeName) {

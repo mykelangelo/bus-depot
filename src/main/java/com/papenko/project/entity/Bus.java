@@ -1,6 +1,7 @@
 package com.papenko.project.entity;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class Bus {
     private final String serialNumber;
@@ -33,5 +34,13 @@ public class Bus {
                 .append(serialNumber, bus.serialNumber)
                 .append(routeName, bus.routeName)
                 .isEquals();
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("serialNumber", serialNumber)
+                .append("routeName", routeName)
+                .toString();
     }
 }

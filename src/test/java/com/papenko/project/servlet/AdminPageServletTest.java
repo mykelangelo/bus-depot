@@ -1,5 +1,8 @@
 package com.papenko.project.servlet;
 
+import com.papenko.project.entity.Bus;
+import com.papenko.project.entity.Driver;
+import com.papenko.project.entity.Route;
 import com.papenko.project.service.AdminService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -43,17 +46,17 @@ class AdminPageServletTest {
         // GIVEN
         doReturn(servletContext).when(adminPage).getServletContext();
         doReturn(requestDispatcher).when(servletContext).getRequestDispatcher(anyString());
-        doReturn(List.of("alexa@company.com", "bob.jenkins@gmail.com")).when(adminService).getDriversEmails();
-        doReturn(List.of("AA4444AA", "II1111II")).when(adminService).getBusesSerials();
-        doReturn(List.of("7L", "7k", "71")).when(adminService).getRoutesNames();
+        doReturn(List.of(new Driver("alexa@company.com", "AA4444AA"), new Driver("bob.jenkins@gmail.com", "Il1171lI"))).when(adminService).getDrivers();
+        doReturn(List.of(new Bus("AA4444AA", "7L"), new Bus("Il1171lI", "7k"))).when(adminService).getBuses();
+        doReturn(List.of(new Route("7L"), new Route("7k"), new Route("71"))).when(adminService).getRoutes();
         // WHEN
         adminPage.doGet(httpServletRequest, httpServletResponse);
         // THEN
         verify(servletContext).getRequestDispatcher("/admin.jsp");
         verify(requestDispatcher).forward(httpServletRequest, httpServletResponse);
-        verify(httpServletRequest).setAttribute("driversEmails", List.of("alexa@company.com", "bob.jenkins@gmail.com"));
-        verify(httpServletRequest).setAttribute("busesSerials", List.of("AA4444AA", "II1111II"));
-        verify(httpServletRequest).setAttribute("routesNames", List.of("7L", "7k", "71"));
+        verify(httpServletRequest).setAttribute("drivers", List.of(new Driver("alexa@company.com", "AA4444AA"), new Driver("bob.jenkins@gmail.com", "Il1171lI")));
+        verify(httpServletRequest).setAttribute("buses", List.of(new Bus("AA4444AA", "7L"), new Bus("Il1171lI", "7k")));
+        verify(httpServletRequest).setAttribute("routes", List.of(new Route("7L"), new Route("7k"), new Route("71")));
     }
 
     @Test
@@ -61,18 +64,18 @@ class AdminPageServletTest {
         // GIVEN
         doReturn(servletContext).when(adminPage).getServletContext();
         doReturn(requestDispatcher).when(servletContext).getRequestDispatcher(anyString());
-        doReturn(List.of("alexa@company.com", "bob.jenkins@gmail.com")).when(adminService).getDriversEmails();
-        doReturn(List.of("AA4444AA", "II1111II")).when(adminService).getBusesSerials();
-        doReturn(List.of("7L", "7k", "71")).when(adminService).getRoutesNames();
+        doReturn(List.of(new Driver("alexa@company.com", "AA4444AA"), new Driver("bob.jenkins@gmail.com", "Il1171lI"))).when(adminService).getDrivers();
+        doReturn(List.of(new Bus("AA4444AA", "7L"), new Bus("Il1171lI", "7k"))).when(adminService).getBuses();
+        doReturn(List.of(new Route("7L"), new Route("7k"), new Route("71"))).when(adminService).getRoutes();
         doReturn("Jokes are not funny").when(httpServletRequest).getParameter("lastSubmitStatusMessage");
         // WHEN
         adminPage.doGet(httpServletRequest, httpServletResponse);
         // THEN
         verify(servletContext).getRequestDispatcher("/admin.jsp");
         verify(requestDispatcher).forward(httpServletRequest, httpServletResponse);
-        verify(httpServletRequest).setAttribute("driversEmails", List.of("alexa@company.com", "bob.jenkins@gmail.com"));
-        verify(httpServletRequest).setAttribute("busesSerials", List.of("AA4444AA", "II1111II"));
-        verify(httpServletRequest).setAttribute("routesNames", List.of("7L", "7k", "71"));
+        verify(httpServletRequest).setAttribute("drivers", List.of(new Driver("alexa@company.com", "AA4444AA"), new Driver("bob.jenkins@gmail.com", "Il1171lI")));
+        verify(httpServletRequest).setAttribute("buses", List.of(new Bus("AA4444AA", "7L"), new Bus("Il1171lI", "7k")));
+        verify(httpServletRequest).setAttribute("routes", List.of(new Route("7L"), new Route("7k"), new Route("71")));
         verify(httpServletRequest).setAttribute("lastSubmitStatusMessage", "Jokes are not funny");
     }
 }

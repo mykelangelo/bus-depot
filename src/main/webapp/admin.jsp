@@ -1,8 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<c:set var="driversEmails" value="${requestScope.get('driversEmails')}"/>
-<c:set var="busesSerials" value="${requestScope.get('busesSerials')}"/>
-<c:set var="routesNames" value="${requestScope.get('routesNames')}"/>
+<c:set var="buses" value="${requestScope.get('buses')}"/>
+<c:set var="drivers" value="${requestScope.get('drivers')}"/>
+<c:set var="routes" value="${requestScope.get('routes')}"/>
 <c:set var="lastSubmitStatusMessage" value="${requestScope.get('lastSubmitStatusMessage')}"/>
 
 <html>
@@ -31,9 +31,9 @@
             <option selected disabled hidden>
                 Drivers
             </option>
-            <c:forEach var="driver_email" items="${driversEmails}">
-                <option class="driver-to-bus__driver-dropdown-option-${driver_email.replace('@', '_')}">
-                        ${driver_email}
+            <c:forEach var="driver" items="${drivers}">
+                <option class="driver-to-bus__driver-dropdown-option-${driver.getUserEmail().replace('@', '_')}">
+                        ${driver.getUserEmail()}
                 </option>
             </c:forEach>
         </select>
@@ -45,9 +45,9 @@
             <option selected disabled hidden>
                 Buses
             </option>
-            <c:forEach var="bus_serial" items="${busesSerials}">
-                <option class="driver-to-bus__bus-dropdown-option-${bus_serial}">
-                        ${bus_serial}
+            <c:forEach var="bus" items="${buses}">
+                <option class="driver-to-bus__bus-dropdown-option-${bus.getSerialNumber()}">
+                        ${bus.getSerialNumber()}
                 </option>
             </c:forEach>
         </select>
@@ -63,9 +63,9 @@
             <option selected disabled hidden>
                 Drivers
             </option>
-            <c:forEach var="driver_email" items="${driversEmails}">
-                <option class="vacate-driver__driver-dropdown-option-${driver_email.replace('@', '_')}">
-                        ${driver_email}
+            <c:forEach var="driver" items="${drivers}">
+                <option class="vacate-driver__driver-dropdown-option-${driver.getUserEmail().replace('@', '_')}">
+                        ${driver.getUserEmail()}
                 </option>
             </c:forEach>
         </select>
@@ -81,9 +81,9 @@
             <option selected disabled hidden>
                 Buses
             </option>
-            <c:forEach var="bus_serial" items="${busesSerials}">
-                <option class="bus-to-route__bus-dropdown-option-${bus_serial}">
-                        ${bus_serial}
+            <c:forEach var="bus" items="${buses}">
+                <option class="bus-to-route__bus-dropdown-option-${bus.getSerialNumber()}">
+                        ${bus.getSerialNumber()}
                 </option>
             </c:forEach>
         </select>
@@ -95,15 +95,66 @@
             <option selected disabled hidden>
                 Routes
             </option>
-            <c:forEach var="route_name" items="${routesNames}">
-                <option class="bus-to-route__route-dropdown-option-${route_name}">
-                        ${route_name}
+            <c:forEach var="route" items="${routes}">
+                <option class="bus-to-route__route-dropdown-option-${route.getName()}">
+                        ${route.getName()}
                 </option>
             </c:forEach>
         </select>
     </label>
     <input type="submit" class="bus-to-route__submit-button" value="Assign">
 </form>
-
+<hr>
+<br>
+<hr>
+<table>
+    <thead>
+    Buses with their serial numbers and routes names:
+    </thead>
+    <tr>
+        <th>
+            Serial
+        </th>
+        <th>
+            Route
+        </th>
+    </tr>
+    <c:forEach var="bus" items="${buses}">
+        <tr>
+            <td class="buses-view__bus-serial-for-${bus.getSerialNumber()}">
+                    ${bus.getSerialNumber()}
+            </td>
+            <td class="buses-view__route-name-for-${bus.getSerialNumber()}">
+                    ${bus.getRouteName()}
+            </td>
+        </tr>
+    </c:forEach>
+</table>
+<hr>
+<br>
+<hr>
+<table>
+    <thead>
+    Drivers with their user emails and buses serial numbers
+    </thead>
+    <tr>
+        <th>
+            Email
+        </th>
+        <th>
+            Bus
+        </th>
+    </tr>
+    <c:forEach var="driver" items="${drivers}">
+        <tr>
+            <td class="drivers-view__user-email-for-${driver.getUserEmail().replace('@', '_')}">
+                    ${driver.getUserEmail()}
+            </td>
+            <td class="drivers-view__bus-serial-for-${driver.getUserEmail().replace('@', '_')}">
+                    ${driver.getBusSerial()}
+            </td>
+        </tr>
+    </c:forEach>
+</table>
 </body>
 </html>

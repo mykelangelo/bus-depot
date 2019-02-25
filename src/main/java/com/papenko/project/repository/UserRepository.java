@@ -15,25 +15,6 @@ public class UserRepository {
         this.dataSource = dataSource;
     }
 
-    public List<User> findAllDrivers() {
-        var sql = "SELECT email, password_hash FROM depot_user WHERE user_type = 'BUS_DRIVER';";
-        List<User> driverUsers = new ArrayList<>();
-
-        try (var connection = dataSource.getConnection();
-             var preparedStatement = connection.prepareStatement(sql);
-             var resultSet = preparedStatement.executeQuery()) {
-            while (resultSet.next()) {
-                var email = resultSet.getString("email");
-                var passwordHash = resultSet.getString("password_hash");
-                driverUsers.add(new User(email, UserType.BUS_DRIVER, passwordHash));
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-        return driverUsers;
-    }
-
     public User findUserByEmail(String email) {
         var sql = "SELECT user_type, password_hash FROM depot_user WHERE email = (?);";
 
