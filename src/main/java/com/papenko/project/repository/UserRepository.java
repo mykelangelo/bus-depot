@@ -5,8 +5,6 @@ import com.papenko.project.entity.UserType;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class UserRepository {
     private final DataSource dataSource;

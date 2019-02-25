@@ -3,14 +3,12 @@ package com.papenko.project.service;
 import com.papenko.project.entity.Bus;
 import com.papenko.project.entity.Driver;
 import com.papenko.project.entity.Route;
-import com.papenko.project.entity.User;
 import com.papenko.project.repository.BusRepository;
 import com.papenko.project.repository.DriverRepository;
 import com.papenko.project.repository.RouteRepository;
 import com.papenko.project.repository.UserRepository;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class AdminService {
     private final UserRepository userRepository;
