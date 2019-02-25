@@ -5,19 +5,19 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class Driver {
     private final String userEmail;
-    private final String busSerial;
+    private final Bus bus;
 
-    public Driver(String userEmail, String busSerial) {
+    public Driver(String userEmail, Bus bus) {
         this.userEmail = userEmail;
-        this.busSerial = busSerial;
+        this.bus = bus;
     }
 
     public String getUserEmail() {
         return userEmail;
     }
 
-    public String getBusSerial() {
-        return busSerial;
+    public Bus getBus() {
+        return bus;
     }
 
     @Override
@@ -27,7 +27,7 @@ public class Driver {
         Driver driver = (Driver) o;
         return new EqualsBuilder()
                 .append(userEmail, driver.userEmail)
-                .append(busSerial, driver.busSerial)
+                .append(bus, driver.bus)
                 .isEquals();
     }
 
@@ -35,7 +35,7 @@ public class Driver {
     public String toString() {
         return new ToStringBuilder(this)
                 .append("userEmail", userEmail)
-                .append("busSerial", busSerial)
+                .append("bus", bus)
                 .toString();
     }
 }

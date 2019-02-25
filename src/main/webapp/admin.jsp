@@ -125,7 +125,7 @@
                     ${bus.getSerialNumber()}
             </td>
             <td class="buses-view__route-name-for-${bus.getSerialNumber()}">
-                    ${bus.getRouteName()}
+                    ${bus.getRoute().getName()}
             </td>
         </tr>
     </c:forEach>
@@ -151,7 +151,7 @@
                     ${driver.getUserEmail()}
             </td>
             <td class="drivers-view__bus-serial-for-${driver.getUserEmail().replace('@', '_')}">
-                    ${driver.getBusSerial()}
+                    ${driver.getBus().getSerialNumber()}
             </td>
         </tr>
     </c:forEach>

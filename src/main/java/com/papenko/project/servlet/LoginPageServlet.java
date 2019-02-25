@@ -31,7 +31,7 @@ public class LoginPageServlet extends HttpServlet {
         );
     }
 
-    DataSource getDataSource() {
+    private DataSource getDataSource() {
         LOGGER.debug("about to get dataSource");
         return DataSourceHolder.getInstance();
     }

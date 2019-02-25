@@ -19,4 +19,12 @@ public class DriverPage {
     public WebElement findGreetingMessage() {
         return webDriver.findElement(By.className("driver__greetingMessage"));
     }
+
+    public WebElement busSerial() {
+        return webDriver.findElement(By.className("driver__bus-serial"));
+    }
+
+    public WebElement routeName() {
+        return webDriver.findElement(By.className("driver__route-name"));
+    }
 }

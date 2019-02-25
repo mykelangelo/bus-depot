@@ -29,7 +29,7 @@ import static org.mockito.Mockito.verify;
 class AdminPageServletTest {
     @Spy
     @InjectMocks
-    AdminPageServlet adminPage;
+    AdminPageServlet adminPageServlet;
     @Mock
     AdminService adminService;
     @Mock
@@ -44,37 +44,61 @@ class AdminPageServletTest {
     @Test
     void doGet_shouldForwardToAdminPage_andSetDriversEmailsAndBusesSerialsAndRoutesNamesToRequest_andNoSetLastSubmitMessage_whenLastSubmitMessageIsNotPresentInQueryParam() throws ServletException, IOException {
         // GIVEN
-        doReturn(servletContext).when(adminPage).getServletContext();
+        doReturn(servletContext).when(adminPageServlet).getServletContext();
         doReturn(requestDispatcher).when(servletContext).getRequestDispatcher(anyString());
-        doReturn(List.of(new Driver("alexa@company.com", "AA4444AA"), new Driver("bob.jenkins@gmail.com", "Il1171lI"))).when(adminService).getDrivers();
-        doReturn(List.of(new Bus("AA4444AA", "7L"), new Bus("Il1171lI", "7k"))).when(adminService).getBuses();
+        doReturn(List.of(
+                new Driver("alexa@company.com", new Bus("AA4444AA", new Route("7u"))),
+                new Driver("bob.jenkins@gmail.com", new Bus("Il1171lI", new Route("7R"))))
+        ).when(adminService).getDrivers();
+        doReturn(List.of(
+                new Bus("AA4444AA", new Route("7u")),
+                new Bus("Il1171lI", new Route("7R")))
+        ).when(adminService).getBuses();
         doReturn(List.of(new Route("7L"), new Route("7k"), new Route("71"))).when(adminService).getRoutes();
         // WHEN
-        adminPage.doGet(httpServletRequest, httpServletResponse);
+        adminPageServlet.doGet(httpServletRequest, httpServletResponse);
         // THEN
         verify(servletContext).getRequestDispatcher("/admin.jsp");
         verify(requestDispatcher).forward(httpServletRequest, httpServletResponse);
-        verify(httpServletRequest).setAttribute("drivers", List.of(new Driver("alexa@company.com", "AA4444AA"), new Driver("bob.jenkins@gmail.com", "Il1171lI")));
-        verify(httpServletRequest).setAttribute("buses", List.of(new Bus("AA4444AA", "7L"), new Bus("Il1171lI", "7k")));
+        verify(httpServletRequest).setAttribute("drivers", List.of(
+                new Driver("alexa@company.com", new Bus("AA4444AA", new Route("7u"))),
+                new Driver("bob.jenkins@gmail.com", new Bus("Il1171lI", new Route("7R"))))
+        );
+        verify(httpServletRequest).setAttribute("buses", List.of(
+                new Bus("AA4444AA", new Route("7u")),
+                new Bus("Il1171lI", new Route("7R")))
+        );
         verify(httpServletRequest).setAttribute("routes", List.of(new Route("7L"), new Route("7k"), new Route("71")));
     }
 
     @Test
     void doGet_shouldForwardToAdminPage_andSetDriversEmailsAndBusesSerialsAndRoutesNamesToRequest_andSetLastSubmitMessage_whenLastSubmitMessageIsPresentInQueryParam() throws ServletException, IOException {
         // GIVEN
-        doReturn(servletContext).when(adminPage).getServletContext();
+        doReturn(servletContext).when(adminPageServlet).getServletContext();
         doReturn(requestDispatcher).when(servletContext).getRequestDispatcher(anyString());
-        doReturn(List.of(new Driver("alexa@company.com", "AA4444AA"), new Driver("bob.jenkins@gmail.com", "Il1171lI"))).when(adminService).getDrivers();
-        doReturn(List.of(new Bus("AA4444AA", "7L"), new Bus("Il1171lI", "7k"))).when(adminService).getBuses();
+        doReturn(List.of(
+                new Driver("alexa@company.com", new Bus("AA4444AA", new Route("7u"))),
+                new Driver("bob.jenkins@gmail.com", new Bus("Il1171lI", new Route("7R"))))
+        ).when(adminService).getDrivers();
+        doReturn(List.of(
+                new Bus("AA4444AA", new Route("7u")),
+                new Bus("Il1171lI", new Route("7R")))
+        ).when(adminService).getBuses();
         doReturn(List.of(new Route("7L"), new Route("7k"), new Route("71"))).when(adminService).getRoutes();
         doReturn("Jokes are not funny").when(httpServletRequest).getParameter("lastSubmitStatusMessage");
         // WHEN
-        adminPage.doGet(httpServletRequest, httpServletResponse);
+        adminPageServlet.doGet(httpServletRequest, httpServletResponse);
         // THEN
         verify(servletContext).getRequestDispatcher("/admin.jsp");
         verify(requestDispatcher).forward(httpServletRequest, httpServletResponse);
-        verify(httpServletRequest).setAttribute("drivers", List.of(new Driver("alexa@company.com", "AA4444AA"), new Driver("bob.jenkins@gmail.com", "Il1171lI")));
-        verify(httpServletRequest).setAttribute("buses", List.of(new Bus("AA4444AA", "7L"), new Bus("Il1171lI", "7k")));
+        verify(httpServletRequest).setAttribute("drivers", List.of(
+                new Driver("alexa@company.com", new Bus("AA4444AA", new Route("7u"))),
+                new Driver("bob.jenkins@gmail.com", new Bus("Il1171lI", new Route("7R"))))
+        );
+        verify(httpServletRequest).setAttribute("buses", List.of(
+                new Bus("AA4444AA", new Route("7u")),
+                new Bus("Il1171lI", new Route("7R")))
+        );
         verify(httpServletRequest).setAttribute("routes", List.of(new Route("7L"), new Route("7k"), new Route("71")));
         verify(httpServletRequest).setAttribute("lastSubmitStatusMessage", "Jokes are not funny");
     }

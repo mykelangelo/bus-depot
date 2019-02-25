@@ -6,23 +6,19 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 public class Bus {
     private final String serialNumber;
 
-    private String routeName;
+    private final Route route;
 
-    public Bus(String serialNumber, String routeName) {
+    public Bus(String serialNumber, Route route) {
         this.serialNumber = serialNumber;
-        this.routeName = routeName;
+        this.route = route;
     }
 
     public String getSerialNumber() {
         return serialNumber;
     }
 
-    public String getRouteName() {
-        return routeName;
-    }
-
-    public void setRouteName(String routeName) {
-        this.routeName = routeName;
+    public Route getRoute() {
+        return route;
     }
 
     @Override
@@ -32,7 +28,7 @@ public class Bus {
         Bus bus = (Bus) o;
         return new EqualsBuilder()
                 .append(serialNumber, bus.serialNumber)
-                .append(routeName, bus.routeName)
+                .append(route, bus.route)
                 .isEquals();
     }
 
@@ -40,7 +36,7 @@ public class Bus {
     public String toString() {
         return new ToStringBuilder(this)
                 .append("serialNumber", serialNumber)
-                .append("routeName", routeName)
+                .append("route", route)
                 .toString();
     }
 }

@@ -22,7 +22,7 @@ import static org.mockito.Mockito.verify;
 class AssignBusToRouteServletTest {
     @Spy
     @InjectMocks
-    AssignBusToRouteServlet assignBusToRoute;
+    AssignBusToRouteServlet assignBusToRouteServlet;
     @Mock
     AdminService adminService;
     @Mock
@@ -32,12 +32,12 @@ class AssignBusToRouteServletTest {
 
 
     @Test
-    void doPost_shouldSetBusToRoute_andSetLastSubmitStatusMessageToRequest_whenBothParametersAreSet() throws ServletException, IOException {
+    void doPost_shouldSetBusToRoute_andSetLastSubmitStatusMessageToRequest_whenBothParametersAreSet() throws IOException {
         // GIVEN
         doReturn("AI7007AA").when(httpServletRequest).getParameter("bus-serial");
         doReturn("7L").when(httpServletRequest).getParameter("route-name");
         // WHEN
-        assignBusToRoute.doPost(httpServletRequest, httpServletResponse);
+        assignBusToRouteServlet.doPost(httpServletRequest, httpServletResponse);
         // THEN
         verify(adminService).assignBusToRoute("AI7007AA", "7L");
         verify(httpServletResponse).sendRedirect("/admin?lastSubmitStatusMessage=You assigned bus with serial number AI7007AA to route with name 7L");

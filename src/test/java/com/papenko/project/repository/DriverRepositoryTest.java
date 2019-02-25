@@ -1,6 +1,8 @@
 package com.papenko.project.repository;
 
+import com.papenko.project.entity.Bus;
 import com.papenko.project.entity.Driver;
+import com.papenko.project.entity.Route;
 import com.wix.mysql.EmbeddedMysql;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
@@ -35,7 +37,6 @@ class DriverRepositoryTest {
                 new HikariDataSource(
                         new HikariConfig("src/test/resources/db/connection-pool.properties")
                 )
-
         );
     }
 
@@ -45,7 +46,7 @@ class DriverRepositoryTest {
     }
 
     @Test
-    void updateDriver_shouldUpdateBusOfDriver() {
+    void updateDriverSetBus_shouldUpdateBusOfDriver() {
         // GIVEN
         embeddedMysql.executeScripts("depot_database",
                 () -> "INSERT INTO route (route_name) VALUE ('7L'); " +
@@ -54,9 +55,10 @@ class DriverRepositoryTest {
                         " VALUE ('bus.driver@yes', 'BUS_DRIVER', '$2a$10$rRsTiuqd3V5hQJwsLi3CneRCcKxK0eiKKO1JlGIxAnx9NIP4GsHbG');" +
                         "INSERT INTO bus_driver (user_email, bus_serial) VALUE ('bus.driver@yes', 'IA9669SA');");
         // WHEN
-        driverRepository.updateDriver(new Driver("bus.driver@yes", "FI6669CT"));
+        driverRepository.updateDriverSetBus(new Driver("bus.driver@yes", new Bus("IA9669SA", new Route("7L"))),
+                new Bus("FI6669CT", new Route("7L")));
         // THEN
-        assertEquals("FI6669CT", driverRepository.findDriverByEmail("bus.driver@yes").getBusSerial());
+        assertEquals("FI6669CT", driverRepository.findDriverByEmail("bus.driver@yes").getBus().getSerialNumber());
     }
 
     @Test
@@ -71,7 +73,7 @@ class DriverRepositoryTest {
         // WHEN
         Driver driver = driverRepository.findDriverByEmail("bus.driver@yes");
         // THEN
-        assertEquals(new Driver("bus.driver@yes", "IA9669SA"), driver);
+        assertEquals(new Driver("bus.driver@yes", new Bus("IA9669SA", new Route("7L"))), driver);
     }
 
     @Test
@@ -97,7 +99,9 @@ class DriverRepositoryTest {
         // WHEN
         List<Driver> drivers = driverRepository.findAllDrivers();
         // THEN
-        assertEquals(List.of(new Driver("hell.driver@yes", "GG777HH"), new Driver("bus.driver@yes", "IA9669SA")),
+        assertEquals(List.of(
+                new Driver("hell.driver@yes", new Bus("GG777HH", new Route("7L"))),
+                new Driver("bus.driver@yes", new Bus("IA9669SA", new Route("7L")))),
                 drivers);
     }
 }

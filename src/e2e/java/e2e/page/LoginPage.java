@@ -6,10 +6,10 @@ import org.openqa.selenium.WebElement;
 
 public class LoginPage {
     private static final String LOGIN_PAGE_URL = "http://localhost:8080/login";
-    private final WebDriver driver;
+    private final WebDriver webDriver;
 
-    public LoginPage(WebDriver driver) {
-        this.driver = driver;
+    public LoginPage(WebDriver webDriver) {
+        this.webDriver = webDriver;
     }
 
     public static String getPageUrl() {
@@ -17,22 +17,22 @@ public class LoginPage {
     }
 
     public void goToPage() {
-        driver.get(LOGIN_PAGE_URL);
+        webDriver.get(LOGIN_PAGE_URL);
     }
 
     public WebElement findEmailField() {
-        return driver.findElement(By.className("login__email"));
+        return webDriver.findElement(By.className("login__email"));
     }
 
     public WebElement findPasswordField() {
-        return driver.findElement(By.className("login__password"));
+        return webDriver.findElement(By.className("login__password"));
     }
 
     public WebElement findSubmitButton() {
-        return driver.findElement(By.className("login__submit"));
+        return webDriver.findElement(By.className("login__submit"));
     }
 
     public WebElement findLoginErrorMessage() {
-        return driver.findElement(By.className("login__error-message"));
+        return webDriver.findElement(By.className("login__error-message"));
     }
 }

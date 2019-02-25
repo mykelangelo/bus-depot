@@ -6,18 +6,15 @@ import com.papenko.project.entity.Route;
 import com.papenko.project.repository.BusRepository;
 import com.papenko.project.repository.DriverRepository;
 import com.papenko.project.repository.RouteRepository;
-import com.papenko.project.repository.UserRepository;
 
 import java.util.List;
 
 public class AdminService {
-    private final UserRepository userRepository;
     private final DriverRepository driverRepository;
     private final BusRepository busRepository;
     private final RouteRepository routeRepository;
 
-    public AdminService(UserRepository userRepository, DriverRepository driverRepository, BusRepository busRepository, RouteRepository routeRepository) {
-        this.userRepository = userRepository;
+    public AdminService(DriverRepository driverRepository, BusRepository busRepository, RouteRepository routeRepository) {
         this.driverRepository = driverRepository;
         this.busRepository = busRepository;
         this.routeRepository = routeRepository;
@@ -32,11 +29,14 @@ public class AdminService {
     }
 
     public void assignDriverToBus(String driverEmail, String busSerial) {
-        driverRepository.updateDriver(new Driver(driverEmail, busSerial));
+        Driver driver = driverRepository.findDriverByEmail(driverEmail);
+        Bus bus = busRepository.findBusBySerialNumber(busSerial);
+        driverRepository.updateDriverSetBus(driver, bus);
     }
 
     public void vacateDriverFromBus(String driverEmail) {
-        driverRepository.updateDriver(new Driver(driverEmail, null));
+        Driver driver = driverRepository.findDriverByEmail(driverEmail);
+        driverRepository.updateDriverSetBus(driver, new Bus(null, null));
     }
 
     public List<Route> getRoutes() {
@@ -44,6 +44,8 @@ public class AdminService {
     }
 
     public void assignBusToRoute(String busSerial, String routeName) {
-        busRepository.updateBus(new Bus(busSerial, routeName));
+        Bus bus = busRepository.findBusBySerialNumber(busSerial);
+        Route route = routeRepository.findRouteByName(routeName);
+        busRepository.updateBusSetRoute(bus, route);
     }
 }

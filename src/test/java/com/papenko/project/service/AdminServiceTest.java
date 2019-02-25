@@ -6,7 +6,6 @@ import com.papenko.project.entity.Route;
 import com.papenko.project.repository.BusRepository;
 import com.papenko.project.repository.DriverRepository;
 import com.papenko.project.repository.RouteRepository;
-import com.papenko.project.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -22,8 +21,6 @@ import static org.mockito.Mockito.verify;
 @ExtendWith(MockitoExtension.class)
 class AdminServiceTest {
     @Mock
-    UserRepository userRepository;
-    @Mock
     BusRepository busRepository;
     @Mock
     RouteRepository routeRepository;
@@ -35,21 +32,28 @@ class AdminServiceTest {
     @Test
     void getDrivers_shouldReturnListWithEveryDriver() {
         // GIVEN
-        given(driverRepository.findAllDrivers()).willReturn(List.of(new Driver("alexa@company.com", "BB8698BB"), new Driver("bob.jenkins@gmail.com", "AA4444AA")));
+        given(driverRepository.findAllDrivers()).willReturn(List.of(
+                new Driver("alexa@company.com", new Bus("BB8698BB", new Route("R9"))),
+                new Driver("bob.jenkins@gmail.com", new Bus("AA4444AA", new Route("K9")))));
         // WHEN
         List<Driver> driversEmail = adminService.getDrivers();
         // THEN
-        assertEquals(List.of(new Driver("alexa@company.com", "BB8698BB"), new Driver("bob.jenkins@gmail.com", "AA4444AA")), driversEmail);
+        assertEquals(List.of(
+                new Driver("alexa@company.com", new Bus("BB8698BB", new Route("R9"))),
+                new Driver("bob.jenkins@gmail.com", new Bus("AA4444AA", new Route("K9")))),
+                driversEmail);
     }
 
     @Test
-    void getBuses_shouldReturnListEveryBus() {
+    void getBuses_shouldReturnListWithEveryBus() {
         // GIVEN
-        given(busRepository.findAllBuses()).willReturn(List.of(new Bus("AA4444AA", "69"), new Bus("II1111II", "6k")));
+        given(busRepository.findAllBuses()).willReturn(List.of(new Bus("AA4444AA", new Route("69")),
+                new Bus("II1111II", new Route("6k"))));
         // WHEN
         List<Bus> busesSerials = adminService.getBuses();
         // THEN
-        assertEquals(List.of(new Bus("AA4444AA", "69"), new Bus("II1111II", "6k")), busesSerials);
+        assertEquals(List.of(new Bus("AA4444AA", new Route("69")),
+                new Bus("II1111II", new Route("6k"))), busesSerials);
     }
 
     @Test
@@ -65,27 +69,38 @@ class AdminServiceTest {
     @Test
     void assignDriverToBus_shouldInitiateAssigningDriverToBus() {
         // GIVEN
+        given(driverRepository.findDriverByEmail("freddy.mercury@gmail.com"))
+                .willReturn(new Driver("freddy.mercury@gmail.com", new Bus("EO3030EO", new Route("30"))));
+        given(busRepository.findBusBySerialNumber("BO1111RA")).willReturn(new Bus("BO1111RA", new Route("8R")));
         // WHEN
-        adminService.assignDriverToBus("bob.jenkins@gmail.com", "II1111II");
+        adminService.assignDriverToBus("freddy.mercury@gmail.com", "BO1111RA");
         // THEN
-        verify(driverRepository).updateDriver(new Driver("bob.jenkins@gmail.com", "II1111II"));
+        verify(driverRepository).updateDriverSetBus(
+                new Driver("freddy.mercury@gmail.com", new Bus("EO3030EO", new Route("30"))),
+                new Bus("BO1111RA", new Route("8R")));
     }
 
     @Test
     void vacateDriverFromBus_shouldInitiateVacatingDriverFromBus() {
         // GIVEN
+        given(driverRepository.findDriverByEmail("sponge.bob@square.pants"))
+                .willReturn(new Driver("sponge.bob@square.pants", new Bus("OL0101OL", new Route("O1"))));
         // WHEN
-        adminService.vacateDriverFromBus("bob.jenkins@gmail.com");
+        adminService.vacateDriverFromBus("sponge.bob@square.pants");
         // THEN
-        verify(driverRepository).updateDriver(new Driver("bob.jenkins@gmail.com", null));
+        verify(driverRepository).updateDriverSetBus(
+                new Driver("sponge.bob@square.pants", new Bus("OL0101OL", new Route("O1"))),
+                new Bus(null, null));
     }
 
     @Test
     void assignBusToRoute_shouldInitiateAssigningBusToRoute() {
         // GIVEN
+        given(busRepository.findBusBySerialNumber("XO7040Z0")).willReturn(new Bus("XO7040Z0", new Route("666")));
+        given(routeRepository.findRouteByName("69")).willReturn(new Route("69"));
         // WHEN
-        adminService.assignBusToRoute("AA0099AA", "96");
+        adminService.assignBusToRoute("XO7040Z0", "69");
         // THEN
-        verify(busRepository).updateBus(new Bus("AA0099AA", "96"));
+        verify(busRepository).updateBusSetRoute(new Bus("XO7040Z0", new Route("666")), new Route("69"));
     }
 }

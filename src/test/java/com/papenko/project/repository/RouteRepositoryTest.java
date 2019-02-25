@@ -15,6 +15,7 @@ import static com.wix.mysql.ScriptResolver.classPathScripts;
 import static com.wix.mysql.config.MysqldConfig.aMysqldConfig;
 import static com.wix.mysql.distribution.Version.v5_7_latest;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 class RouteRepositoryTest {
     private RouteRepository routeRepository;
@@ -34,7 +35,6 @@ class RouteRepositoryTest {
                 new HikariDataSource(
                         new HikariConfig("src/test/resources/db/connection-pool.properties")
                 )
-
         );
     }
 
@@ -51,8 +51,26 @@ class RouteRepositoryTest {
         // WHEN
         List<Route> routes = routeRepository.findAllRoutes();
         // THEN
-        Route route0 = new Route("71");
-        Route route1 = new Route("7L");
-        assertEquals(List.of(route0, route1), routes);
+        assertEquals(List.of(new Route("71"), new Route("7L")), routes);
+    }
+
+    @Test
+    void findRouteByName_shouldReturnRoute_ifRouteWithSuchNameExists() {
+        // GIVEN
+        embeddedMysql.executeScripts("depot_database",
+                () -> "INSERT INTO route (route_name) VALUE ('7L');");
+        // WHEN
+        Route route = routeRepository.findRouteByName("7L");
+        // THEN
+        assertEquals(new Route("7L"), route);
+    }
+
+    @Test
+    void findRouteByName_shouldReturnNull_ifNoRouteWithSuchNameExists() {
+        // GIVEN
+        // WHEN
+        Route route = routeRepository.findRouteByName("H4");
+        // THEN
+        assertNull(route);
     }
 }

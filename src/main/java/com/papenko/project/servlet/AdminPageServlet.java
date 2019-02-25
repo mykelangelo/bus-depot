@@ -4,7 +4,6 @@ import com.papenko.project.DataSourceHolder;
 import com.papenko.project.repository.BusRepository;
 import com.papenko.project.repository.DriverRepository;
 import com.papenko.project.repository.RouteRepository;
-import com.papenko.project.repository.UserRepository;
 import com.papenko.project.service.AdminService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,9 +24,6 @@ public class AdminPageServlet extends HttpServlet {
     @Override
     public void init() {
         adminService = new AdminService(
-                new UserRepository(
-                        getDataSource()
-                ),
                 new DriverRepository(
                         getDataSource()
                 ),
@@ -40,7 +36,7 @@ public class AdminPageServlet extends HttpServlet {
         );
     }
 
-    DataSource getDataSource() {
+    private DataSource getDataSource() {
         LOGGER.debug("about to get dataSource");
         return DataSourceHolder.getInstance();
     }

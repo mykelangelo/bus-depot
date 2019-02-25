@@ -1,6 +1,7 @@
 package com.papenko.project.repository;
 
 import com.papenko.project.entity.Bus;
+import com.papenko.project.entity.Route;
 import com.wix.mysql.EmbeddedMysql;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
@@ -35,7 +36,6 @@ class BusRepositoryTest {
                 new HikariDataSource(
                         new HikariConfig("src/test/resources/db/connection-pool.properties")
                 )
-
         );
     }
 
@@ -56,21 +56,19 @@ class BusRepositoryTest {
         // WHEN
         List<Bus> busesSerials = busRepository.findAllBuses();
         // THEN
-        Bus bus0 = new Bus("FI6669CT", "7L");
-        Bus bus1 = new Bus("IA9669SA", "7L");
-        assertEquals(List.of(bus0, bus1), busesSerials);
+        assertEquals(List.of(new Bus("FI6669CT", new Route("7L")), new Bus("IA9669SA", new Route("7L"))), busesSerials);
     }
 
     @Test
-    void updateBus_shouldUpdateRouteOfBus() {
+    void updateBusSetRoute_shouldUpdateRouteOfBus() {
         // GIVEN
         embeddedMysql.executeScripts("depot_database",
                 () -> "INSERT INTO route (route_name) VALUES ('7L'), ('96'); " +
                         "INSERT INTO bus (bus_serial, route_name) VALUE ('IA9669SA', '7L');");
         // WHEN
-        busRepository.updateBus(new Bus("IA9669SA", "96"));
+        busRepository.updateBusSetRoute(new Bus("IA9669SA", new Route("7L")), new Route("96"));
         // THEN
-        assertEquals(new Bus("IA9669SA", "96"), busRepository.findBusBySerialNumber("IA9669SA"));
+        assertEquals(new Bus("IA9669SA", new Route("96")), busRepository.findBusBySerialNumber("IA9669SA"));
     }
 
     @Test
@@ -82,7 +80,7 @@ class BusRepositoryTest {
         // WHEN
         Bus bus = busRepository.findBusBySerialNumber("IA9669SA");
         // THEN
-        assertEquals(new Bus("IA9669SA", "7L"), bus);
+        assertEquals(new Bus("IA9669SA", new Route("7L")), bus);
     }
 
     @Test

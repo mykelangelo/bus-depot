@@ -31,7 +31,7 @@ class VacateDriverServletTest {
     HttpServletResponse httpServletResponse;
 
     @Test
-    void doPost_shouldVacateDriverFromBus_andSetLastSubmitStatusMessageToRequest_whenDriverEmailParameterIsSet() throws ServletException, IOException {
+    void doPost_shouldVacateDriverFromBus_andSetLastSubmitStatusMessageToRequest_whenDriverEmailParameterIsSet() throws IOException {
         // GIVEN
         doReturn("bob.jenkins@gmail.com").when(httpServletRequest).getParameter("driver-email");
         // WHEN

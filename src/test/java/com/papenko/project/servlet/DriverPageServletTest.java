@@ -1,7 +1,12 @@
 package com.papenko.project.servlet;
 
+import com.papenko.project.entity.Bus;
+import com.papenko.project.entity.Driver;
+import com.papenko.project.entity.Route;
+import com.papenko.project.service.DriverService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -11,6 +16,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 import static org.mockito.ArgumentMatchers.anyString;
@@ -20,7 +26,10 @@ import static org.mockito.Mockito.verify;
 @ExtendWith(MockitoExtension.class)
 class DriverPageServletTest {
     @Spy
-    DriverPageServlet driverAction = new DriverPageServlet();
+    @InjectMocks
+    DriverPageServlet driverPageServlet;
+    @Mock
+    DriverService driverService;
     @Mock
     HttpServletRequest httpServletRequest;
     @Mock
@@ -29,16 +38,24 @@ class DriverPageServletTest {
     ServletContext servletContext;
     @Mock
     RequestDispatcher requestDispatcher;
+    @Mock
+    HttpSession httpSession;
 
     @Test
-    void doGet_shouldForwardToAdminPage() throws ServletException, IOException {
+    void doGet_shouldForwardToAdminPage_andSetDriverToRequest() throws ServletException, IOException {
         // GIVEN
-        doReturn(servletContext).when(driverAction).getServletContext();
+        doReturn(servletContext).when(driverPageServlet).getServletContext();
         doReturn(requestDispatcher).when(servletContext).getRequestDispatcher(anyString());
+        doReturn(httpSession).when(httpServletRequest).getSession();
+        doReturn("patrick.star@bikini.bottom").when(httpSession).getAttribute("email");
+        doReturn(new Driver("patrick.star@bikini.bottom", new Bus("99ggg99", new Route("77"))))
+                .when(driverService).findDriverByEmail("patrick.star@bikini.bottom");
         // WHEN
-        driverAction.doGet(httpServletRequest, httpServletResponse);
+        driverPageServlet.doGet(httpServletRequest, httpServletResponse);
         // THEN
         verify(servletContext).getRequestDispatcher("/driver.jsp");
         verify(requestDispatcher).forward(httpServletRequest, httpServletResponse);
+        verify(httpServletRequest).setAttribute("driver",
+                new Driver("patrick.star@bikini.bottom", new Bus("99ggg99", new Route("77"))));
     }
 }

@@ -31,4 +31,21 @@ public class RouteRepository {
 
         return routes;
     }
+
+    public Route findRouteByName(String routeName) {
+        var sql = "SELECT route_name FROM route " +
+                "WHERE route_name = (?);";
+        try (var connection = dataSource.getConnection();
+             var preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1, routeName);
+            try (var resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return new Route(routeName);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
 }

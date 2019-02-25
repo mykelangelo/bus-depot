@@ -1,6 +1,7 @@
 package com.papenko.project.repository;
 
 import com.papenko.project.entity.Bus;
+import com.papenko.project.entity.Route;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
@@ -9,9 +10,11 @@ import java.util.List;
 
 public class BusRepository {
     private final DataSource dataSource;
+    private final RouteRepository routeRepository;
 
     public BusRepository(DataSource dataSource) {
         this.dataSource = dataSource;
+        routeRepository = new RouteRepository(dataSource);
     }
 
     public List<Bus> findAllBuses() {
@@ -24,7 +27,8 @@ public class BusRepository {
             while (resultSet.next()) {
                 String busSerial = resultSet.getString("bus_serial");
                 String routeName = resultSet.getString("route_name");
-                buses.add(new Bus(busSerial, routeName));
+                Route route = routeRepository.findRouteByName(routeName);
+                buses.add(new Bus(busSerial, route));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -33,12 +37,12 @@ public class BusRepository {
         return buses;
     }
 
-    public void updateBus(Bus bus) {
+    public void updateBusSetRoute(Bus bus, Route route) {
         var sql = "UPDATE bus SET route_name = (?) " +
                 "WHERE bus_serial = (?);";
         try (var connection = dataSource.getConnection();
              var preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setString(1, bus.getRouteName());
+            preparedStatement.setString(1, route.getName());
             preparedStatement.setString(2, bus.getSerialNumber());
             preparedStatement.execute();
         } catch (SQLException e) {
@@ -55,7 +59,8 @@ public class BusRepository {
             try (var resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
                     String routeName = resultSet.getString("route_name");
-                    return new Bus(busSerial, routeName);
+                    Route route = routeRepository.findRouteByName(routeName);
+                    return new Bus(busSerial, route);
                 }
             }
         } catch (SQLException e) {

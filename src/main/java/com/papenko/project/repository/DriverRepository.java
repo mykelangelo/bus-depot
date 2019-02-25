@@ -1,5 +1,6 @@
 package com.papenko.project.repository;
 
+import com.papenko.project.entity.Bus;
 import com.papenko.project.entity.Driver;
 
 import javax.sql.DataSource;
@@ -9,17 +10,19 @@ import java.util.List;
 
 public class DriverRepository {
     private final DataSource dataSource;
+    private final BusRepository busRepository;
 
     public DriverRepository(DataSource dataSource) {
         this.dataSource = dataSource;
+        busRepository = new BusRepository(dataSource);
     }
 
-    public void updateDriver(Driver driver) {
+    public void updateDriverSetBus(Driver driver, Bus bus) {
         var sql = "UPDATE bus_driver SET bus_serial = (?) " +
                 "WHERE user_email = (?);";
         try (var connection = dataSource.getConnection();
              var preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setString(1, driver.getBusSerial());
+            preparedStatement.setString(1, bus.getSerialNumber());
             preparedStatement.setString(2, driver.getUserEmail());
             preparedStatement.execute();
         } catch (SQLException e) {
@@ -37,7 +40,8 @@ public class DriverRepository {
             try (var resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
                     String busSerial = resultSet.getString("bus_serial");
-                    return new Driver(driverEmail, busSerial);
+                    Bus bus = busRepository.findBusBySerialNumber(busSerial);
+                    return new Driver(driverEmail, bus);
                 }
             }
         } catch (SQLException e) {
@@ -56,7 +60,8 @@ public class DriverRepository {
             while (resultSet.next()) {
                 String userEmail = resultSet.getString("user_email");
                 String busSerial = resultSet.getString("bus_serial");
-                drivers.add(new Driver(userEmail, busSerial));
+                Bus bus = busRepository.findBusBySerialNumber(busSerial);
+                drivers.add(new Driver(userEmail, bus));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

@@ -22,7 +22,7 @@ import static org.mockito.Mockito.verify;
 class AssignDriverToBusServletTest {
     @Spy
     @InjectMocks
-    AssignDriverToBusServlet assignDriverToBus;
+    AssignDriverToBusServlet assignDriverToBusServlet;
     @Mock
     AdminService adminService;
     @Mock
@@ -31,12 +31,12 @@ class AssignDriverToBusServletTest {
     HttpServletResponse httpServletResponse;
 
     @Test
-    void doPost_shouldSetDriverToBus_andSetLastSubmitStatusMessageToRequest_whenBothParametersAreSet() throws ServletException, IOException {
+    void doPost_shouldSetDriverToBus_andSetLastSubmitStatusMessageToRequest_whenBothParametersAreSet() throws IOException {
         // GIVEN
         doReturn("bob.jenkins@gmail.com").when(httpServletRequest).getParameter("driver-email");
         doReturn("AA4444AA").when(httpServletRequest).getParameter("bus-serial");
         // WHEN
-        assignDriverToBus.doPost(httpServletRequest, httpServletResponse);
+        assignDriverToBusServlet.doPost(httpServletRequest, httpServletResponse);
         // THEN
         verify(adminService).assignDriverToBus("bob.jenkins@gmail.com", "AA4444AA");
         verify(httpServletResponse).sendRedirect("/admin?lastSubmitStatusMessage=You assigned driver with email bob.jenkins@gmail.com to bus with serial number AA4444AA");

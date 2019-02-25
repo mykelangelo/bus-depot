@@ -4,12 +4,10 @@ import com.papenko.project.DataSourceHolder;
 import com.papenko.project.repository.BusRepository;
 import com.papenko.project.repository.DriverRepository;
 import com.papenko.project.repository.RouteRepository;
-import com.papenko.project.repository.UserRepository;
 import com.papenko.project.service.AdminService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -26,9 +24,6 @@ public class VacateDriverServlet extends HttpServlet {
     @Override
     public void init() {
         adminService = new AdminService(
-                new UserRepository(
-                        getDataSource()
-                ),
                 new DriverRepository(
                         getDataSource()
                 ),
@@ -41,13 +36,13 @@ public class VacateDriverServlet extends HttpServlet {
         );
     }
 
-    DataSource getDataSource() {
+    private DataSource getDataSource() {
         LOGGER.debug("about to get dataSource");
         return DataSourceHolder.getInstance();
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String driverEmail = request.getParameter("driver-email");
 
         adminService.vacateDriverFromBus(driverEmail);
