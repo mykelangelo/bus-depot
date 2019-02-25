@@ -1,4 +1,4 @@
-package e2e;
+package e2e.page;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -7,7 +7,7 @@ import org.openqa.selenium.WebElement;
 public class DriversView {
     private final WebDriver webDriver;
 
-    public DriversView(WebDriver webDriver) {
+    DriversView(WebDriver webDriver) {
         this.webDriver = webDriver;
     }
 

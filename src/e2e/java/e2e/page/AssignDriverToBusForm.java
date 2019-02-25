@@ -1,34 +1,34 @@
-package e2e;
+package e2e.page;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-class AssignDriverToBusForm {
+public class AssignDriverToBusForm {
 
     private final WebDriver webDriver;
 
-    public AssignDriverToBusForm(WebDriver webDriver) {
+    AssignDriverToBusForm(WebDriver webDriver) {
         this.webDriver = webDriver;
     }
 
-    WebElement busDropdown() {
+    public WebElement busDropdown() {
         return webDriver.findElement(By.className("driver-to-bus__bus-dropdown"));
     }
 
-    WebElement busDropdownOption(String busSerialNumber) {
+    public WebElement busDropdownOption(String busSerialNumber) {
         return webDriver.findElement(By.className("driver-to-bus__bus-dropdown-option-" + busSerialNumber));
     }
 
-    WebElement driverDropdown() {
+    public WebElement driverDropdown() {
         return webDriver.findElement(By.className("driver-to-bus__driver-dropdown"));
     }
 
-    WebElement driverDropdownOption(String email) {
+    public WebElement driverDropdownOption(String email) {
         return webDriver.findElement(By.className("driver-to-bus__driver-dropdown-option-" + email.replace('@', '_')));
     }
 
-    WebElement submitButton() {
+    public WebElement submitButton() {
         return webDriver.findElement(By.className("driver-to-bus__submit-button"));
     }
 }

@@ -1,13 +1,13 @@
-package e2e;
+package e2e.page;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-class BusesView {
+public class BusesView {
     private WebDriver webDriver;
 
-    public BusesView(WebDriver webDriver) {
+    BusesView(WebDriver webDriver) {
         this.webDriver = webDriver;
     }
 

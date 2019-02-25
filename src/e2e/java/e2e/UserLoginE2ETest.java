@@ -1,5 +1,8 @@
 package e2e;
 
+import e2e.page.AdminPage;
+import e2e.page.DriverPage;
+import e2e.page.LoginPage;
 import io.github.bonigarcia.wdm.ChromeDriverManager;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.TakesScreenshot;
@@ -52,7 +55,7 @@ public class UserLoginE2ETest implements ScreenShotGeneratingE2ETest {
         loginPage.findPasswordField().sendKeys("correctPasswordWhyNotItsAGreatOne");
         loginPage.findSubmitButton().click();
 
-        assertEquals(loginPage.getPageUrl(), webDriver.getCurrentUrl(), "Didn't stay on login page");
+        assertEquals(LoginPage.getPageUrl(), webDriver.getCurrentUrl(), "Didn't stay on login page");
         assertEquals("Invalid email or password", loginPage.findLoginErrorMessage().getText());
     }
 
@@ -63,7 +66,7 @@ public class UserLoginE2ETest implements ScreenShotGeneratingE2ETest {
         loginPage.findPasswordField().sendKeys("someWrongCredentials");
         loginPage.findSubmitButton().click();
 
-        assertEquals(loginPage.getPageUrl(), webDriver.getCurrentUrl(), "Didn't stay on login page");
+        assertEquals(LoginPage.getPageUrl(), webDriver.getCurrentUrl(), "Didn't stay on login page");
         assertEquals("Invalid email or password", loginPage.findLoginErrorMessage().getText());
     }
 

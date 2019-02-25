@@ -1,4 +1,4 @@
-package e2e;
+package e2e.page;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;

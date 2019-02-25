@@ -1,5 +1,6 @@
 package e2e;
 
+import e2e.page.AdminPage;
 import io.github.bonigarcia.wdm.ChromeDriverManager;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.TakesScreenshot;
