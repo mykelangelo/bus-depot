@@ -8,6 +8,8 @@
 <html>
 <head>
     <title>Depot's Administration</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
 <body>
 
@@ -106,62 +108,71 @@
 </form>
 <hr>
 <table>
-    <thead>
-    Buses with their serial numbers and routes names:
-    </thead>
     <tr>
-        <th>
-            Serial
-        </th>
-        <th>
-            Route
-        </th>
+        <td>　　</td>
+        <td>
+            <table>
+                <thead>
+                　　All Buses:
+                </thead>
+                <tr>
+                    <th>
+                        Serial
+                    </th>
+                    <th>
+                        Route
+                    </th>
+                </tr>
+                <c:forEach var="bus" items="${buses}">
+                    <tr>
+                        <td class="buses-view__bus-serial-for-${bus.getSerialNumber()}">
+                                ${bus.getSerialNumber()}
+                        </td>
+                        <td class="buses-view__route-name-for-${bus.getSerialNumber()}">
+                                ${bus.getRoute().getName()}
+                        </td>
+                    </tr>
+                </c:forEach>
+            </table>
+        </td>
+        <td>　   　</td>
+        <td>
+            <table>
+                <thead>
+                　　All Drivers:
+                </thead>
+                <tr>
+                    <th>
+                        Email
+                    </th>
+                    <th>
+                        Bus
+                    </th>
+                    <th>
+                        Aware?
+                    </th>
+                </tr>
+                <c:forEach var="driver" items="${drivers}">
+                    <tr>
+                        <td class="drivers-view__user-email-for-${driver.getUserEmail().replace('@', '_')}">
+                                ${driver.getUserEmail()}
+                        </td>
+                        <td class="drivers-view__bus-serial-for-${driver.getUserEmail().replace('@', '_')}">
+                                ${driver.getBus().getSerialNumber()}
+                        </td>
+                        <td class="drivers-view__assignment-awareness-for-${driver.getUserEmail().replace('@', '_')}">
+                            <c:if test="${driver.isAwareOfAssignment()}">
+                                ${"✅"}
+                            </c:if>
+                            <c:if test="${not driver.isAwareOfAssignment()}">
+                                ${"X"}
+                            </c:if>
+                        </td>
+                    </tr>
+                </c:forEach>
+            </table>
+        </td>
     </tr>
-    <c:forEach var="bus" items="${buses}">
-        <tr>
-            <td class="buses-view__bus-serial-for-${bus.getSerialNumber()}">
-                    ${bus.getSerialNumber()}
-            </td>
-            <td class="buses-view__route-name-for-${bus.getSerialNumber()}">
-                    ${bus.getRoute().getName()}
-            </td>
-        </tr>
-    </c:forEach>
-</table>
-<hr>
-<table>
-    <thead>
-    Drivers with their user emails and buses serial numbers
-    </thead>
-    <tr>
-        <th>
-            Email
-        </th>
-        <th>
-            Bus
-        </th>
-        <th>
-            Aware?
-        </th>
-    </tr>
-    <c:forEach var="driver" items="${drivers}">
-        <tr>
-            <td class="drivers-view__user-email-for-${driver.getUserEmail().replace('@', '_')}">
-                    ${driver.getUserEmail()}
-            </td>
-            <td class="drivers-view__bus-serial-for-${driver.getUserEmail().replace('@', '_')}">
-                    ${driver.getBus().getSerialNumber()}
-            </td>
-            <td class="drivers-view__assignment-awareness-for-${driver.getUserEmail().replace('@', '_')}">
-                <c:if test="${driver.isAwareOfAssignment()}">
-                    ${"✅"}
-                </c:if>
-                <c:if test="${not driver.isAwareOfAssignment()}">
-                    ${"X"}
-                </c:if>
-            </td>
-        </tr>
-    </c:forEach>
 </table>
 </body>
 </html>
