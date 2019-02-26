@@ -12,7 +12,7 @@
 <body>
 
 <c:if test="${empty lastSubmitStatusMessage}">
-    <h1 class="admin__greetingMessage" style="color: indigo">
+    <h1 class="admin__greeting-message" style="color: indigo">
         Hi, administrator with email ${sessionScope.get('email')}!
     </h1>
 </c:if>
@@ -105,8 +105,6 @@
     <input type="submit" class="bus-to-route__submit-button" value="Assign">
 </form>
 <hr>
-<br>
-<hr>
 <table>
     <thead>
     Buses with their serial numbers and routes names:
@@ -131,8 +129,6 @@
     </c:forEach>
 </table>
 <hr>
-<br>
-<hr>
 <table>
     <thead>
     Drivers with their user emails and buses serial numbers
@@ -144,6 +140,9 @@
         <th>
             Bus
         </th>
+        <th>
+            Aware?
+        </th>
     </tr>
     <c:forEach var="driver" items="${drivers}">
         <tr>
@@ -152,6 +151,14 @@
             </td>
             <td class="drivers-view__bus-serial-for-${driver.getUserEmail().replace('@', '_')}">
                     ${driver.getBus().getSerialNumber()}
+            </td>
+            <td class="drivers-view__assignment-awareness-for-${driver.getUserEmail().replace('@', '_')}">
+                <c:if test="${driver.isAwareOfAssignment()}">
+                    ${"✅"}
+                </c:if>
+                <c:if test="${not driver.isAwareOfAssignment()}">
+                    ${"X"}
+                </c:if>
             </td>
         </tr>
     </c:forEach>

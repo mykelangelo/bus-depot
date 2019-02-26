@@ -87,13 +87,13 @@ public class UserLoginE2ETest implements ScreenShotGeneratingE2ETest {
     @Test
     @DisplayName("Bus Driver flow: successful login")
     void shouldLetBusDriverLogIn_andDisplayGreetingMessage_whenCredentialsAreCorrect() {
-        loginPage.findEmailField().sendKeys("driver@company.com");
+        loginPage.findEmailField().sendKeys("best.driver@company.com");
         loginPage.findPasswordField().sendKeys("correctPasswordWhyNotItsAGreatOne");
         loginPage.findSubmitButton().click();
 
         LOGGER.debug(webDriver.getCurrentUrl());
         assertEquals(DriverPage.getPageUrl(), webDriver.getCurrentUrl(), "Didn't redirected to driver's landing page");
-        assertEquals("Hi, bus driver with email driver@company.com!",
+        assertEquals("Hi, bus driver with email best.driver@company.com!",
                 driverPage.findGreetingMessage().getText(),
                 "Greeting is missing email (or is malformed)");
     }

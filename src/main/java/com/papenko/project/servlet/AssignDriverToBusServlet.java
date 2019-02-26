@@ -25,7 +25,10 @@ public class AssignDriverToBusServlet extends HttpServlet {
     public void init() {
         adminService = new AdminService(
                 new DriverRepository(
-                        getDataSource()
+                        getDataSource(),
+                        new BusRepository(
+                                getDataSource()
+                        )
                 ),
                 new BusRepository(
                         getDataSource()
@@ -44,10 +47,10 @@ public class AssignDriverToBusServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        LOGGER.debug("POST");
         String driverEmail = request.getParameter("driver-email");
         String busSerial = request.getParameter("bus-serial");
         adminService.assignDriverToBus(driverEmail, busSerial);
-        LOGGER.debug("POST");
         response.sendRedirect("/admin?lastSubmitStatusMessage=You assigned driver with email " +
                 driverEmail + " to bus with serial number " + busSerial);
     }

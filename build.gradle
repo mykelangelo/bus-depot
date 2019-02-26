@@ -48,10 +48,10 @@ wrapper {
 
 project.afterEvaluate {
     tasks.flywayMigrate.dependsOn tasks.processResources
-    tasks.appRun.dependsOn tasks.composeUp, tasks.flywayMigrate
+    tasks.appRun.dependsOn tasks.composeDown, tasks.composeUp, tasks.flywayMigrate
 
     tasks.build.dependsOn tasks.e2e
-    tasks.e2e.dependsOn tasks.composeUp, tasks.flywayMigrate
+    tasks.e2e.dependsOn tasks.composeDown, tasks.composeUp, tasks.flywayMigrate
     tasks.composeDown.shouldRunAfter(tasks.e2e)
     tasks.check.dependsOn tasks.e2e
 }

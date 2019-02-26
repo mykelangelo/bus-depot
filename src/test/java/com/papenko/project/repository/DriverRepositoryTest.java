@@ -16,8 +16,7 @@ import static com.wix.mysql.EmbeddedMysql.anEmbeddedMysql;
 import static com.wix.mysql.ScriptResolver.classPathScripts;
 import static com.wix.mysql.config.MysqldConfig.aMysqldConfig;
 import static com.wix.mysql.distribution.Version.v5_7_latest;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 class DriverRepositoryTest {
     private DriverRepository driverRepository;
@@ -34,9 +33,16 @@ class DriverRepositoryTest {
         ).start();
 
         driverRepository = new DriverRepository(
-                new HikariDataSource(
-                        new HikariConfig("src/test/resources/db/connection-pool.properties")
+                getDataSource(),
+                new BusRepository(
+                        getDataSource()
                 )
+        );
+    }
+
+    private HikariDataSource getDataSource() {
+        return new HikariDataSource(
+                new HikariConfig("src/test/resources/db/connection-pool.properties")
         );
     }
 
@@ -46,19 +52,22 @@ class DriverRepositoryTest {
     }
 
     @Test
-    void updateDriverSetBus_shouldUpdateBusOfDriver() {
+    void updateDriverSetBus_shouldUpdateBusOfDriver_andSetAwarenessToFalse() {
         // GIVEN
         embeddedMysql.executeScripts("depot_database",
                 () -> "INSERT INTO route (route_name) VALUE ('7L'); " +
                         "INSERT INTO bus (bus_serial, route_name) VALUES ('IA9669SA', '7L'), ('FI6669CT', '7L'); " +
                         "INSERT INTO depot_user (email, user_type, password_hash)" +
                         " VALUE ('bus.driver@yes', 'BUS_DRIVER', '$2a$10$rRsTiuqd3V5hQJwsLi3CneRCcKxK0eiKKO1JlGIxAnx9NIP4GsHbG');" +
-                        "INSERT INTO bus_driver (user_email, bus_serial) VALUE ('bus.driver@yes', 'IA9669SA');");
+                        "INSERT INTO bus_driver (user_email, bus_serial, aware_of_assignment)" +
+                        " VALUE ('bus.driver@yes', 'IA9669SA', TRUE);");
         // WHEN
-        driverRepository.updateDriverSetBus(new Driver("bus.driver@yes", new Bus("IA9669SA", new Route("7L"))),
+        driverRepository.updateDriverSetBus(new Driver("bus.driver@yes", new Bus("IA9669SA", new Route("7L")), true),
                 new Bus("FI6669CT", new Route("7L")));
         // THEN
-        assertEquals("FI6669CT", driverRepository.findDriverByEmail("bus.driver@yes").getBus().getSerialNumber());
+        Driver driver = driverRepository.findDriverByEmail("bus.driver@yes");
+        assertEquals("FI6669CT", driver.getBus().getSerialNumber());
+        assertFalse(driver.isAwareOfAssignment());
     }
 
     @Test
@@ -69,18 +78,20 @@ class DriverRepositoryTest {
                         "INSERT INTO bus (bus_serial, route_name) VALUE ('IA9669SA', '7L'); " +
                         "INSERT INTO depot_user (email, user_type, password_hash)" +
                         " VALUE ('bus.driver@yes', 'BUS_DRIVER', '$2a$10$rRsTiuqd3V5hQJwsLi3CneRCcKxK0eiKKO1JlGIxAnx9NIP4GsHbG');" +
-                        "INSERT INTO bus_driver (user_email, bus_serial) VALUE ('bus.driver@yes', 'IA9669SA');");
+                        "INSERT INTO bus_driver (user_email, bus_serial, aware_of_assignment)" +
+                        " VALUE ('bus.driver@yes', 'IA9669SA', FALSE);");
         // WHEN
         Driver driver = driverRepository.findDriverByEmail("bus.driver@yes");
         // THEN
-        assertEquals(new Driver("bus.driver@yes", new Bus("IA9669SA", new Route("7L"))), driver);
+        assertEquals(new Driver("bus.driver@yes", new Bus("IA9669SA", new Route("7L")), false),
+                driver);
     }
 
     @Test
     void findDriverByEmail_shouldReturnNull_whenNoDriverExistsWithSuchEmail() {
         // GIVEN
         // WHEN
-        Driver driver = driverRepository.findDriverByEmail("hell.driver@yes");
+        Driver driver = driverRepository.findDriverByEmail("random.driver@yes");
         // THEN
         assertNull(driver);
     }
@@ -94,14 +105,72 @@ class DriverRepositoryTest {
                         "INSERT INTO depot_user (email, user_type, password_hash)" +
                         " VALUES ('bus.driver@yes', 'BUS_DRIVER', '$2a$10$rRsTiuqd3V5hQJwsLi3CneRCcKxK0eiKKO1JlGIxAnx9NIP4GsHbG')," +
                         " ('hell.driver@yes', 'BUS_DRIVER', '$2a$10$rRsTiuqd3V5hQJwsLi3CneRCcKxK0eiKKO1JlGIxAnx9NIP4GsHbG');" +
-                        "INSERT INTO bus_driver (user_email, bus_serial)" +
-                        " VALUES ('bus.driver@yes', 'IA9669SA'), ('hell.driver@yes', 'GG777HH');");
+                        "INSERT INTO bus_driver (user_email, bus_serial, aware_of_assignment)" +
+                        " VALUES ('bus.driver@yes', 'IA9669SA', FALSE), ('hell.driver@yes', 'GG777HH', TRUE);");
         // WHEN
         List<Driver> drivers = driverRepository.findAllDrivers();
         // THEN
         assertEquals(List.of(
-                new Driver("hell.driver@yes", new Bus("GG777HH", new Route("7L"))),
-                new Driver("bus.driver@yes", new Bus("IA9669SA", new Route("7L")))),
+                new Driver("bus.driver@yes", new Bus("IA9669SA", new Route("7L")), false),
+                new Driver("hell.driver@yes", new Bus("GG777HH", new Route("7L")), true)),
                 drivers);
+    }
+
+    @Test
+    void updateDriverSetAwareness_shouldSetAwarenessToTrue_whenTrueIsPassed() {
+        // GIVEN
+        embeddedMysql.executeScripts("depot_database",
+                () -> "INSERT INTO route (route_name) VALUE ('7L'); " +
+                        "INSERT INTO bus (bus_serial, route_name) VALUE ('IA9669SA', '7L'); " +
+                        "INSERT INTO depot_user (email, user_type, password_hash)" +
+                        " VALUE ('the.driver@yes', 'BUS_DRIVER', '$2a$10$rRsTiuqd3V5hQJwsLi3CneRCcKxK0eiKKO1JlGIxAnx9NIP4GsHbG');" +
+                        "INSERT INTO bus_driver (user_email, bus_serial, aware_of_assignment)" +
+                        " VALUE ('the.driver@yes', 'IA9669SA', FALSE);");
+        // WHEN
+        driverRepository.updateDriverSetAwareness(driverRepository.findDriverByEmail("the.driver@yes"), true);
+        // THEN
+        assertTrue(driverRepository.findDriverByEmail("the.driver@yes").isAwareOfAssignment());
+    }
+
+    @Test
+    void updateDriverSetAwareness_shouldSetAwarenessToFalse_whenFalseIsPassed() {
+        // GIVEN
+        embeddedMysql.executeScripts("depot_database",
+                () -> "INSERT INTO route (route_name) VALUE ('7L'); " +
+                        "INSERT INTO bus (bus_serial, route_name) VALUE ('IA9669SA', '7L'); " +
+                        "INSERT INTO depot_user (email, user_type, password_hash)" +
+                        " VALUE ('the.driver@yes', 'BUS_DRIVER', '$2a$10$rRsTiuqd3V5hQJwsLi3CneRCcKxK0eiKKO1JlGIxAnx9NIP4GsHbG');" +
+                        "INSERT INTO bus_driver (user_email, bus_serial, aware_of_assignment)" +
+                        " VALUE ('the.driver@yes', 'IA9669SA', TRUE);");
+        // WHEN
+        driverRepository.updateDriverSetAwareness(driverRepository.findDriverByEmail("the.driver@yes"), false);
+        // THEN
+        assertFalse(driverRepository.findDriverByEmail("the.driver@yes").isAwareOfAssignment());
+    }
+
+    @Test
+    void findDriverByBusSerial_shouldReturnDriverAssignedToGivenBus_whenSuchDriverExists() {
+        // GIVEN
+        embeddedMysql.executeScripts("depot_database",
+                () -> "INSERT INTO route (route_name) VALUE ('7L'); " +
+                        "INSERT INTO bus (bus_serial, route_name) VALUE ('IA9669SA', '7L'); " +
+                        "INSERT INTO depot_user (email, user_type, password_hash)" +
+                        " VALUES ('bus.driver@yes', 'BUS_DRIVER', '$2a$10$rRsTiuqd3V5hQJwsLi3CneRCcKxK0eiKKO1JlGIxAnx9NIP4GsHbG');" +
+                        "INSERT INTO bus_driver (user_email, bus_serial, aware_of_assignment)" +
+                        " VALUE ('bus.driver@yes', 'IA9669SA', FALSE);");
+        // WHEN
+        Driver driver = driverRepository.findDriverByBusSerial(new Bus("IA9669SA", new Route("7L")));
+        // THEN
+        assertEquals(driverRepository.findDriverByEmail("bus.driver@yes"),
+                driver);
+    }
+
+    @Test
+    void findDriverByBusSerial_shouldReturnNull_whenNoSuchDriverExists() {
+        // GIVEN
+        // WHEN
+        Driver driver = driverRepository.findDriverByBusSerial(new Bus("IA9669SA", new Route("7L")));
+        // THEN
+        assertNull(driver);
     }
 }

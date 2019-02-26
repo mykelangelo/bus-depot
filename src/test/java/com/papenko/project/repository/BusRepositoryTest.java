@@ -15,11 +15,11 @@ import static com.wix.mysql.EmbeddedMysql.anEmbeddedMysql;
 import static com.wix.mysql.ScriptResolver.classPathScripts;
 import static com.wix.mysql.config.MysqldConfig.aMysqldConfig;
 import static com.wix.mysql.distribution.Version.v5_7_latest;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 class BusRepositoryTest {
     private BusRepository busRepository;
+    private DriverRepository driverRepository;
     private EmbeddedMysql embeddedMysql;
 
     @BeforeEach
@@ -33,9 +33,19 @@ class BusRepositoryTest {
         ).start();
 
         busRepository = new BusRepository(
-                new HikariDataSource(
-                        new HikariConfig("src/test/resources/db/connection-pool.properties")
+                getDataSource()
+        );
+        driverRepository = new DriverRepository(
+                getDataSource(),
+                new BusRepository(
+                        getDataSource()
                 )
+        );
+    }
+
+    private HikariDataSource getDataSource() {
+        return new HikariDataSource(
+                new HikariConfig("src/test/resources/db/connection-pool.properties")
         );
     }
 
@@ -60,7 +70,25 @@ class BusRepositoryTest {
     }
 
     @Test
-    void updateBusSetRoute_shouldUpdateRouteOfBus() {
+    void updateBusSetRoute_shouldUpdateRouteOfBus_andSetAwarenessOfDriverInThisBusToFalse_whenSuchDriverExists() {
+        // GIVEN
+        embeddedMysql.executeScripts("depot_database",
+                () -> "INSERT INTO route (route_name) VALUES ('7L'), ('96'); " +
+                        "INSERT INTO bus (bus_serial, route_name) VALUE ('IA9669SA', '7L');" +
+                        "INSERT INTO depot_user (email, user_type, password_hash)" +
+                        " VALUES ('aware@driver.cn', 'BUS_DRIVER', '$2a$10$rRsTiuqd3V5hQJwsLi3CneRCcKxK0eiKKO1JlGIxAnx9NIP4GsHbG');" +
+                        "INSERT INTO bus_driver (user_email, bus_serial, aware_of_assignment)" +
+                        " VALUE ('aware@driver.cn', 'IA9669SA', TRUE);");
+        // WHEN
+        busRepository.updateBusSetRoute(new Bus("IA9669SA", new Route("7L")), new Route("96"));
+        // THEN
+        assertEquals(new Bus("IA9669SA", new Route("96")),
+                busRepository.findBusBySerialNumber("IA9669SA"));
+        assertFalse(driverRepository.findDriverByEmail("aware@driver.cn").isAwareOfAssignment());
+    }
+
+    @Test
+    void updateBusSetRoute_shouldUpdateRouteOfBus_whenNoSuchDriverExists() {
         // GIVEN
         embeddedMysql.executeScripts("depot_database",
                 () -> "INSERT INTO route (route_name) VALUES ('7L'), ('96'); " +
@@ -68,7 +96,8 @@ class BusRepositoryTest {
         // WHEN
         busRepository.updateBusSetRoute(new Bus("IA9669SA", new Route("7L")), new Route("96"));
         // THEN
-        assertEquals(new Bus("IA9669SA", new Route("96")), busRepository.findBusBySerialNumber("IA9669SA"));
+        assertEquals(new Bus("IA9669SA", new Route("96")),
+                busRepository.findBusBySerialNumber("IA9669SA"));
     }
 
     @Test

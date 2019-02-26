@@ -48,7 +48,7 @@ class DriverPageServletTest {
         doReturn(requestDispatcher).when(servletContext).getRequestDispatcher(anyString());
         doReturn(httpSession).when(httpServletRequest).getSession();
         doReturn("patrick.star@bikini.bottom").when(httpSession).getAttribute("email");
-        doReturn(new Driver("patrick.star@bikini.bottom", new Bus("99ggg99", new Route("77"))))
+        doReturn(new Driver("patrick.star@bikini.bottom", new Bus("99ggg99", new Route("77")), true))
                 .when(driverService).findDriverByEmail("patrick.star@bikini.bottom");
         // WHEN
         driverPageServlet.doGet(httpServletRequest, httpServletResponse);
@@ -56,6 +56,19 @@ class DriverPageServletTest {
         verify(servletContext).getRequestDispatcher("/driver.jsp");
         verify(requestDispatcher).forward(httpServletRequest, httpServletResponse);
         verify(httpServletRequest).setAttribute("driver",
-                new Driver("patrick.star@bikini.bottom", new Bus("99ggg99", new Route("77"))));
+                new Driver("patrick.star@bikini.bottom", new Bus("99ggg99", new Route("77")), true));
+    }
+
+
+    @Test
+    void doPost_shouldInitiateSettingDriverAwarenessToTrue_andRedirectToDriverPage() throws IOException {
+        // GIVEN
+        doReturn(httpSession).when(httpServletRequest).getSession();
+        doReturn("yokel@driver.com").when(httpSession).getAttribute("email");
+        // WHEN
+        driverPageServlet.doPost(httpServletRequest, httpServletResponse);
+        // THEN
+        verify(driverService).setDriverAwarenessToTrue("yokel@driver.com");
+        verify(httpServletResponse).sendRedirect("/driver");
     }
 }

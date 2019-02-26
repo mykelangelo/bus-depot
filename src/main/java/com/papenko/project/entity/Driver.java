@@ -6,10 +6,12 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 public class Driver {
     private final String userEmail;
     private final Bus bus;
+    private final boolean awareOfAssignment;
 
-    public Driver(String userEmail, Bus bus) {
+    public Driver(String userEmail, Bus bus, boolean awareOfAssignment) {
         this.userEmail = userEmail;
         this.bus = bus;
+        this.awareOfAssignment = awareOfAssignment;
     }
 
     public String getUserEmail() {
@@ -18,6 +20,10 @@ public class Driver {
 
     public Bus getBus() {
         return bus;
+    }
+
+    public boolean isAwareOfAssignment() {
+        return awareOfAssignment;
     }
 
     @Override

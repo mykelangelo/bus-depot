@@ -9,7 +9,6 @@ import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -31,7 +30,7 @@ class VacateDriverServletTest {
     HttpServletResponse httpServletResponse;
 
     @Test
-    void doPost_shouldVacateDriverFromBus_andSetLastSubmitStatusMessageToRequest_whenDriverEmailParameterIsSet() throws IOException {
+    void doPost_shouldVacateDriverFromBus_andRedirectToAdminPage_andSetLastSubmitStatusMessageAsParameter() throws IOException {
         // GIVEN
         doReturn("bob.jenkins@gmail.com").when(httpServletRequest).getParameter("driver-email");
         // WHEN

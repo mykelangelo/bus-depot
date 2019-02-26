@@ -47,8 +47,8 @@ class AdminPageServletTest {
         doReturn(servletContext).when(adminPageServlet).getServletContext();
         doReturn(requestDispatcher).when(servletContext).getRequestDispatcher(anyString());
         doReturn(List.of(
-                new Driver("alexa@company.com", new Bus("AA4444AA", new Route("7u"))),
-                new Driver("bob.jenkins@gmail.com", new Bus("Il1171lI", new Route("7R"))))
+                new Driver("alexa@company.com", new Bus("AA4444AA", new Route("7u")), true),
+                new Driver("bob.jenkins@gmail.com", new Bus("Il1171lI", new Route("7R")), false))
         ).when(adminService).getDrivers();
         doReturn(List.of(
                 new Bus("AA4444AA", new Route("7u")),
@@ -61,8 +61,8 @@ class AdminPageServletTest {
         verify(servletContext).getRequestDispatcher("/admin.jsp");
         verify(requestDispatcher).forward(httpServletRequest, httpServletResponse);
         verify(httpServletRequest).setAttribute("drivers", List.of(
-                new Driver("alexa@company.com", new Bus("AA4444AA", new Route("7u"))),
-                new Driver("bob.jenkins@gmail.com", new Bus("Il1171lI", new Route("7R"))))
+                new Driver("alexa@company.com", new Bus("AA4444AA", new Route("7u")), true),
+                new Driver("bob.jenkins@gmail.com", new Bus("Il1171lI", new Route("7R")), false))
         );
         verify(httpServletRequest).setAttribute("buses", List.of(
                 new Bus("AA4444AA", new Route("7u")),
@@ -77,8 +77,8 @@ class AdminPageServletTest {
         doReturn(servletContext).when(adminPageServlet).getServletContext();
         doReturn(requestDispatcher).when(servletContext).getRequestDispatcher(anyString());
         doReturn(List.of(
-                new Driver("alexa@company.com", new Bus("AA4444AA", new Route("7u"))),
-                new Driver("bob.jenkins@gmail.com", new Bus("Il1171lI", new Route("7R"))))
+                new Driver("alexa@company.com", new Bus("AA4444AA", new Route("7u")), true),
+                new Driver("bob.jenkins@gmail.com", new Bus("Il1171lI", new Route("7R")), false))
         ).when(adminService).getDrivers();
         doReturn(List.of(
                 new Bus("AA4444AA", new Route("7u")),
@@ -92,8 +92,8 @@ class AdminPageServletTest {
         verify(servletContext).getRequestDispatcher("/admin.jsp");
         verify(requestDispatcher).forward(httpServletRequest, httpServletResponse);
         verify(httpServletRequest).setAttribute("drivers", List.of(
-                new Driver("alexa@company.com", new Bus("AA4444AA", new Route("7u"))),
-                new Driver("bob.jenkins@gmail.com", new Bus("Il1171lI", new Route("7R"))))
+                new Driver("alexa@company.com", new Bus("AA4444AA", new Route("7u")), true),
+                new Driver("bob.jenkins@gmail.com", new Bus("Il1171lI", new Route("7R")), false))
         );
         verify(httpServletRequest).setAttribute("buses", List.of(
                 new Bus("AA4444AA", new Route("7u")),

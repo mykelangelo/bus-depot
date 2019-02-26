@@ -45,7 +45,9 @@ public class AdminAssigningE2ETest implements ScreenShotGeneratingE2ETest {
 
     @Test
     @DisplayName("Admin flow: assign a driver to a bus")
-    void shouldAssignDriverToBus_andVacateDriverFromBus_andGetCorrespondingMessages() {
+    void shouldAssignDriverToBus_andVacateDriverFromBus_andGetCorrespondingMessages_andSeeDriverAwarenessSetToFalse() {
+        assertEquals("✅", adminPage.driversView().assignmentAwareness("driver@company.com").getText());
+
         adminPage.driverToBusForm().driverDropdown().click();
         adminPage.driverToBusForm().driverDropdownOption("driver@company.com").click();
         adminPage.driverToBusForm().busDropdown().click();
@@ -53,6 +55,7 @@ public class AdminAssigningE2ETest implements ScreenShotGeneratingE2ETest {
         adminPage.driverToBusForm().submitButton().click();
 
         assertThat(webDriver.getCurrentUrl()).startsWith(AdminPage.getPageUrl());
+        assertEquals("X", adminPage.driversView().assignmentAwareness("driver@company.com").getText());
         assertEquals("OA0404OA", adminPage.driversView().busSerial("driver@company.com").getText());
         assertEquals("You assigned driver with email driver@company.com to bus with serial number OA0404OA",
                 adminPage.findLastSubmitStatusMessage().getText());
@@ -60,29 +63,34 @@ public class AdminAssigningE2ETest implements ScreenShotGeneratingE2ETest {
 
     @Test
     @DisplayName("Admin flow: vacate a driver from a bus")
-    void shouldVacateDriverFromBus_andGetCorrespondingMessage() {
+    void shouldVacateDriverFromBus_andGetCorrespondingMessage_andSeeDriverAwarenessSetToFalse() {
+        assertEquals("✅", adminPage.driversView().assignmentAwareness("worst.driver@company.com").getText());
+
         adminPage.vacateDriverForm().driverDropdown().click();
-        adminPage.vacateDriverForm().driverDropdownOption("driver@company.com").click();
+        adminPage.vacateDriverForm().driverDropdownOption("worst.driver@company.com").click();
         adminPage.vacateDriverForm().submitButton().click();
 
         assertThat(webDriver.getCurrentUrl()).startsWith(AdminPage.getPageUrl());
-        assertEquals("", adminPage.driversView().busSerial("driver@company.com").getText());
-        assertEquals("You vacated driver with email driver@company.com",
+        assertEquals("X", adminPage.driversView().assignmentAwareness("worst.driver@company.com").getText());
+        assertEquals("", adminPage.driversView().busSerial("worst.driver@company.com").getText());
+        assertEquals("You vacated driver with email worst.driver@company.com",
                 adminPage.findLastSubmitStatusMessage().getText());
     }
 
     @Test
     @DisplayName("Administrator flow: assign a bus to a route")
-    void shouldAssignBusToRoute_andGetCorrespondingMessage() {
+    void shouldAssignBusToRoute_andGetCorrespondingMessage_andSeeDriverAwarenessSetToFalse() {
+        assertEquals("✅", adminPage.driversView().assignmentAwareness("some.driver@company.com").getText());
         adminPage.busToRouteForm().busDropdown().click();
-        adminPage.busToRouteForm().busDropdownOption("AI7007AA").click();
+        adminPage.busToRouteForm().busDropdownOption("YO7010LO").click();
         adminPage.busToRouteForm().routeDropdown().click();
         adminPage.busToRouteForm().routeDropdownOption("7L").click();
         adminPage.busToRouteForm().submitButton().click();
 
         assertThat(webDriver.getCurrentUrl()).startsWith(AdminPage.getPageUrl());
-        assertEquals("7L", adminPage.busesView().routeName("AI7007AA").getText());
-        assertEquals("You assigned bus with serial number AI7007AA to route with name 7L",
+        assertEquals("X", adminPage.driversView().assignmentAwareness("some.driver@company.com").getText());
+        assertEquals("7L", adminPage.busesView().routeName("YO7010LO").getText());
+        assertEquals("You assigned bus with serial number YO7010LO to route with name 7L",
                 adminPage.findLastSubmitStatusMessage().getText());
     }
 }

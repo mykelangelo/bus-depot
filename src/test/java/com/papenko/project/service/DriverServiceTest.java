@@ -12,6 +12,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class DriverServiceTest {
@@ -24,11 +25,24 @@ class DriverServiceTest {
     void findDriverByEmail_shouldReturnDriverWithSuchEmail() {
         // GIVEN
         given(driverRepository.findDriverByEmail("ezio.auditore@da.firenze")).willReturn(
-                new Driver("ezio.auditore@da.firenze", new Bus("AS4545AS", new Route("F1"))));
+                new Driver("ezio.auditore@da.firenze", new Bus("AS4545AS", new Route("F1")), true));
         // WHEN
         Driver driver = driverService.findDriverByEmail("ezio.auditore@da.firenze");
         // THEN
-        assertEquals(new Driver("ezio.auditore@da.firenze", new Bus("AS4545AS", new Route("F1"))),
+        assertEquals(new Driver("ezio.auditore@da.firenze", new Bus("AS4545AS", new Route("F1")), true),
                 driver);
+    }
+
+    @Test
+    void setDriverAwarenessToTrue_shouldInitiateSettingDriverAwarenessToTrue() {
+        // GIVEN
+        given(driverRepository.findDriverByEmail("un.aware@driver.here")).willReturn(
+                new Driver("un.aware@driver.here", new Bus("NT1107NT", new Route("N7")), false));
+        // WHEN
+        driverService.setDriverAwarenessToTrue("un.aware@driver.here");
+        // THEN
+        verify(driverRepository).updateDriverSetAwareness(
+                new Driver("un.aware@driver.here", new Bus("NT1107NT", new Route("N7")), false),
+                true);
     }
 }

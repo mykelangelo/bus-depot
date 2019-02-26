@@ -9,7 +9,6 @@ import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -32,7 +31,7 @@ class AssignBusToRouteServletTest {
 
 
     @Test
-    void doPost_shouldSetBusToRoute_andSetLastSubmitStatusMessageToRequest_whenBothParametersAreSet() throws IOException {
+    void doPost_shouldSetBusToRoute_andRedirectToAdminPage_andSetLastSubmitStatusMessageAsParameter() throws IOException {
         // GIVEN
         doReturn("AI7007AA").when(httpServletRequest).getParameter("bus-serial");
         doReturn("7L").when(httpServletRequest).getParameter("route-name");

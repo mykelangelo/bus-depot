@@ -53,10 +53,12 @@ public class AdminViewingE2ETest implements ScreenShotGeneratingE2ETest {
 
     @Test
     @DisplayName("Admin flow: view drivers")
-    void shouldViewDriverEmail_andTheirBus() {
+    void shouldViewDriverEmail_andTheirBus_andTheirAwareness() {
         assertEquals("hell.o@company.com",
                 adminPage.driversView().userEmail("hell.o@company.com").getText());
         assertEquals("AA2552IA",
                 adminPage.driversView().busSerial("hell.o@company.com").getText());
+        assertEquals("✅",
+                adminPage.driversView().assignmentAwareness("hell.o@company.com").getText());
     }
 }

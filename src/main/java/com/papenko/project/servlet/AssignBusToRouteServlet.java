@@ -25,7 +25,10 @@ public class AssignBusToRouteServlet extends HttpServlet {
     public void init() {
         adminService = new AdminService(
                 new DriverRepository(
-                        getDataSource()
+                        getDataSource(),
+                        new BusRepository(
+                                getDataSource()
+                        )
                 ),
                 new BusRepository(
                         getDataSource()
@@ -45,10 +48,10 @@ public class AssignBusToRouteServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        LOGGER.debug("POST");
         String busSerial = request.getParameter("bus-serial");
         String routeName = request.getParameter("route-name");
         adminService.assignBusToRoute(busSerial, routeName);
-        LOGGER.debug("POST");
         response.sendRedirect("/admin?lastSubmitStatusMessage=You assigned bus with serial number " +
                 busSerial + " to route with name " + routeName);
     }

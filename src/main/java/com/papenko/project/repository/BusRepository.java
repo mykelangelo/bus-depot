@@ -1,6 +1,7 @@
 package com.papenko.project.repository;
 
 import com.papenko.project.entity.Bus;
+import com.papenko.project.entity.Driver;
 import com.papenko.project.entity.Route;
 
 import javax.sql.DataSource;
@@ -11,10 +12,12 @@ import java.util.List;
 public class BusRepository {
     private final DataSource dataSource;
     private final RouteRepository routeRepository;
+    private final DriverRepository driverRepository;
 
     public BusRepository(DataSource dataSource) {
         this.dataSource = dataSource;
         routeRepository = new RouteRepository(dataSource);
+        driverRepository = new DriverRepository(dataSource, this);
     }
 
     public List<Bus> findAllBuses() {
@@ -47,6 +50,11 @@ public class BusRepository {
             preparedStatement.execute();
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        }
+
+        Driver driver = driverRepository.findDriverByBusSerial(bus);
+        if (driver != null) {
+            driverRepository.updateDriverSetAwareness(driver, false);
         }
     }
 

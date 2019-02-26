@@ -25,7 +25,10 @@ public class VacateDriverServlet extends HttpServlet {
     public void init() {
         adminService = new AdminService(
                 new DriverRepository(
-                        getDataSource()
+                        getDataSource(),
+                        new BusRepository(
+                                getDataSource()
+                        )
                 ),
                 new BusRepository(
                         getDataSource()
@@ -43,10 +46,9 @@ public class VacateDriverServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String driverEmail = request.getParameter("driver-email");
-
-        adminService.vacateDriverFromBus(driverEmail);
         LOGGER.debug("POST");
+        String driverEmail = request.getParameter("driver-email");
+        adminService.vacateDriverFromBus(driverEmail);
         response.sendRedirect("/admin?lastSubmitStatusMessage=You vacated driver with email " + driverEmail);
     }
 }

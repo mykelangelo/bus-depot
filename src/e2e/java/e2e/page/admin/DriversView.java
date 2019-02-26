@@ -18,4 +18,8 @@ public class DriversView {
     public WebElement busSerial(String driverEmail) {
         return webDriver.findElement(By.className("drivers-view__bus-serial-for-" + driverEmail.replace('@', '_')));
     }
+
+    public WebElement assignmentAwareness(String driverEmail) {
+        return webDriver.findElement(By.className("drivers-view__assignment-awareness-for-" + driverEmail.replace('@', '_')));
+    }
 }

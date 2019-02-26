@@ -13,4 +13,8 @@ public class DriverService {
     public Driver findDriverByEmail(String driverEmail) {
         return driverRepository.findDriverByEmail(driverEmail);
     }
+
+    public void setDriverAwarenessToTrue(String driverEmail) {
+        driverRepository.updateDriverSetAwareness(driverRepository.findDriverByEmail(driverEmail), true);
+    }
 }

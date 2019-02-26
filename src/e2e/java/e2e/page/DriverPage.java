@@ -17,7 +17,7 @@ public class DriverPage {
     }
 
     public WebElement findGreetingMessage() {
-        return webDriver.findElement(By.className("driver__greetingMessage"));
+        return webDriver.findElement(By.className("driver__greeting-message"));
     }
 
     public WebElement busSerial() {
@@ -26,5 +26,13 @@ public class DriverPage {
 
     public WebElement routeName() {
         return webDriver.findElement(By.className("driver__route-name"));
+    }
+
+    public WebElement unawareMessage() {
+        return webDriver.findElement(By.className("driver__unaware-message"));
+    }
+
+    public WebElement confirmButton() {
+        return webDriver.findElement(By.className("driver__confirm-button"));
     }
 }

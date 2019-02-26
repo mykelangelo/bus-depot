@@ -33,14 +33,14 @@ class AdminServiceTest {
     void getDrivers_shouldReturnListWithEveryDriver() {
         // GIVEN
         given(driverRepository.findAllDrivers()).willReturn(List.of(
-                new Driver("alexa@company.com", new Bus("BB8698BB", new Route("R9"))),
-                new Driver("bob.jenkins@gmail.com", new Bus("AA4444AA", new Route("K9")))));
+                new Driver("alexa@company.com", new Bus("BB8698BB", new Route("R9")), true),
+                new Driver("bob.jenkins@gmail.com", new Bus("AA4444AA", new Route("K9")), true)));
         // WHEN
         List<Driver> driversEmail = adminService.getDrivers();
         // THEN
         assertEquals(List.of(
-                new Driver("alexa@company.com", new Bus("BB8698BB", new Route("R9"))),
-                new Driver("bob.jenkins@gmail.com", new Bus("AA4444AA", new Route("K9")))),
+                new Driver("alexa@company.com", new Bus("BB8698BB", new Route("R9")), true),
+                new Driver("bob.jenkins@gmail.com", new Bus("AA4444AA", new Route("K9")), true)),
                 driversEmail);
     }
 
@@ -70,13 +70,13 @@ class AdminServiceTest {
     void assignDriverToBus_shouldInitiateAssigningDriverToBus() {
         // GIVEN
         given(driverRepository.findDriverByEmail("freddy.mercury@gmail.com"))
-                .willReturn(new Driver("freddy.mercury@gmail.com", new Bus("EO3030EO", new Route("30"))));
+                .willReturn(new Driver("freddy.mercury@gmail.com", new Bus("EO3030EO", new Route("30")), true));
         given(busRepository.findBusBySerialNumber("BO1111RA")).willReturn(new Bus("BO1111RA", new Route("8R")));
         // WHEN
         adminService.assignDriverToBus("freddy.mercury@gmail.com", "BO1111RA");
         // THEN
         verify(driverRepository).updateDriverSetBus(
-                new Driver("freddy.mercury@gmail.com", new Bus("EO3030EO", new Route("30"))),
+                new Driver("freddy.mercury@gmail.com", new Bus("EO3030EO", new Route("30")), true),
                 new Bus("BO1111RA", new Route("8R")));
     }
 
@@ -84,12 +84,12 @@ class AdminServiceTest {
     void vacateDriverFromBus_shouldInitiateVacatingDriverFromBus() {
         // GIVEN
         given(driverRepository.findDriverByEmail("sponge.bob@square.pants"))
-                .willReturn(new Driver("sponge.bob@square.pants", new Bus("OL0101OL", new Route("O1"))));
+                .willReturn(new Driver("sponge.bob@square.pants", new Bus("OL0101OL", new Route("O1")), true));
         // WHEN
         adminService.vacateDriverFromBus("sponge.bob@square.pants");
         // THEN
         verify(driverRepository).updateDriverSetBus(
-                new Driver("sponge.bob@square.pants", new Bus("OL0101OL", new Route("O1"))),
+                new Driver("sponge.bob@square.pants", new Bus("OL0101OL", new Route("O1")), true),
                 new Bus(null, null));
     }
 

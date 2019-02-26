@@ -2,6 +2,7 @@ package com.papenko.project.servlet;
 
 import com.papenko.project.DataSourceHolder;
 import com.papenko.project.entity.Driver;
+import com.papenko.project.repository.BusRepository;
 import com.papenko.project.repository.DriverRepository;
 import com.papenko.project.service.DriverService;
 import org.slf4j.Logger;
@@ -25,7 +26,10 @@ public class DriverPageServlet extends HttpServlet {
     public void init() {
         driverService = new DriverService(
                 new DriverRepository(
-                        getDataSource()
+                        getDataSource(),
+                        new BusRepository(
+                                getDataSource()
+                        )
                 )
         );
     }
@@ -42,5 +46,14 @@ public class DriverPageServlet extends HttpServlet {
         Driver driver = driverService.findDriverByEmail(email);
         request.setAttribute("driver", driver);
         getServletContext().getRequestDispatcher("/driver.jsp").forward(request, response);
+    }
+
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        LOGGER.debug("POST");
+        String driverEmail = (String) request.getSession().getAttribute("email");
+        driverService.setDriverAwarenessToTrue(driverEmail);
+        response.sendRedirect("/driver");
     }
 }

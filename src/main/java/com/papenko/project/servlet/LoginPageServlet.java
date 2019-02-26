@@ -47,6 +47,7 @@ public class LoginPageServlet extends HttpServlet {
         LOGGER.debug("POST");
         String email = request.getParameter("email");
         String password = request.getParameter("password");
+
         if (loginService.checkCredentials(email, password)) {
             UserType userType = loginService.getUserType(email);
             String landingPage = generateLandingPagePath(userType);

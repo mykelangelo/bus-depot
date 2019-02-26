@@ -25,7 +25,10 @@ public class AdminPageServlet extends HttpServlet {
     public void init() {
         adminService = new AdminService(
                 new DriverRepository(
-                        getDataSource()
+                        getDataSource(),
+                        new BusRepository(
+                                getDataSource()
+                        )
                 ),
                 new BusRepository(
                         getDataSource()
@@ -43,11 +46,11 @@ public class AdminPageServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        LOGGER.debug("GET");
         request.setAttribute("lastSubmitStatusMessage", request.getParameter("lastSubmitStatusMessage"));
         request.setAttribute("drivers", adminService.getDrivers());
         request.setAttribute("buses", adminService.getBuses());
         request.setAttribute("routes", adminService.getRoutes());
-        LOGGER.debug("GET");
         getServletContext().getRequestDispatcher("/admin.jsp").forward(request, response);
     }
 }

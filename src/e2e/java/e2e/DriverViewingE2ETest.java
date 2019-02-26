@@ -47,12 +47,26 @@ public class DriverViewingE2ETest implements ScreenShotGeneratingE2ETest {
 
     @Test
     @DisplayName("Driver flow: view their current bus")
-    void shouldViewBusSerial_andItsRoute() {
+    void shouldViewBusSerial_andItsRoute_whenDriverIsAwareOfTheirAssignment() {
         loginPage.findEmailField().sendKeys("hell.o@company.com");
         loginPage.findPasswordField().sendKeys("correctPasswordWhyNotItsAGreatOne");
         loginPage.findSubmitButton().click();
 
         assertEquals("AA2552IA", driverPage.busSerial().getText());
         assertEquals("7k", driverPage.routeName().getText());
+    }
+
+    @Test
+    @DisplayName("Driver flow: accept new assignment and view their current bus")
+    void shouldAcceptNewAssignment_thenViewBusSerial_andItsRoute_whenDriverIsUnawareOfTheirAssignment() {
+        loginPage.findEmailField().sendKeys("an.un.en.n@company.com");
+        loginPage.findPasswordField().sendKeys("correctPasswordWhyNotItsAGreatOne");
+        loginPage.findSubmitButton().click();
+
+        assertEquals("You have been assigned to a new bus and/or route. Press 'Confirm' button below to see you new assignment.",
+                driverPage.unawareMessage().getText());
+        driverPage.confirmButton().click();
+        assertEquals("DO2019NT", driverPage.busSerial().getText());
+        assertEquals("UN7", driverPage.routeName().getText());
     }
 }

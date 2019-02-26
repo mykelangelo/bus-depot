@@ -31,7 +31,7 @@ public class AdminPage {
     }
 
     public WebElement findGreetingMessage() {
-        return webDriver.findElement(By.className("admin__greetingMessage"));
+        return webDriver.findElement(By.className("admin__greeting-message"));
     }
 
     public WebElement findLastSubmitStatusMessage() {

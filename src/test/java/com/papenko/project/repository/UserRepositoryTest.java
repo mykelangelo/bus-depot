@@ -46,8 +46,8 @@ class UserRepositoryTest {
     void findUserByEmail_shouldReturnUser_whenUserExistsWithGivenEmail() {
         // GIVEN
         embeddedMysql.executeScripts("depot_database",
-                () -> "INSERT INTO depot_user (email, user_type, password_hash) " +
-                        "VALUES ('existing_user_email@yes', 'BUS_DRIVER', '$2a$10$rRsTiuqd3V5hQJwsLi3CneRCcKxK0eiKKO1JlGIxAnx9NIP4GsHbG');");
+                () -> "INSERT INTO depot_user (email, user_type, password_hash)" +
+                        " VALUE ('existing_user_email@yes', 'BUS_DRIVER', '$2a$10$rRsTiuqd3V5hQJwsLi3CneRCcKxK0eiKKO1JlGIxAnx9NIP4GsHbG');");
         // WHEN
         User user = userRepository.findUserByEmail("existing_user_email@yes");
         // THEN
@@ -58,9 +58,6 @@ class UserRepositoryTest {
     @Test
     void findUserByEmail_shouldReturnNull_whenUserDoesNotExistsWithGivenEmail() {
         // GIVEN
-        embeddedMysql.executeScripts("depot_database",
-                () -> "INSERT INTO depot_user (email, user_type, password_hash) " +
-                        "VALUES ('existing_user_email@yes', 'BUS_DRIVER', '$2a$10$rRsTiuqd3V5hQJwsLi3CneRCcKxK0eiKKO1JlGIxAnx9NIP4GsHbG');");
         // WHEN
         User user = userRepository.findUserByEmail("non_existing_user_email@yes");
         // THEN
