@@ -25,28 +25,35 @@
 </c:if>
 
 <c:if test="${driver.isAwareOfAssignment()}">
-    <table>
-        <thead>
-        Info for ${driver.getUserEmail()}:
-        </thead>
-        <tr>
-            <th>
-                Your Bus:
-            </th>
-            <th>
-                Your Route:
-            </th>
-        </tr>
-        <tr>
-            <td class="driver__bus-serial">
-                    ${driver.getBus().getSerialNumber()}
-            </td>
-            <td class="driver__route-name">
-                    ${driver.getBus().getRoute().getName()}
-            </td>
-        </tr>
-        <tfoot> Come again soon!</tfoot>
-    </table>
+    <c:if test="${empty driver.getBus()}">
+        <h2 class="driver__vacated-message">
+            You're free of any work currently. Have fun on your vacation!
+        </h2>
+    </c:if>
+    <c:if test="${not empty driver.getBus()}">
+        <table>
+            <thead>
+            Info for ${driver.getUserEmail()}:
+            </thead>
+            <tr>
+                <th>
+                    Your Bus:
+                </th>
+                <th>
+                    Your Route:
+                </th>
+            </tr>
+            <tr>
+                <td class="driver__bus-serial">
+                        ${driver.getBus().getSerialNumber()}
+                </td>
+                <td class="driver__route-name">
+                        ${driver.getBus().getRoute().getName()}
+                </td>
+            </tr>
+            <tfoot> Come again soon!</tfoot>
+        </table>
+    </c:if>
 </c:if>
 
 </body>

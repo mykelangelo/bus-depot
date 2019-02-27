@@ -46,6 +46,16 @@ public class DriverViewingE2ETest implements ScreenShotGeneratingE2ETest {
     }
 
     @Test
+    @DisplayName("Driver flow: view vacation message")
+    void shouldViewVacationMessage() {
+        loginPage.findEmailField().sendKeys("kalibob@company.com");
+        loginPage.findPasswordField().sendKeys("correctPasswordWhyNotItsAGreatOne");
+        loginPage.findSubmitButton().click();
+
+        assertEquals("You're free of any work currently. Have fun on your vacation!", driverPage.vacatedMessage().getText());
+    }
+
+    @Test
     @DisplayName("Driver flow: view their current bus")
     void shouldViewBusSerial_andItsRoute_whenDriverIsAwareOfTheirAssignment() {
         loginPage.findEmailField().sendKeys("hell.o@company.com");
@@ -57,7 +67,7 @@ public class DriverViewingE2ETest implements ScreenShotGeneratingE2ETest {
     }
 
     @Test
-    @DisplayName("Driver flow: accept new assignment and view their current bus")
+    @DisplayName("Driver flow: accept new assignment and view their current bus and route")
     void shouldAcceptNewAssignment_thenViewBusSerial_andItsRoute_whenDriverIsUnawareOfTheirAssignment() {
         loginPage.findEmailField().sendKeys("an.un.en.n@company.com");
         loginPage.findPasswordField().sendKeys("correctPasswordWhyNotItsAGreatOne");
@@ -68,5 +78,18 @@ public class DriverViewingE2ETest implements ScreenShotGeneratingE2ETest {
         driverPage.confirmButton().click();
         assertEquals("DO2019NT", driverPage.busSerial().getText());
         assertEquals("UN7", driverPage.routeName().getText());
+    }
+
+    @Test
+    @DisplayName("Driver flow: accept new assignment and view their current bus")
+    void shouldAcceptNewAssignment_thenViewVacationMessage_whenDriverIsUnawareOfTheirAssignment() {
+        loginPage.findEmailField().sendKeys("newbie@company.com");
+        loginPage.findPasswordField().sendKeys("correctPasswordWhyNotItsAGreatOne");
+        loginPage.findSubmitButton().click();
+
+        assertEquals("You have been assigned to a new bus and/or route. Press 'Confirm' button below to see you new assignment.",
+                driverPage.unawareMessage().getText());
+        driverPage.confirmButton().click();
+        assertEquals("You're free of any work currently. Have fun on your vacation!", driverPage.vacatedMessage().getText());
     }
 }

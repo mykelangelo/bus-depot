@@ -35,4 +35,8 @@ public class DriverPage {
     public WebElement confirmButton() {
         return webDriver.findElement(By.className("driver__confirm-button"));
     }
+
+    public WebElement vacatedMessage() {
+        return webDriver.findElement(By.className("driver__vacated-message"));
+    }
 }

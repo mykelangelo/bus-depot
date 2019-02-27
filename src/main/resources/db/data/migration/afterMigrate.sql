@@ -7,6 +7,7 @@ VALUES ('administrator@company.com', 'DEPOT_ADMIN', '$2a$10$IjbakaL8jaGveRFlWFHc
        ('worst.driver@company.com', 'BUS_DRIVER', '$2a$10$IjbakaL8jaGveRFlWFHcLuU00Dc0z3LsUkjrCRNtUia7pSzp3nnyy'),
        ('hell.o@company.com', 'BUS_DRIVER', '$2a$10$IjbakaL8jaGveRFlWFHcLuU00Dc0z3LsUkjrCRNtUia7pSzp3nnyy'),
        ('kalibob@company.com', 'BUS_DRIVER', '$2a$10$IjbakaL8jaGveRFlWFHcLuU00Dc0z3LsUkjrCRNtUia7pSzp3nnyy'),
+       ('newbie@company.com', 'BUS_DRIVER', '$2a$10$IjbakaL8jaGveRFlWFHcLuU00Dc0z3LsUkjrCRNtUia7pSzp3nnyy'),
        ('an.un.en.n@company.com', 'BUS_DRIVER', '$2a$10$IjbakaL8jaGveRFlWFHcLuU00Dc0z3LsUkjrCRNtUia7pSzp3nnyy');
 -- password: correctPasswordWhyNotItsAGreatOne
 
@@ -34,4 +35,5 @@ VALUES ('driver@company.com', 'AI7007AA', TRUE),
        ('worst.driver@company.com', 'MY1337FV', TRUE),
        ('hell.o@company.com', 'AA2552IA', TRUE),
        ('kalibob@company.com', NULL, TRUE),
+       ('newbie@company.com', NULL, FALSE),
        ('an.un.en.n@company.com', 'DO2019NT', FALSE);
