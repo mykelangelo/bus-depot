@@ -54,6 +54,19 @@ task startDependencies {
     dependsOn 'composeUp'
 }
 
+task stage
+
+configurations { stage {} }
+
+task copyToLib(type: Copy) {
+    into "$buildDir/server"
+    from(configurations.stage) {
+        include "webapp-runner*"
+    }
+}
+
+tasks.stage.dependsOn(copyToLib)
+
 dependencies {
 /* Apache Commons BEGIN */
     implementation "org.apache.commons:commons-lang3:3.8.1"
@@ -97,6 +110,10 @@ dependencies {
     testImplementation "io.github.bonigarcia:webdrivermanager:3.1.1"
     testImplementation "org.seleniumhq.selenium:selenium-chrome-driver:3.141.59"
 /* E2E testing END */
+
+/* Heroku Gradle buildpack support BEGIN */
+    stage 'com.github.jsimone:webapp-runner:9.0.16.0'
+/* Heroku Gradle buildpack support END */
 }
 repositories {
     jcenter()
