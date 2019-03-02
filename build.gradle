@@ -10,7 +10,6 @@ buildscript {
 }
 plugins {
     id 'org.unbroken-dome.test-sets' version '2.0.3'
-    id "org.flywaydb.flyway" version "5.2.4"
 }
 
 apply plugin: 'idea'
@@ -42,67 +41,61 @@ gretty {
 }
 
 wrapper {
-    gradleVersion = '5.1.1'
+    gradleVersion = '5.2.1'
     distributionType = Wrapper.DistributionType.ALL
 }
 
 project.afterEvaluate {
-    tasks.flywayMigrate.dependsOn tasks.processResources
-    tasks.appRun.dependsOn tasks.composeDown, tasks.composeUp, tasks.flywayMigrate
-
     tasks.build.dependsOn tasks.e2e
-    tasks.e2e.dependsOn tasks.composeDown, tasks.composeUp, tasks.flywayMigrate
-    tasks.composeDown.shouldRunAfter(tasks.e2e)
-    tasks.check.dependsOn tasks.e2e
 }
 
-flyway {
-    cleanDisabled = true
-    configFiles = ['src/main/resources/db/flyway.properties']
-    
+task startDependencies {
+    dependsOn 'composeDown'
+    dependsOn 'composeUp'
 }
 
 dependencies {
 /* Apache Commons BEGIN */
-    compile "org.apache.commons:commons-lang3:3.8.1"
-    compile "org.apache.commons:commons-collections4:4.2"
-    compile "commons-io:commons-io:2.6"
+    implementation "org.apache.commons:commons-lang3:3.8.1"
+    implementation "org.apache.commons:commons-collections4:4.2"
+    implementation "commons-io:commons-io:2.6"
 /* Apache Commons END */
 
 /* JEE dependencies BEGIN */
-    compile "javax.servlet:jstl:1.2"
-    compile "javax.servlet:javax.servlet-api:4.0.1"
+    implementation "javax.servlet:jstl:1.2"
+    implementation "javax.servlet:javax.servlet-api:4.0.1"
 /* JEE dependencies END */
 
 /* Logging BEGIN */
-    compile "org.slf4j:slf4j-api:1.7.25"
-    compile "org.slf4j:jul-to-slf4j:1.7.25"
-    compile "ch.qos.logback:logback-classic:1.2.3"
+    implementation "org.slf4j:slf4j-api:1.7.25"
+    implementation "org.slf4j:jul-to-slf4j:1.7.25"
+    implementation "ch.qos.logback:logback-classic:1.2.3"
 /* Logging END */
 
 /* Database Connectivity BEGIN */
-    compile "mysql:mysql-connector-java:8.0.12"
-    compile "com.zaxxer:HikariCP:3.1.0"
+    implementation "mysql:mysql-connector-java:8.0.12"
+    implementation "com.zaxxer:HikariCP:3.1.0"
+    implementation 'org.flywaydb:flyway-core:6.0.0-beta'
 /* Database Connectivity END */
 
 /* Password Hashing library BEGIN */
-    compile "org.mindrot:jbcrypt:0.4"
+    implementation "org.mindrot:jbcrypt:0.4"
 /* Password Hashing library END */
 
 /* Unit testing BEGIN */
     testImplementation "org.junit.jupiter:junit-jupiter-api:5.3.2"
-    testCompile "org.junit.jupiter:junit-jupiter-params:5.3.2"
+    testImplementation "org.junit.jupiter:junit-jupiter-params:5.3.2"
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.3.2"
-    testCompile "org.mockito:mockito-junit-jupiter:2.23.4"
-    testCompile "org.assertj:assertj-core:3.11.1"
+    testImplementation "org.mockito:mockito-junit-jupiter:2.23.4"
+    testImplementation "org.assertj:assertj-core:3.11.1"
     // For Repository tests
-    testCompile "com.wix:wix-embedded-mysql:4.2.0"
+    testImplementation "com.wix:wix-embedded-mysql:4.2.0"
 /* Unit testing END */
 
 /* E2E testing BEGIN */
-    testCompile "org.seleniumhq.selenium:selenium-java:3.141.59"
-    testCompile "io.github.bonigarcia:webdrivermanager:3.1.1"
-    testCompile "org.seleniumhq.selenium:selenium-chrome-driver:3.141.59"
+    testImplementation "org.seleniumhq.selenium:selenium-java:3.141.59"
+    testImplementation "io.github.bonigarcia:webdrivermanager:3.1.1"
+    testImplementation "org.seleniumhq.selenium:selenium-chrome-driver:3.141.59"
 /* E2E testing END */
 }
 repositories {
