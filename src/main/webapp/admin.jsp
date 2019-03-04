@@ -29,6 +29,7 @@
     <label>
         Select driver:
         <select class="driver-to-bus__driver-dropdown"
+                required
                 name="driver-email">
             <option selected disabled hidden>
                 Drivers
@@ -43,6 +44,7 @@
     <label>
         Select bus:
         <select class="driver-to-bus__bus-dropdown"
+                required
                 name="bus-serial">
             <option selected disabled hidden>
                 Buses
@@ -61,6 +63,7 @@
     <label>
         Select driver:
         <select class="vacate-driver__driver-dropdown"
+                required
                 name="driver-email">
             <option selected disabled hidden>
                 Drivers
@@ -79,6 +82,7 @@
     <label>
         Select bus:
         <select class="bus-to-route__bus-dropdown"
+                required
                 name="bus-serial">
             <option selected disabled hidden>
                 Buses
@@ -93,6 +97,7 @@
     <label>
         Select route:
         <select class="bus-to-route__route-dropdown"
+                required
                 name="route-name">
             <option selected disabled hidden>
                 Routes
