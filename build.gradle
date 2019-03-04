@@ -92,7 +92,7 @@ dependencies {
 /* Database Connectivity END */
 
 /* Password Hashing library BEGIN */
-    implementation "org.mindrot:jbcrypt:0.4"
+    implementation "org.mindrot:jbcrypt:0.4-atlassian-1"
 /* Password Hashing library END */
 
 /* Unit testing BEGIN */
