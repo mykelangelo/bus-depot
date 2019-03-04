@@ -70,7 +70,7 @@ tasks.stage.dependsOn(copyToLib)
 dependencies {
 /* Apache Commons BEGIN */
     implementation "org.apache.commons:commons-lang3:3.8.1"
-    implementation "org.apache.commons:commons-collections4:4.2"
+    implementation "org.apache.commons:commons-collections4:4.3"
     implementation "commons-io:commons-io:2.6"
 /* Apache Commons END */
 
