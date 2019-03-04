@@ -31,7 +31,7 @@
         <select class="driver-to-bus__driver-dropdown"
                 required
                 name="driver-email">
-            <option selected disabled hidden>
+            <option selected disabled hidden value>
                 Drivers
             </option>
             <c:forEach var="driver" items="${drivers}">
@@ -46,7 +46,7 @@
         <select class="driver-to-bus__bus-dropdown"
                 required
                 name="bus-serial">
-            <option selected disabled hidden>
+            <option selected disabled hidden value>
                 Buses
             </option>
             <c:forEach var="bus" items="${buses}">
@@ -65,7 +65,7 @@
         <select class="vacate-driver__driver-dropdown"
                 required
                 name="driver-email">
-            <option selected disabled hidden>
+            <option selected disabled hidden value>
                 Drivers
             </option>
             <c:forEach var="driver" items="${drivers}">
@@ -84,7 +84,7 @@
         <select class="bus-to-route__bus-dropdown"
                 required
                 name="bus-serial">
-            <option selected disabled hidden>
+            <option selected disabled hidden value>
                 Buses
             </option>
             <c:forEach var="bus" items="${buses}">
@@ -99,7 +99,7 @@
         <select class="bus-to-route__route-dropdown"
                 required
                 name="route-name">
-            <option selected disabled hidden>
+            <option selected disabled hidden value>
                 Routes
             </option>
             <c:forEach var="route" items="${routes}">
