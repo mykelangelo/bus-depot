@@ -39,7 +39,7 @@ public class LoginPageServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         LOGGER.debug("GET");
-        this.getServletContext().getRequestDispatcher("/login.jsp").forward(req, resp);
+        this.getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(req, resp);
     }
 
     @Override
@@ -55,7 +55,7 @@ public class LoginPageServlet extends HttpServlet {
             response.sendRedirect(landingPage);
         } else {
             request.setAttribute("loginErrorMessage", "Invalid email or password");
-            this.getServletContext().getRequestDispatcher("/login.jsp").forward(request, response);
+            this.getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
         }
     }
 

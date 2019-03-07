@@ -53,7 +53,7 @@ class DriverPageServletTest {
         // WHEN
         driverPageServlet.doGet(httpServletRequest, httpServletResponse);
         // THEN
-        verify(servletContext).getRequestDispatcher("/driver.jsp");
+        verify(servletContext).getRequestDispatcher("/WEB-INF/driver.jsp");
         verify(requestDispatcher).forward(httpServletRequest, httpServletResponse);
         verify(httpServletRequest).setAttribute("driver",
                 new Driver("patrick.star@bikini.bottom", new Bus("99ggg99", new Route("77")), true));

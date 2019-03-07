@@ -15,7 +15,7 @@
 
 <c:if test="${empty lastSubmitStatusMessage}">
     <h1 class="admin__greeting-message" style="color: indigo">
-        Hi, administrator with email ${sessionScope.get('email')}!
+        　Hi, administrator with email ${sessionScope.get('email')}!
     </h1>
 </c:if>
 
@@ -27,7 +27,7 @@
 
 <form action="${pageContext.request.contextPath}/driver-to-bus" method="post">
     <label>
-        Select driver:
+        　Select driver:
         <select class="driver-to-bus__driver-dropdown"
                 required
                 name="driver-email">
@@ -58,10 +58,10 @@
     </label>
     <input type="submit" class="driver-to-bus__submit-button" value="Assign">
 </form>
-<hr style="color: aliceblue">
+<hr>
 <form action="${pageContext.request.contextPath}/vacate-driver" method="post">
     <label>
-        Select driver:
+        　Select driver:
         <select class="vacate-driver__driver-dropdown"
                 required
                 name="driver-email">
@@ -77,10 +77,10 @@
     </label>
     <input type="submit" class="vacate-driver__submit-button" value="Vacate">
 </form>
-<hr style="color: aliceblue">
+<hr>
 <form action="${pageContext.request.contextPath}/bus-to-route" method="post">
     <label>
-        Select bus:
+        　Select bus:
         <select class="bus-to-route__bus-dropdown"
                 required
                 name="bus-serial">
@@ -124,6 +124,7 @@
                     <th>
                         Serial
                     </th>
+                    <th>　</th>
                     <th>
                         Route
                     </th>
@@ -133,6 +134,7 @@
                         <td class="buses-view__bus-serial-for-${bus.getSerialNumber()}">
                                 ${bus.getSerialNumber()}
                         </td>
+                        <td>　</td>
                         <td class="buses-view__route-name-for-${bus.getSerialNumber()}">
                                 ${bus.getRoute().getName()}
                         </td>
@@ -150,9 +152,11 @@
                     <th>
                         Email
                     </th>
+                    <th>　</th>
                     <th>
                         Bus
                     </th>
+                    <th>　</th>
                     <th>
                         Aware?
                     </th>
@@ -162,15 +166,17 @@
                         <td class="drivers-view__user-email-for-${driver.getUserEmail().replace('@', '_')}">
                                 ${driver.getUserEmail()}
                         </td>
+                        <th>　</th>
                         <td class="drivers-view__bus-serial-for-${driver.getUserEmail().replace('@', '_')}">
                                 ${driver.getBus().getSerialNumber()}
                         </td>
+                        <th>　</th>
                         <td class="drivers-view__assignment-awareness-for-${driver.getUserEmail().replace('@', '_')}">
                             <c:if test="${driver.isAwareOfAssignment()}">
                                 ${"✅"}
                             </c:if>
                             <c:if test="${not driver.isAwareOfAssignment()}">
-                                ${"X"}
+                                ${"❌"}
                             </c:if>
                         </td>
                     </tr>

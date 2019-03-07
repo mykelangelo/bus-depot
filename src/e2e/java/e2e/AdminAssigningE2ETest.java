@@ -55,7 +55,7 @@ public class AdminAssigningE2ETest implements ScreenShotGeneratingE2ETest {
         adminPage.driverToBusForm().submitButton().click();
 
         assertThat(webDriver.getCurrentUrl()).startsWith(AdminPage.getPageUrl());
-        assertEquals("X", adminPage.driversView().assignmentAwareness("driver@company.com").getText());
+        assertEquals("❌", adminPage.driversView().assignmentAwareness("driver@company.com").getText());
         assertEquals("OA0404OA", adminPage.driversView().busSerial("driver@company.com").getText());
         assertEquals("You assigned driver with email driver@company.com to bus with serial number OA0404OA",
                 adminPage.findLastSubmitStatusMessage().getText());
@@ -71,7 +71,7 @@ public class AdminAssigningE2ETest implements ScreenShotGeneratingE2ETest {
         adminPage.vacateDriverForm().submitButton().click();
 
         assertThat(webDriver.getCurrentUrl()).startsWith(AdminPage.getPageUrl());
-        assertEquals("X", adminPage.driversView().assignmentAwareness("worst.driver@company.com").getText());
+        assertEquals("❌", adminPage.driversView().assignmentAwareness("worst.driver@company.com").getText());
         assertEquals("", adminPage.driversView().busSerial("worst.driver@company.com").getText());
         assertEquals("You vacated driver with email worst.driver@company.com",
                 adminPage.findLastSubmitStatusMessage().getText());
@@ -88,7 +88,7 @@ public class AdminAssigningE2ETest implements ScreenShotGeneratingE2ETest {
         adminPage.busToRouteForm().submitButton().click();
 
         assertThat(webDriver.getCurrentUrl()).startsWith(AdminPage.getPageUrl());
-        assertEquals("X", adminPage.driversView().assignmentAwareness("some.driver@company.com").getText());
+        assertEquals("❌", adminPage.driversView().assignmentAwareness("some.driver@company.com").getText());
         assertEquals("7L", adminPage.busesView().routeName("YO7010LO").getText());
         assertEquals("You assigned bus with serial number YO7010LO to route with name 7L",
                 adminPage.findLastSubmitStatusMessage().getText());

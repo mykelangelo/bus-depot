@@ -51,6 +51,6 @@ public class AdminPageServlet extends HttpServlet {
         request.setAttribute("drivers", adminService.getDrivers());
         request.setAttribute("buses", adminService.getBuses());
         request.setAttribute("routes", adminService.getRoutes());
-        getServletContext().getRequestDispatcher("/admin.jsp").forward(request, response);
+        getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp").forward(request, response);
     }
 }

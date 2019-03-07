@@ -45,7 +45,7 @@ public class DriverPageServlet extends HttpServlet {
         String email = (String) request.getSession().getAttribute("email");
         Driver driver = driverService.findDriverByEmail(email);
         request.setAttribute("driver", driver);
-        getServletContext().getRequestDispatcher("/driver.jsp").forward(request, response);
+        getServletContext().getRequestDispatcher("/WEB-INF/driver.jsp").forward(request, response);
     }
 
 

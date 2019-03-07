@@ -12,46 +12,52 @@
 <body>
 
 <h1 class="driver__greeting-message" style="color: indigo">
-    Hi, bus driver with email ${email}!
+    　Hi, bus driver with email ${email}!
 </h1>
 
 <c:if test="${not driver.isAwareOfAssignment()}">
     <h2 class="driver__unaware-message" style="color: firebrick">
-        You have been assigned to a new bus and/or route. Press 'Confirm' button below to see you new assignment.
+        You have been assigned to a new bus and/or route.
     </h2>
+    <h3>
+        Press 'Confirm' button below to see you new assignment.
+    </h3>
     <form action="${pageContext.request.contextPath}/driver" method="post">
-        <input type="submit" class="driver__confirm-button" value="Confirm">
+        　<input type="submit" class="driver__confirm-button" value="Confirm">
     </form>
 </c:if>
 
 <c:if test="${driver.isAwareOfAssignment()}">
     <c:if test="${empty driver.getBus()}">
         <h2 class="driver__vacated-message">
-            You're free of any work currently. Have fun on your vacation!
+            　You're free of any work currently. Have fun on your vacation!
         </h2>
     </c:if>
     <c:if test="${not empty driver.getBus()}">
         <table>
             <thead>
-            Info for ${driver.getUserEmail()}:
+            　Info for ${driver.getUserEmail()}:
             </thead>
             <tr>
+                <th>　</th>
                 <th>
                     Your Bus:
                 </th>
+                <th>　</th>
                 <th>
                     Your Route:
                 </th>
             </tr>
             <tr>
+                <td>　</td>
                 <td class="driver__bus-serial">
                         ${driver.getBus().getSerialNumber()}
                 </td>
+                <td>　</td>
                 <td class="driver__route-name">
                         ${driver.getBus().getRoute().getName()}
                 </td>
             </tr>
-            <tfoot> Come again soon!</tfoot>
         </table>
     </c:if>
 </c:if>

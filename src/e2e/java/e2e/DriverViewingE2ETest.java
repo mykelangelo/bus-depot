@@ -73,7 +73,7 @@ public class DriverViewingE2ETest implements ScreenShotGeneratingE2ETest {
         loginPage.findPasswordField().sendKeys("correctPasswordWhyNotItsAGreatOne");
         loginPage.findSubmitButton().click();
 
-        assertEquals("You have been assigned to a new bus and/or route. Press 'Confirm' button below to see you new assignment.",
+        assertEquals("You have been assigned to a new bus and/or route.",
                 driverPage.unawareMessage().getText());
         driverPage.confirmButton().click();
         assertEquals("DO2019NT", driverPage.busSerial().getText());
@@ -87,7 +87,7 @@ public class DriverViewingE2ETest implements ScreenShotGeneratingE2ETest {
         loginPage.findPasswordField().sendKeys("correctPasswordWhyNotItsAGreatOne");
         loginPage.findSubmitButton().click();
 
-        assertEquals("You have been assigned to a new bus and/or route. Press 'Confirm' button below to see you new assignment.",
+        assertEquals("You have been assigned to a new bus and/or route.",
                 driverPage.unawareMessage().getText());
         driverPage.confirmButton().click();
         assertEquals("You're free of any work currently. Have fun on your vacation!", driverPage.vacatedMessage().getText());

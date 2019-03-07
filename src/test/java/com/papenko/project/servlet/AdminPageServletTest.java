@@ -58,7 +58,7 @@ class AdminPageServletTest {
         // WHEN
         adminPageServlet.doGet(httpServletRequest, httpServletResponse);
         // THEN
-        verify(servletContext).getRequestDispatcher("/admin.jsp");
+        verify(servletContext).getRequestDispatcher("/WEB-INF/admin.jsp");
         verify(requestDispatcher).forward(httpServletRequest, httpServletResponse);
         verify(httpServletRequest).setAttribute("drivers", List.of(
                 new Driver("alexa@company.com", new Bus("AA4444AA", new Route("7u")), true),
@@ -89,7 +89,7 @@ class AdminPageServletTest {
         // WHEN
         adminPageServlet.doGet(httpServletRequest, httpServletResponse);
         // THEN
-        verify(servletContext).getRequestDispatcher("/admin.jsp");
+        verify(servletContext).getRequestDispatcher("/WEB-INF/admin.jsp");
         verify(requestDispatcher).forward(httpServletRequest, httpServletResponse);
         verify(httpServletRequest).setAttribute("drivers", List.of(
                 new Driver("alexa@company.com", new Bus("AA4444AA", new Route("7u")), true),

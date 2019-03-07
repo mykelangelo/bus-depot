@@ -46,7 +46,7 @@ class LoginPageServletTest {
         // WHEN
         loginPageServlet.doGet(httpServletRequest, httpServletResponse);
         // THEN
-        verify(servletContext).getRequestDispatcher("/login.jsp");
+        verify(servletContext).getRequestDispatcher("/WEB-INF/login.jsp");
         verify(requestDispatcher).forward(httpServletRequest, httpServletResponse);
     }
 
@@ -91,7 +91,7 @@ class LoginPageServletTest {
         //WHEN
         loginPageServlet.doPost(httpServletRequest, httpServletResponse);
         //THEN
-        verify(servletContext).getRequestDispatcher("/login.jsp");
+        verify(servletContext).getRequestDispatcher("/WEB-INF/login.jsp");
         verify(requestDispatcher).forward(httpServletRequest, httpServletResponse);
         verify(httpServletRequest).setAttribute("loginErrorMessage", "Invalid email or password");
     }
