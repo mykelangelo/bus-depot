@@ -5,7 +5,7 @@ buildscript {
     }
     dependencies {
         classpath 'org.gretty:gretty:2.3.1'
-        classpath "com.avast.gradle:gradle-docker-compose-plugin:0.8.12"
+        classpath "com.avast.gradle:gradle-docker-compose-plugin:0.9.1"
     }
 }
 plugins {
@@ -36,7 +36,6 @@ gretty {
     servletContainer = 'tomcat9'
     contextPath = ""
     springBoot = false
-    fastReload
     integrationTestTask = 'e2e'
 }
 
@@ -70,7 +69,7 @@ tasks.stage.dependsOn(copyToLib)
 dependencies {
 /* Apache Commons BEGIN */
     implementation "org.apache.commons:commons-lang3:3.8.1"
-    implementation "org.apache.commons:commons-collections4:4.2"
+    implementation "org.apache.commons:commons-collections4:4.3"
     implementation "commons-io:commons-io:2.6"
 /* Apache Commons END */
 
@@ -80,8 +79,8 @@ dependencies {
 /* JEE dependencies END */
 
 /* Logging BEGIN */
-    implementation "org.slf4j:slf4j-api:1.7.25"
-    implementation "org.slf4j:jul-to-slf4j:1.7.25"
+    implementation "org.slf4j:slf4j-api:1.7.26"
+    implementation "org.slf4j:jul-to-slf4j:1.7.26"
     implementation "ch.qos.logback:logback-classic:1.2.3"
 /* Logging END */
 
@@ -96,18 +95,18 @@ dependencies {
 /* Password Hashing library END */
 
 /* Unit testing BEGIN */
-    testImplementation "org.junit.jupiter:junit-jupiter-api:5.3.2"
-    testImplementation "org.junit.jupiter:junit-jupiter-params:5.3.2"
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.3.2"
-    testImplementation "org.mockito:mockito-junit-jupiter:2.23.4"
-    testImplementation "org.assertj:assertj-core:3.11.1"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:5.4.0"
+    testImplementation "org.junit.jupiter:junit-jupiter-params:5.4.0"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.4.0"
+    testImplementation "org.mockito:mockito-junit-jupiter:2.25.0"
+    testImplementation "org.assertj:assertj-core:3.12.1"
     // For Repository tests
     testImplementation "com.wix:wix-embedded-mysql:4.2.0"
 /* Unit testing END */
 
 /* E2E testing BEGIN */
     testImplementation "org.seleniumhq.selenium:selenium-java:3.141.59"
-    testImplementation "io.github.bonigarcia:webdrivermanager:3.1.1"
+    testImplementation "io.github.bonigarcia:webdrivermanager:3.3.0"
     testImplementation "org.seleniumhq.selenium:selenium-chrome-driver:3.141.59"
 /* E2E testing END */
 
