@@ -52,8 +52,10 @@ class AdminServiceTest {
         // WHEN
         List<Bus> busesSerials = adminService.getBuses();
         // THEN
-        assertEquals(List.of(new Bus("AA4444AA", new Route("69")),
-                new Bus("II1111II", new Route("6k"))), busesSerials);
+        assertEquals(List.of(
+                new Bus("AA4444AA", new Route("69")),
+                new Bus("II1111II", new Route("6k"))),
+                busesSerials);
     }
 
     @Test
@@ -102,5 +104,18 @@ class AdminServiceTest {
         adminService.assignBusToRoute("XO7040Z0", "69");
         // THEN
         verify(busRepository).updateBusSetRoute(new Bus("XO7040Z0", new Route("666")), new Route("69"));
+    }
+
+    @Test
+    void getDriverInBus_shouldReturnDriverByBusSerialProvided() {
+        // GIVEN
+        given(busRepository.findBusBySerialNumber("AOL01AOL")).willReturn(new Bus("AOL01AOL", new Route("314")));
+        given(driverRepository.findDriverByBus(new Bus("AOL01AOL", new Route("314"))))
+                .willReturn(new Driver("ao@lo.cn", new Bus("AOL01AOL", new Route("314")), true));
+        // WHEN
+        Driver driver = adminService.getDriverInBus("AOL01AOL");
+        // THEN
+        assertEquals(new Driver("ao@lo.cn", new Bus("AOL01AOL", new Route("314")), true),
+                driver);
     }
 }

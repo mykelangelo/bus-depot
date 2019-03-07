@@ -45,7 +45,7 @@ public class AdminAssigningE2ETest implements ScreenShotGeneratingE2ETest {
 
     @Test
     @DisplayName("Admin flow: assign a driver to a bus")
-    void shouldAssignDriverToBus_andVacateDriverFromBus_andGetCorrespondingMessages_andSeeDriverAwarenessSetToFalse() {
+    void shouldAssignDriverToBus_andGetCorrespondingMessage_andSeeDriverAwarenessSetToFalse() {
         assertEquals("✅", adminPage.driversView().assignmentAwareness("driver@company.com").getText());
 
         adminPage.driverToBusForm().driverDropdown().click();
@@ -58,6 +58,29 @@ public class AdminAssigningE2ETest implements ScreenShotGeneratingE2ETest {
         assertEquals("❌", adminPage.driversView().assignmentAwareness("driver@company.com").getText());
         assertEquals("OA0404OA", adminPage.driversView().busSerial("driver@company.com").getText());
         assertEquals("You assigned driver with email driver@company.com to bus with serial number OA0404OA",
+                adminPage.findLastSubmitStatusMessage().getText());
+    }
+
+    @Test
+    @DisplayName("Admin flow: fail to assign second driver to a bus")
+    void shouldFailToAssignSecondDriverToBus_andGetCorrespondingMessage_andSeeBothDriversAwarenessRemainTrueAndTheirBusesRemainSame() {
+        assertEquals("✅", adminPage.driversView().assignmentAwareness("hell.o@company.com").getText());
+        assertEquals("AA2552IA", adminPage.driversView().busSerial("hell.o@company.com").getText());
+        assertEquals("✅", adminPage.driversView().assignmentAwareness("kalibob@company.com").getText());
+        assertEquals("", adminPage.driversView().busSerial("kalibob@company.com").getText());
+
+        adminPage.driverToBusForm().driverDropdown().click();
+        adminPage.driverToBusForm().driverDropdownOption("kalibob@company.com").click();
+        adminPage.driverToBusForm().busDropdown().click();
+        adminPage.driverToBusForm().busDropdownOption("AA2552IA").click();
+        adminPage.driverToBusForm().submitButton().click();
+
+        assertThat(webDriver.getCurrentUrl()).startsWith(AdminPage.getPageUrl());
+        assertEquals("✅", adminPage.driversView().assignmentAwareness("hell.o@company.com").getText());
+        assertEquals("AA2552IA", adminPage.driversView().busSerial("hell.o@company.com").getText());
+        assertEquals("✅", adminPage.driversView().assignmentAwareness("kalibob@company.com").getText());
+        assertEquals("", adminPage.driversView().busSerial("kalibob@company.com").getText());
+        assertEquals("You tried to assign driver with email kalibob@company.com to bus with serial number AA2552IA, but this bus is already used by driver with email hell.o@company.com",
                 adminPage.findLastSubmitStatusMessage().getText());
     }
 
@@ -81,6 +104,7 @@ public class AdminAssigningE2ETest implements ScreenShotGeneratingE2ETest {
     @DisplayName("Administrator flow: assign a bus to a route")
     void shouldAssignBusToRoute_andGetCorrespondingMessage_andSeeDriverAwarenessSetToFalse() {
         assertEquals("✅", adminPage.driversView().assignmentAwareness("some.driver@company.com").getText());
+
         adminPage.busToRouteForm().busDropdown().click();
         adminPage.busToRouteForm().busDropdownOption("YO7010LO").click();
         adminPage.busToRouteForm().routeDropdown().click();

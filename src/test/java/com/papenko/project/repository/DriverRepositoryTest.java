@@ -159,7 +159,7 @@ class DriverRepositoryTest {
                         "INSERT INTO bus_driver (user_email, bus_serial, aware_of_assignment)" +
                         " VALUE ('bus.driver@yes', 'IA9669SA', FALSE);");
         // WHEN
-        Driver driver = driverRepository.findDriverByBusSerial(new Bus("IA9669SA", new Route("7L")));
+        Driver driver = driverRepository.findDriverByBus(new Bus("IA9669SA", new Route("7L")));
         // THEN
         assertEquals(driverRepository.findDriverByEmail("bus.driver@yes"),
                 driver);
@@ -169,7 +169,7 @@ class DriverRepositoryTest {
     void findDriverByBusSerial_shouldReturnNull_whenNoSuchDriverExists() {
         // GIVEN
         // WHEN
-        Driver driver = driverRepository.findDriverByBusSerial(new Bus("IA9669SA", new Route("7L")));
+        Driver driver = driverRepository.findDriverByBus(new Bus("IA9669SA", new Route("7L")));
         // THEN
         assertNull(driver);
     }

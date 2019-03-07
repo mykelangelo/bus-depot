@@ -48,4 +48,9 @@ public class AdminService {
         Route route = routeRepository.findRouteByName(routeName);
         busRepository.updateBusSetRoute(bus, route);
     }
+
+    public Driver getDriverInBus(String busSerial) {
+        Bus bus = busRepository.findBusBySerialNumber(busSerial);
+        return driverRepository.findDriverByBus(bus);
+    }
 }

@@ -23,8 +23,8 @@ import static org.apache.commons.lang3.StringUtils.*;
  */
 @WebFilter(urlPatterns = "*")
 public class HttpsEnforcerFilter extends HttpFilter {
-    private static final Logger LOGGER = LoggerFactory.getLogger(HttpsEnforcerFilter.class);
     static final String X_FORWARDED_PROTO = "X-Forwarded-Proto";
+    private static final Logger LOGGER = LoggerFactory.getLogger(HttpsEnforcerFilter.class);
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)

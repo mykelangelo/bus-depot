@@ -86,7 +86,7 @@ public class DriverRepository {
         }
     }
 
-    public Driver findDriverByBusSerial(Bus bus) {
+    public Driver findDriverByBus(Bus bus) {
         var sql = "SELECT user_email, aware_of_assignment FROM bus_driver " +
                 "WHERE bus_serial = (?);";
         try (var connection = dataSource.getConnection();

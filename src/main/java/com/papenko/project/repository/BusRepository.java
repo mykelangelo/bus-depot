@@ -52,7 +52,7 @@ public class BusRepository {
             throw new RuntimeException(e);
         }
 
-        Driver driver = driverRepository.findDriverByBusSerial(bus);
+        Driver driver = driverRepository.findDriverByBus(bus);
         if (driver != null) {
             driverRepository.updateDriverSetAwareness(driver, false);
         }

@@ -14,14 +14,13 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class HttpsEnforcerFilterTest {
-    private HttpsEnforcerFilter httpsEnforcerFilter = new HttpsEnforcerFilter();
-
     @Mock
     HttpServletRequest httpServletRequest;
     @Mock
     HttpServletResponse httpServletResponse;
     @Mock
     FilterChain filterChain;
+    private HttpsEnforcerFilter httpsEnforcerFilter = new HttpsEnforcerFilter();
 
     @Test
     void doFilter_shouldNotRedirect_whenAppIsRunningLocally() throws Exception {

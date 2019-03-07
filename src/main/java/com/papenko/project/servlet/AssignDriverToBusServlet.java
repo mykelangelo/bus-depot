@@ -1,6 +1,7 @@
 package com.papenko.project.servlet;
 
 import com.papenko.project.DataSourceHolder;
+import com.papenko.project.entity.Driver;
 import com.papenko.project.repository.BusRepository;
 import com.papenko.project.repository.DriverRepository;
 import com.papenko.project.repository.RouteRepository;
@@ -50,8 +51,15 @@ public class AssignDriverToBusServlet extends HttpServlet {
         LOGGER.debug("POST");
         String driverEmail = request.getParameter("driver-email");
         String busSerial = request.getParameter("bus-serial");
-        adminService.assignDriverToBus(driverEmail, busSerial);
-        response.sendRedirect("/admin?lastSubmitStatusMessage=You assigned driver with email " +
-                driverEmail + " to bus with serial number " + busSerial);
+        Driver driverAlreadyInBus = adminService.getDriverInBus(busSerial);
+        if (driverAlreadyInBus == null) {
+            adminService.assignDriverToBus(driverEmail, busSerial);
+            response.sendRedirect("/admin?lastSubmitStatusMessage=You assigned driver with email " +
+                    driverEmail + " to bus with serial number " + busSerial);
+        } else {
+            response.sendRedirect("/admin?lastSubmitStatusMessage=You tried to assign driver with email " +
+                    driverEmail + " to bus with serial number " + busSerial +
+                    ", but this bus is already used by driver with email " + driverAlreadyInBus.getUserEmail());
+        }
     }
 }
