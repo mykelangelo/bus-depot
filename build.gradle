@@ -85,8 +85,8 @@ dependencies {
 /* Logging END */
 
 /* Database Connectivity BEGIN */
-    implementation "mysql:mysql-connector-java:8.0.12"
-    implementation "com.zaxxer:HikariCP:3.1.0"
+    implementation "mysql:mysql-connector-java:8.0.15"
+    implementation "com.zaxxer:HikariCP:3.3.1"
     implementation 'org.flywaydb:flyway-core:6.0.0-beta'
 /* Database Connectivity END */
 
