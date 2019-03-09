@@ -1,6 +1,7 @@
 package com.papenko.project.servlet;
 
 import com.papenko.project.DataSourceHolder;
+import com.papenko.project.entity.AuthenticatedUserDetails;
 import com.papenko.project.entity.UserType;
 import com.papenko.project.repository.UserRepository;
 import com.papenko.project.service.LoginService;
@@ -37,9 +38,9 @@ public class LoginPageServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         LOGGER.debug("GET");
-        this.getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(req, resp);
+        this.getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
     }
 
     @Override
@@ -51,7 +52,8 @@ public class LoginPageServlet extends HttpServlet {
         if (loginService.checkCredentials(email, password)) {
             UserType userType = loginService.getUserType(email);
             String landingPage = generateLandingPagePath(userType);
-            request.getSession().setAttribute("email", email);
+            var userDetails = new AuthenticatedUserDetails(email, userType);
+            request.getSession().setAttribute("user_details", userDetails);
             response.sendRedirect(landingPage);
         } else {
             request.setAttribute("loginErrorMessage", "Invalid email or password");

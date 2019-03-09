@@ -1,8 +1,6 @@
 package com.papenko.project.servlet;
 
-import com.papenko.project.entity.Bus;
-import com.papenko.project.entity.Driver;
-import com.papenko.project.entity.Route;
+import com.papenko.project.entity.*;
 import com.papenko.project.service.DriverService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -47,7 +45,8 @@ class DriverPageServletTest {
         doReturn(servletContext).when(driverPageServlet).getServletContext();
         doReturn(requestDispatcher).when(servletContext).getRequestDispatcher(anyString());
         doReturn(httpSession).when(httpServletRequest).getSession();
-        doReturn("patrick.star@bikini.bottom").when(httpSession).getAttribute("email");
+        var userDetails = new AuthenticatedUserDetails("patrick.star@bikini.bottom", UserType.BUS_DRIVER);
+        doReturn(userDetails).when(httpSession).getAttribute("user_details");
         doReturn(new Driver("patrick.star@bikini.bottom", new Bus("99ggg99", new Route("77")), true))
                 .when(driverService).findDriverByEmail("patrick.star@bikini.bottom");
         // WHEN
@@ -64,7 +63,8 @@ class DriverPageServletTest {
     void doPost_shouldInitiateSettingDriverAwarenessToTrue_andRedirectToDriverPage() throws IOException {
         // GIVEN
         doReturn(httpSession).when(httpServletRequest).getSession();
-        doReturn("yokel@driver.com").when(httpSession).getAttribute("email");
+        var userDetails = new AuthenticatedUserDetails("yokel@driver.com", UserType.BUS_DRIVER);
+        doReturn(userDetails).when(httpSession).getAttribute("user_details");
         // WHEN
         driverPageServlet.doPost(httpServletRequest, httpServletResponse);
         // THEN

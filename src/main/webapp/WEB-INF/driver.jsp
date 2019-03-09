@@ -1,6 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<c:set var="email" value="${sessionScope.get('email')}"/>
 <c:set var="driver" value="${requestScope.get('driver')}"/>
 
 <html>
@@ -12,7 +11,7 @@
 <body>
 
 <h1 class="driver__greeting-message" style="color: indigo">
-    　Hi, bus driver with email ${email}!
+    　Hi, bus driver with email ${sessionScope.get('user_details').getEmail()}!
 </h1>
 
 <c:if test="${not driver.isAwareOfAssignment()}">

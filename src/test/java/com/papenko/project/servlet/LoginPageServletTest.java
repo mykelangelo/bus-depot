@@ -1,5 +1,6 @@
 package com.papenko.project.servlet;
 
+import com.papenko.project.entity.AuthenticatedUserDetails;
 import com.papenko.project.entity.UserType;
 import com.papenko.project.service.LoginService;
 import org.junit.jupiter.api.Test;
@@ -51,33 +52,35 @@ class LoginPageServletTest {
     }
 
     @Test
-    void doPost_shouldRedirectAdminToAdminLandingPage_andSetEmailToSession_whenCorrectCredentialsSubmitted() throws ServletException, IOException {
+    void doPost_shouldRedirectAdminToAdminLandingPage_andSetAuthenticatedUserDetailsToSession_whenCorrectCredentialsSubmitted() throws ServletException, IOException {
         //GIVEN
         doReturn("correct@email.yes").when(httpServletRequest).getParameter("email");
         doReturn("correct_password").when(httpServletRequest).getParameter("password");
         doReturn(true).when(loginService).checkCredentials("correct@email.yes", "correct_password");
         doReturn(session).when(httpServletRequest).getSession();
-        Mockito.doReturn(UserType.DEPOT_ADMIN).when(loginService).getUserType("correct@email.yes");
+        doReturn(UserType.DEPOT_ADMIN).when(loginService).getUserType("correct@email.yes");
+        var userDetails = new AuthenticatedUserDetails("correct@email.yes", UserType.DEPOT_ADMIN);
         //WHEN
         loginPageServlet.doPost(httpServletRequest, httpServletResponse);
         //THEN
         verify(httpServletResponse).sendRedirect("/admin");
-        verify(session).setAttribute("email", "correct@email.yes");
+        verify(session).setAttribute("user_details", userDetails);
     }
 
     @Test
-    void doPost_shouldRedirectDriverToDriverLandingPage_andSetEmailToSession_whenCorrectCredentialsSubmitted() throws ServletException, IOException {
+    void doPost_shouldRedirectDriverToDriverLandingPage_andSetAuthenticatedUserDetailsToSession_whenCorrectCredentialsSubmitted() throws ServletException, IOException {
         //GIVEN
         doReturn("correct@email.yes").when(httpServletRequest).getParameter("email");
         doReturn("correct_password").when(httpServletRequest).getParameter("password");
         doReturn(true).when(loginService).checkCredentials("correct@email.yes", "correct_password");
         doReturn(session).when(httpServletRequest).getSession();
         doReturn(UserType.BUS_DRIVER).when(loginService).getUserType("correct@email.yes");
+        var userDetails = new AuthenticatedUserDetails("correct@email.yes", UserType.BUS_DRIVER);
         //WHEN
         loginPageServlet.doPost(httpServletRequest, httpServletResponse);
         //THEN
         verify(httpServletResponse).sendRedirect("/driver");
-        verify(session).setAttribute("email", "correct@email.yes");
+        verify(session).setAttribute("user_details", userDetails);
     }
 
     @Test

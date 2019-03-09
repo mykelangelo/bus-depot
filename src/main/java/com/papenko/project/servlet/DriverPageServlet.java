@@ -1,6 +1,7 @@
 package com.papenko.project.servlet;
 
 import com.papenko.project.DataSourceHolder;
+import com.papenko.project.entity.AuthenticatedUserDetails;
 import com.papenko.project.entity.Driver;
 import com.papenko.project.repository.BusRepository;
 import com.papenko.project.repository.DriverRepository;
@@ -42,8 +43,8 @@ public class DriverPageServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         LOGGER.debug("GET");
-        String email = (String) request.getSession().getAttribute("email");
-        Driver driver = driverService.findDriverByEmail(email);
+        var userDetails = (AuthenticatedUserDetails) request.getSession().getAttribute("user_details");
+        Driver driver = driverService.findDriverByEmail(userDetails.getEmail());
         request.setAttribute("driver", driver);
         getServletContext().getRequestDispatcher("/WEB-INF/driver.jsp").forward(request, response);
     }
@@ -52,8 +53,8 @@ public class DriverPageServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         LOGGER.debug("POST");
-        String driverEmail = (String) request.getSession().getAttribute("email");
-        driverService.setDriverAwarenessToTrue(driverEmail);
+        var userDetails = (AuthenticatedUserDetails) request.getSession().getAttribute("user_details");
+        driverService.setDriverAwarenessToTrue(userDetails.getEmail());
         response.sendRedirect("/driver");
     }
 }
