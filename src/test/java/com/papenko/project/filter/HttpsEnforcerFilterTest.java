@@ -24,28 +24,32 @@ class HttpsEnforcerFilterTest {
 
     @Test
     void doFilter_shouldNotRedirect_whenAppIsRunningLocally() throws Exception {
+        // GIVEN
+        // WHEN
         httpsEnforcerFilter.doFilter(httpServletRequest, httpServletResponse, filterChain);
-
+        // THEN
         verify(filterChain).doFilter(httpServletRequest, httpServletResponse);
     }
 
     @Test
     void doFilter_shouldNotRedirect_whenAppIsRunningInProduction_andWithHttps() throws Exception {
+        // GIVEN
         when(httpServletRequest.getHeader(X_FORWARDED_PROTO)).thenReturn("https://the-app.com");
-
+        // WHEN
         httpsEnforcerFilter.doFilter(httpServletRequest, httpServletResponse, filterChain);
-
+        // THEN
         verify(filterChain).doFilter(httpServletRequest, httpServletResponse);
     }
 
     @Test
     void doFilter_shouldRedirect_whenAppIsRunningInProduction_andHttp() throws Exception {
+        // GIVEN
         when(httpServletRequest.getHeader(X_FORWARDED_PROTO)).thenReturn("http://the-app.com");
         when(httpServletRequest.getServerName()).thenReturn("the-app.com");
         when(httpServletRequest.getRequestURI()).thenReturn("/login");
-
+        // WHEN
         httpsEnforcerFilter.doFilter(httpServletRequest, httpServletResponse, filterChain);
-
+        // THEN
         verify(httpServletResponse).sendRedirect("https://the-app.com/login");
         verifyZeroInteractions(filterChain);
     }

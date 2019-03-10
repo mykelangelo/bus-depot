@@ -26,10 +26,6 @@ public class AdminPage {
         return ADMIN_PAGE_URL;
     }
 
-    public void goToPage() {
-        webDriver.get(ADMIN_PAGE_URL);
-    }
-
     public WebElement findGreetingMessage() {
         return webDriver.findElement(By.className("admin__greeting-message"));
     }

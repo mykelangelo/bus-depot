@@ -1,5 +1,6 @@
 package e2e;
 
+import e2e.page.LoginPage;
 import e2e.page.admin.AdminPage;
 import io.github.bonigarcia.wdm.ChromeDriverManager;
 import org.junit.jupiter.api.*;
@@ -29,7 +30,13 @@ public class AdminAssigningE2ETest implements ScreenShotGeneratingE2ETest {
 
         webDriver = new ChromeDriver(options);
         adminPage = new AdminPage(webDriver);
-        adminPage.goToPage();
+        LoginPage loginPage = new LoginPage(webDriver);
+
+        loginPage.goToPage();
+
+        loginPage.findEmailField().sendKeys("administrator@company.com");
+        loginPage.findPasswordField().sendKeys("correctPasswordWhyNotItsAGreatOne");
+        loginPage.findSubmitButton().click();
     }
 
     @AfterEach

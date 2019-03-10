@@ -3,8 +3,6 @@ package com.papenko.project.entity;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import java.util.Objects;
-
 public class AuthenticatedUserDetails {
     private String email;
     private UserType userType;
