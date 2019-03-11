@@ -22,7 +22,9 @@ public class DataSourceHolder {
 
     static {
         final HikariConfig hikariConfig;
+        final String dataScriptsDirectoryURL;
         if (isProduction()) {
+            dataScriptsDirectoryURL = "classpath:db/production-data";
             LOGGER.warn("Production database is being used");
             hikariConfig = new HikariConfig();
             URI dbUri = URI.create(System.getenv(PRODUCTION_DB_URL_ENV_PROPERTY));
@@ -31,6 +33,7 @@ public class DataSourceHolder {
             hikariConfig.setPassword(credentials[1]);
             hikariConfig.setJdbcUrl("jdbc:mysql://" + dbUri.getHost() + dbUri.getPath());
         } else if (isCIEnv()) {
+            dataScriptsDirectoryURL = "classpath:db/e2e-tests-data";
             LOGGER.warn("CI database is being used");
             hikariConfig = new HikariConfig();
             String username = getenv("MYSQL_USER");
@@ -40,13 +43,14 @@ public class DataSourceHolder {
             hikariConfig.setPassword(password);
             hikariConfig.setJdbcUrl("jdbc:mysql://localhost:3306/test");
         } else {
+            dataScriptsDirectoryURL = "classpath:db/e2e-tests-data";
             LOGGER.warn("Local database is being used");
             hikariConfig = new HikariConfig("/db/connection-pool.properties");
         }
         hikariConfig.setDriverClassName(Driver.class.getName());
         INSTANCE = new HikariDataSource(hikariConfig);
         Flyway.configure()
-                .locations("classpath:db/schema", "classpath:db/data")
+                .locations("classpath:db/schema", dataScriptsDirectoryURL)
                 .dataSource(INSTANCE)
                 .load()
                 .migrate();
