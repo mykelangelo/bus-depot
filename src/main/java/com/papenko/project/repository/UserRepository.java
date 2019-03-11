@@ -2,11 +2,14 @@ package com.papenko.project.repository;
 
 import com.papenko.project.entity.User;
 import com.papenko.project.entity.UserType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
 
 public class UserRepository {
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserRepository.class);
     private final DataSource dataSource;
 
     public UserRepository(DataSource dataSource) {
@@ -27,6 +30,7 @@ public class UserRepository {
                 }
             }
         } catch (SQLException e) {
+            LOGGER.error("SQL fails to find user by email " + email, e);
             throw new RuntimeException(e);
         }
         return null;

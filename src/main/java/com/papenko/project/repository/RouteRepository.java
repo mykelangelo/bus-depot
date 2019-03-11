@@ -1,6 +1,8 @@
 package com.papenko.project.repository;
 
 import com.papenko.project.entity.Route;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
@@ -8,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RouteRepository {
+    private static final Logger LOGGER = LoggerFactory.getLogger(RouteRepository.class);
     private final DataSource dataSource;
 
     public RouteRepository(DataSource dataSource) {
@@ -26,6 +29,7 @@ public class RouteRepository {
                 routes.add(new Route(routeName));
             }
         } catch (SQLException e) {
+            LOGGER.error("SQL fails to find all routes. Current list of routes: " + routes, e);
             throw new RuntimeException(e);
         }
 
@@ -44,6 +48,7 @@ public class RouteRepository {
                 }
             }
         } catch (SQLException e) {
+            LOGGER.error("SQL fails to find route by name " + routeName, e);
             throw new RuntimeException(e);
         }
         return null;

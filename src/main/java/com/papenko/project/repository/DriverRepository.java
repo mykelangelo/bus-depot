@@ -2,6 +2,8 @@ package com.papenko.project.repository;
 
 import com.papenko.project.entity.Bus;
 import com.papenko.project.entity.Driver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
@@ -9,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DriverRepository {
+    private static final Logger LOGGER = LoggerFactory.getLogger(DriverRepository.class);
     private final DataSource dataSource;
     private final BusRepository busRepository;
 
@@ -27,6 +30,7 @@ public class DriverRepository {
             preparedStatement.setString(2, driver.getUserEmail());
             preparedStatement.execute();
         } catch (SQLException e) {
+            LOGGER.error("SQL fails to update driver " + driver + " with bus " + bus, e);
             throw new RuntimeException(e);
         }
     }
@@ -46,6 +50,7 @@ public class DriverRepository {
                 }
             }
         } catch (SQLException e) {
+            LOGGER.error("SQL fails to find driver by email " + driverEmail, e);
             throw new RuntimeException(e);
         }
         return null;
@@ -66,6 +71,7 @@ public class DriverRepository {
                 drivers.add(new Driver(userEmail, bus, awareOfAssignment));
             }
         } catch (SQLException e) {
+            LOGGER.error("SQL fails to find all drivers. Current list of drivers: " + drivers, e);
             throw new RuntimeException(e);
         }
 
@@ -82,6 +88,7 @@ public class DriverRepository {
             preparedStatement.setString(2, driver.getUserEmail());
             preparedStatement.execute();
         } catch (SQLException e) {
+            LOGGER.error("SQL fails to update driver " + driver + " with awareness " + isAwareOfAssignment, e);
             throw new RuntimeException(e);
         }
     }
@@ -100,6 +107,7 @@ public class DriverRepository {
                 }
             }
         } catch (SQLException e) {
+            LOGGER.error("SQL fails to find driver by bus " + bus, e);
             throw new RuntimeException(e);
         }
         return null;

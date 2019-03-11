@@ -16,8 +16,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.io.IOException;
 
-import static java.util.Arrays.asList;
-
 @WebServlet(urlPatterns = "/login")
 public class LoginPageServlet extends HttpServlet {
     private static final Logger LOGGER = LoggerFactory.getLogger(LoginPageServlet.class);
@@ -68,7 +66,9 @@ public class LoginPageServlet extends HttpServlet {
         } else if (userType == UserType.BUS_DRIVER) {
             return "/driver";
         } else {
-            throw new IllegalStateException("Only " + asList(UserType.values()) + " user types have landing pages");
+            var e = new IllegalStateException("Only " + UserType.DEPOT_ADMIN + " and " + UserType.BUS_DRIVER + " user types have pages");
+            LOGGER.error("Invalid user type provided " + userType, e);
+            throw e;
         }
     }
 }
