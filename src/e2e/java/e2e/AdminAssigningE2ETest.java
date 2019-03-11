@@ -41,7 +41,7 @@ public class AdminAssigningE2ETest implements ScreenShotGeneratingE2ETest {
 
     @AfterEach
     void takeScreenShotAndShutDownBrowser(TestInfo testInfo) {
-        makeScreenShot(testInfo);
+        this.makeScreenShot(testInfo);
         webDriver.quit();
     }
 

@@ -40,7 +40,7 @@ public class LoginPageServlet extends HttpServlet {
         LOGGER.debug("GET");
         var userDetails = request.getSession().getAttribute("user_details");
         var path = (userDetails == null) ? "/WEB-INF/login.jsp" : "/logout";
-        getServletContext().getRequestDispatcher(path).forward(request, response);
+        this.getServletContext().getRequestDispatcher(path).forward(request, response);
     }
 
     @Override
