@@ -12,15 +12,15 @@ public class VacateDriverForm {
         this.webDriver = webDriver;
     }
 
-    public WebElement driverDropdown() {
+    public WebElement findDriverDropdown() {
         return webDriver.findElement(By.className("vacate-driver__driver-dropdown"));
     }
 
-    public WebElement driverDropdownOption(String email) {
+    public WebElement findDriverDropdownOption(String email) {
         return webDriver.findElement(By.className("vacate-driver__driver-dropdown-option-" + email.replace('@', '_')));
     }
 
-    public WebElement submitButton() {
+    public WebElement findSubmitButton() {
         return webDriver.findElement(By.className("vacate-driver__submit-button"));
     }
 }

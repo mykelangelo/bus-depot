@@ -53,30 +53,30 @@ public class AdminViewingE2ETest implements ScreenShotGeneratingE2ETest {
     @DisplayName("Admin flow: view buses")
     void shouldViewBusSerial_andItsRoute() {
         assertEquals("AA2552IA",
-                adminPage.busesView().busSerial("AA2552IA").getText());
+                adminPage.getBusesView().findBusSerial("AA2552IA").getText());
         assertEquals("7k",
-                adminPage.busesView().routeName("AA2552IA").getText());
+                adminPage.getBusesView().findRouteName("AA2552IA").getText());
     }
 
     @Test
     @DisplayName("Admin flow: view drivers")
     void shouldViewDriverEmail_andTheirBus_andTheirAwareness_whenTheyAreAwareOfTheirAssignment() {
         assertEquals("hell.o@company.com",
-                adminPage.driversView().userEmail("hell.o@company.com").getText());
+                adminPage.getDriversView().findUserEmail("hell.o@company.com").getText());
         assertEquals("AA2552IA",
-                adminPage.driversView().busSerial("hell.o@company.com").getText());
+                adminPage.getDriversView().findBusSerial("hell.o@company.com").getText());
         assertEquals("✅",
-                adminPage.driversView().assignmentAwareness("hell.o@company.com").getText());
+                adminPage.getDriversView().findAssignmentAwareness("hell.o@company.com").getText());
     }
 
     @Test
     @DisplayName("Admin flow: view drivers")
     void shouldViewDriverEmail_andTheirBus_andTheirAwareness_whenTheyAreUnawareOfTheirAssignment() {
         assertEquals("newbie@company.com",
-                adminPage.driversView().userEmail("newbie@company.com").getText());
+                adminPage.getDriversView().findUserEmail("newbie@company.com").getText());
         assertEquals("",
-                adminPage.driversView().busSerial("newbie@company.com").getText());
+                adminPage.getDriversView().findBusSerial("newbie@company.com").getText());
         assertEquals("❌",
-                adminPage.driversView().assignmentAwareness("newbie@company.com").getText());
+                adminPage.getDriversView().findAssignmentAwareness("newbie@company.com").getText());
     }
 }

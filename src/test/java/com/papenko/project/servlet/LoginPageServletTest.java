@@ -53,7 +53,7 @@ class LoginPageServletTest {
     }
 
     @Test
-    void doPost_shouldRedirectAdminToAdminLandingPage_andSetAuthenticatedUserDetailsToSession_whenCorrectCredentialsSubmitted() throws ServletException, IOException {
+    void doPost_shouldRedirectAdminToAdminPage_andSetAuthenticatedUserDetailsToSession_whenCorrectCredentialsSubmitted() throws ServletException, IOException {
         //GIVEN
         doReturn("correct@email.yes").when(httpServletRequest).getParameter("email");
         doReturn("correct_password").when(httpServletRequest).getParameter("password");
@@ -69,7 +69,7 @@ class LoginPageServletTest {
     }
 
     @Test
-    void doPost_shouldRedirectDriverToDriverLandingPage_andSetAuthenticatedUserDetailsToSession_whenCorrectCredentialsSubmitted() throws ServletException, IOException {
+    void doPost_shouldRedirectDriverToDriverPage_andSetAuthenticatedUserDetailsToSession_whenCorrectCredentialsSubmitted() throws ServletException, IOException {
         //GIVEN
         doReturn("correct@email.yes").when(httpServletRequest).getParameter("email");
         doReturn("correct_password").when(httpServletRequest).getParameter("password");

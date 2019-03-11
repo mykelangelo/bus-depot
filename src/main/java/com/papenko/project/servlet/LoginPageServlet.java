@@ -50,17 +50,17 @@ public class LoginPageServlet extends HttpServlet {
 
         if (loginService.checkCredentials(email, password)) {
             UserType userType = loginService.getUserType(email);
-            String landingPage = generateLandingPagePath(userType);
+            String pageURI = selectPageURI(userType);
             var userDetails = new AuthenticatedUserDetails(email, userType);
             request.getSession().setAttribute("user_details", userDetails);
-            response.sendRedirect(landingPage);
+            response.sendRedirect(pageURI);
         } else {
             request.setAttribute("loginErrorMessage", "Invalid email or password");
             this.getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
         }
     }
 
-    private String generateLandingPagePath(UserType userType) {
+    private String selectPageURI(UserType userType) {
         if (userType == UserType.DEPOT_ADMIN) {
             return "/admin";
         } else if (userType == UserType.BUS_DRIVER) {

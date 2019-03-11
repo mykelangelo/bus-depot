@@ -11,11 +11,11 @@ public class BusesView {
         this.webDriver = webDriver;
     }
 
-    public WebElement busSerial(String busSerial) {
+    public WebElement findBusSerial(String busSerial) {
         return webDriver.findElement(By.className("buses-view__bus-serial-for-" + busSerial));
     }
 
-    public WebElement routeName(String busSerial) {
+    public WebElement findRouteName(String busSerial) {
         return webDriver.findElement(By.className("buses-view__route-name-for-" + busSerial));
     }
 }

@@ -91,7 +91,7 @@ public class UserLogoutE2ETest implements ScreenShotGeneratingE2ETest {
 
         assertEquals(AdminPage.getPageUrl(), webDriver.getCurrentUrl());
 
-        adminPage.logoutButton().click();
+        adminPage.findLogoutButton().click();
         assertThat(webDriver.getCurrentUrl()).startsWith(LoginPage.getPageUrl());
 
         webDriver.get(AdminPage.getPageUrl());
@@ -108,7 +108,7 @@ public class UserLogoutE2ETest implements ScreenShotGeneratingE2ETest {
 
         assertEquals(DriverPage.getPageUrl(), webDriver.getCurrentUrl());
 
-        driverPage.logoutButton().click();
+        driverPage.findLogoutButton().click();
         assertThat(webDriver.getCurrentUrl()).startsWith(LoginPage.getPageUrl());
 
         webDriver.get(DriverPage.getPageUrl());

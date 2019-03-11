@@ -78,7 +78,7 @@ public class UserLoginE2ETest implements ScreenShotGeneratingE2ETest {
         loginPage.findSubmitButton().click();
 
         LOGGER.debug(webDriver.getCurrentUrl());
-        assertEquals(AdminPage.getPageUrl(), webDriver.getCurrentUrl(), "Didn't redirected to admin's landing page");
+        assertEquals(AdminPage.getPageUrl(), webDriver.getCurrentUrl(), "Didn't redirected to admin's page");
         assertEquals("Hi, administrator with email administrator@company.com!",
                 adminPage.findGreetingMessage().getText(),
                 "Greeting is missing email (or is malformed)");
@@ -92,7 +92,7 @@ public class UserLoginE2ETest implements ScreenShotGeneratingE2ETest {
         loginPage.findSubmitButton().click();
 
         LOGGER.debug(webDriver.getCurrentUrl());
-        assertEquals(DriverPage.getPageUrl(), webDriver.getCurrentUrl(), "Didn't redirected to driver's landing page");
+        assertEquals(DriverPage.getPageUrl(), webDriver.getCurrentUrl(), "Didn't redirected to driver's page");
         assertEquals("Hi, bus driver with email best.driver@company.com!",
                 driverPage.findGreetingMessage().getText(),
                 "Greeting is missing email (or is malformed)");

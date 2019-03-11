@@ -26,6 +26,30 @@ public class AdminPage {
         return ADMIN_PAGE_URL;
     }
 
+    public AssignDriverToBusForm getDriverToBusForm() {
+        return assignDriverToBusForm;
+    }
+
+    public VacateDriverForm getVacateDriverForm() {
+        return vacateDriverForm;
+    }
+
+    public AssignBusToRouteForm getBusToRouteForm() {
+        return assignBusToRouteForm;
+    }
+
+    public BusesView getBusesView() {
+        return busesView;
+    }
+
+    public DriversView getDriversView() {
+        return driversView;
+    }
+
+    public WebElement findLogoutButton() {
+        return webDriver.findElement(By.className("admin__logout-button"));
+    }
+
     public WebElement findGreetingMessage() {
         return webDriver.findElement(By.className("admin__greeting-message"));
     }
@@ -33,29 +57,4 @@ public class AdminPage {
     public WebElement findLastSubmitStatusMessage() {
         return webDriver.findElement(By.className("admin__last-submit-status-message"));
     }
-
-    public AssignDriverToBusForm driverToBusForm() {
-        return assignDriverToBusForm;
-    }
-
-    public VacateDriverForm vacateDriverForm() {
-        return vacateDriverForm;
-    }
-
-    public AssignBusToRouteForm busToRouteForm() {
-        return assignBusToRouteForm;
-    }
-
-    public BusesView busesView() {
-        return busesView;
-    }
-
-    public DriversView driversView() {
-        return driversView;
-    }
-
-    public WebElement logoutButton() {
-        return webDriver.findElement(By.className("admin__logout-button"));
-    }
 }
-

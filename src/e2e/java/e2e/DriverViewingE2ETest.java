@@ -52,7 +52,7 @@ public class DriverViewingE2ETest implements ScreenShotGeneratingE2ETest {
         loginPage.findPasswordField().sendKeys("correctPasswordWhyNotItsAGreatOne");
         loginPage.findSubmitButton().click();
 
-        assertEquals("You're free of any work currently. Have fun on your vacation!", driverPage.vacatedMessage().getText());
+        assertEquals("You're free of any work currently. Have fun on your vacation!", driverPage.findVacatedMessage().getText());
     }
 
     @Test
@@ -62,8 +62,8 @@ public class DriverViewingE2ETest implements ScreenShotGeneratingE2ETest {
         loginPage.findPasswordField().sendKeys("correctPasswordWhyNotItsAGreatOne");
         loginPage.findSubmitButton().click();
 
-        assertEquals("AA2552IA", driverPage.busSerial().getText());
-        assertEquals("7k", driverPage.routeName().getText());
+        assertEquals("AA2552IA", driverPage.findBusSerial().getText());
+        assertEquals("7k", driverPage.findRouteName().getText());
     }
 
     @Test
@@ -74,10 +74,10 @@ public class DriverViewingE2ETest implements ScreenShotGeneratingE2ETest {
         loginPage.findSubmitButton().click();
 
         assertEquals("You have been assigned to a new bus and/or route.",
-                driverPage.unawareMessage().getText());
-        driverPage.confirmButton().click();
-        assertEquals("DO2019NT", driverPage.busSerial().getText());
-        assertEquals("UN7", driverPage.routeName().getText());
+                driverPage.findUnawareMessage().getText());
+        driverPage.findConfirmButton().click();
+        assertEquals("DO2019NT", driverPage.findBusSerial().getText());
+        assertEquals("UN7", driverPage.findRouteName().getText());
     }
 
     @Test
@@ -88,8 +88,8 @@ public class DriverViewingE2ETest implements ScreenShotGeneratingE2ETest {
         loginPage.findSubmitButton().click();
 
         assertEquals("You have been assigned to a new bus and/or route.",
-                driverPage.unawareMessage().getText());
-        driverPage.confirmButton().click();
-        assertEquals("You're free of any work currently. Have fun on your vacation!", driverPage.vacatedMessage().getText());
+                driverPage.findUnawareMessage().getText());
+        driverPage.findConfirmButton().click();
+        assertEquals("You're free of any work currently. Have fun on your vacation!", driverPage.findVacatedMessage().getText());
     }
 }

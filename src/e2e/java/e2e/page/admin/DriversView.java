@@ -11,15 +11,15 @@ public class DriversView {
         this.webDriver = webDriver;
     }
 
-    public WebElement userEmail(String driverEmail) {
+    public WebElement findUserEmail(String driverEmail) {
         return webDriver.findElement(By.className("drivers-view__user-email-for-" + driverEmail.replace('@', '_')));
     }
 
-    public WebElement busSerial(String driverEmail) {
+    public WebElement findBusSerial(String driverEmail) {
         return webDriver.findElement(By.className("drivers-view__bus-serial-for-" + driverEmail.replace('@', '_')));
     }
 
-    public WebElement assignmentAwareness(String driverEmail) {
+    public WebElement findAssignmentAwareness(String driverEmail) {
         return webDriver.findElement(By.className("drivers-view__assignment-awareness-for-" + driverEmail.replace('@', '_')));
     }
 }

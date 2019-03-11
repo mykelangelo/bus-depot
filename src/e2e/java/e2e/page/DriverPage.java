@@ -16,31 +16,31 @@ public class DriverPage {
         return DRIVER_PAGE_URL;
     }
 
+    public WebElement findLogoutButton() {
+        return webDriver.findElement(By.className("driver__logout-button"));
+    }
+
     public WebElement findGreetingMessage() {
         return webDriver.findElement(By.className("driver__greeting-message"));
     }
 
-    public WebElement busSerial() {
+    public WebElement findBusSerial() {
         return webDriver.findElement(By.className("driver__bus-serial"));
     }
 
-    public WebElement routeName() {
+    public WebElement findRouteName() {
         return webDriver.findElement(By.className("driver__route-name"));
     }
 
-    public WebElement unawareMessage() {
+    public WebElement findUnawareMessage() {
         return webDriver.findElement(By.className("driver__unaware-message"));
     }
 
-    public WebElement confirmButton() {
+    public WebElement findConfirmButton() {
         return webDriver.findElement(By.className("driver__confirm-button"));
     }
 
-    public WebElement vacatedMessage() {
+    public WebElement findVacatedMessage() {
         return webDriver.findElement(By.className("driver__vacated-message"));
-    }
-
-    public WebElement logoutButton() {
-        return webDriver.findElement(By.className("driver__logout-button"));
     }
 }

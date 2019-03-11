@@ -11,23 +11,23 @@ public class AssignBusToRouteForm {
         this.webDriver = webDriver;
     }
 
-    public WebElement routeDropdown() {
+    public WebElement findRouteDropdown() {
         return webDriver.findElement(By.className("bus-to-route__route-dropdown"));
     }
 
-    public WebElement routeDropdownOption(String routeName) {
+    public WebElement findRouteDropdownOption(String routeName) {
         return webDriver.findElement(By.className("bus-to-route__route-dropdown-option-" + routeName));
     }
 
-    public WebElement busDropdown() {
+    public WebElement findBusDropdown() {
         return webDriver.findElement(By.className("bus-to-route__bus-dropdown"));
     }
 
-    public WebElement busDropdownOption(String busSerialNumber) {
+    public WebElement findBusDropdownOption(String busSerialNumber) {
         return webDriver.findElement(By.className("bus-to-route__bus-dropdown-option-" + busSerialNumber));
     }
 
-    public WebElement submitButton() {
+    public WebElement findSubmitButton() {
         return webDriver.findElement(By.className("bus-to-route__submit-button"));
     }
 }

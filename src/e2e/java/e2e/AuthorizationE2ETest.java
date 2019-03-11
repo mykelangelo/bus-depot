@@ -48,7 +48,7 @@ public class AuthorizationE2ETest implements ScreenShotGeneratingE2ETest {
     @ParameterizedTest
     @ValueSource(strings = {"/driver", "/admin", "/driver-to-bus", "/vacate-driver", "/bus-to-route"})
     @DisplayName("Security check: unauthorized user can not perform actions that need authorization")
-    void shouldNotLetUnauthorizedUserVisitDriverOrAdminPageAsWellAsSubmitAnyOfTheirForms(String driverOrAdminURI) {
+    void shouldNotLetUnauthorizedUserVisitDriverOrAdminPageOrSubmitAnyOfTheirForms(String driverOrAdminURI) {
         var authorizationNeededURL = ROOT_URL + driverOrAdminURI;
         webDriver.get(authorizationNeededURL);
 
@@ -66,7 +66,7 @@ public class AuthorizationE2ETest implements ScreenShotGeneratingE2ETest {
 
     @Test
     @DisplayName("Security check: unauthorized user can perform actions that do not need authorization")
-    void shouldLetUnauthorizedUserVisitLoginPageAsWellAsSubmitLoginForm() {
+    void shouldLetUnauthorizedUserVisitLoginPageOrSubmitLoginForm() {
         var authorizationNotNeededURL = ROOT_URL + "/login";
         webDriver.get(authorizationNotNeededURL);
 
@@ -75,7 +75,7 @@ public class AuthorizationE2ETest implements ScreenShotGeneratingE2ETest {
 
     @Test
     @DisplayName("Security check: admin can not perform actions that need driver's authorization")
-    void shouldNotLetAuthorizedAdminVisitDriverPageAsWellAsSubmitDriverForm() {
+    void shouldNotLetAuthorizedAdminVisitDriverPageOrSubmitDriverForm() {
         loginPage.goToPage();
         loginPage.findEmailField().sendKeys("administrator@company.com");
         loginPage.findPasswordField().sendKeys("correctPasswordWhyNotItsAGreatOne");
