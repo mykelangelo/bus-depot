@@ -10,6 +10,10 @@
 </head>
 <body>
 
+<form action="${pageContext.request.contextPath}/login" method="get">
+    　<input type="submit" class="driver__logout-button" value="Log Out">
+</form>
+
 <h1 class="driver__greeting-message" style="color: indigo">
     　Hi, bus driver with email ${sessionScope.get('user_details').getEmail()}!
 </h1>

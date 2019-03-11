@@ -39,4 +39,8 @@ public class DriverPage {
     public WebElement vacatedMessage() {
         return webDriver.findElement(By.className("driver__vacated-message"));
     }
+
+    public WebElement logoutButton() {
+        return webDriver.findElement(By.className("driver__logout-button"));
+    }
 }

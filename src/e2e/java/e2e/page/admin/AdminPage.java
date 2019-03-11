@@ -53,5 +53,9 @@ public class AdminPage {
     public DriversView driversView() {
         return driversView;
     }
+
+    public WebElement logoutButton() {
+        return webDriver.findElement(By.className("admin__logout-button"));
+    }
 }
 

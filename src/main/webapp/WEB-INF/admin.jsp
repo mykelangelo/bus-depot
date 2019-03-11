@@ -13,6 +13,10 @@
 </head>
 <body>
 
+<form action="${pageContext.request.contextPath}/login" method="get">
+    　<input type="submit" class="admin__logout-button" value="Log Out">
+</form>
+
 <c:if test="${empty lastSubmitStatusMessage}">
     <h1 class="admin__greeting-message" style="color: indigo">
         　Hi, administrator with email ${sessionScope.get('user_details').getEmail()}!
