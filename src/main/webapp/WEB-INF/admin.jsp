@@ -13,7 +13,7 @@
 </head>
 <body>
 
-<form action="${pageContext.request.contextPath}/login" method="get">
+<form action="${pageContext.request.contextPath}/logout" method="get">
     　<input type="submit" class="admin__logout-button" value="Log Out">
 </form>
 

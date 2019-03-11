@@ -19,7 +19,7 @@ VALUES ('human.admin@bus-depot.com', 'DEPOT_ADMIN', '$2a$10$BTrA6YQEY1JiSh5rLPhe
        ('mykle.shchur@bus-depot.com', 'BUS_DRIVER', '$2a$10$nh6QbeTT0S4BkkGUus7f9u5YNhQI9F/xK9uG7JmtZSon10bSxxnuu'),
        -- password: SlavaIsuTaVyoDoNovyn
        ('donald.trump@bus-depot.com', 'BUS_DRIVER', '$2a$10$pLqrxqwXOPvAQCwx2T2WZei9vU/8gVNL8h0wc8D07z1L4aURJBmSW');
-       -- password: makeAmericaGreatAgainAgain
+-- password: makeAmericaGreatAgainAgain
 
 
 INSERT IGNORE INTO route (route_name)

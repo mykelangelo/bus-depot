@@ -64,10 +64,11 @@ public class AuthorizationE2ETest implements ScreenShotGeneratingE2ETest {
         assertEquals("HTTP Status 404 – Not Found", webDriver.findElement(By.tagName("h1")).getText());
     }
 
-    @Test
+    @ParameterizedTest
+    @ValueSource(strings = {"/login", "/logout"})
     @DisplayName("Security check: unauthorized user can perform actions that do not need authorization")
-    void shouldLetUnauthorizedUserVisitLoginPageOrSubmitLoginForm() {
-        var authorizationNotNeededURL = ROOT_URL + "/login";
+    void shouldLetUnauthorizedUserVisitLoginPageOrSubmitLoginFormOrTryToLogout(String accessibleURI) {
+        var authorizationNotNeededURL = ROOT_URL + accessibleURI;
         webDriver.get(authorizationNotNeededURL);
 
         assertEquals("Welcome to The Bus Depot!", webDriver.findElement(By.tagName("h1")).getText());
@@ -127,6 +128,21 @@ public class AuthorizationE2ETest implements ScreenShotGeneratingE2ETest {
         loginPage.findSubmitButton().click();
 
         var noAuthorizationNeededURL = ROOT_URL + "/login";
+        webDriver.get(noAuthorizationNeededURL);
+
+        assertEquals(LoginPage.getPageUrl(), webDriver.getCurrentUrl());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"driver@company.com", "administrator@company.com"})
+    @DisplayName("Security check: driver or admin can perform actions that do not need authorization")
+    void shouldLetAuthorizedDriverOrAdminPerformLogout(String driverOrAdminEmail) {
+        loginPage.goToPage();
+        loginPage.findEmailField().sendKeys(driverOrAdminEmail);
+        loginPage.findPasswordField().sendKeys("correctPasswordWhyNotItsAGreatOne");
+        loginPage.findSubmitButton().click();
+
+        var noAuthorizationNeededURL = ROOT_URL + "/logout";
         webDriver.get(noAuthorizationNeededURL);
 
         assertEquals(LoginPage.getPageUrl(), webDriver.getCurrentUrl());

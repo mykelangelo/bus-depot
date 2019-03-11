@@ -39,17 +39,31 @@ class LoginPageServletTest {
     HttpSession session;
 
     @Test
-    void doGet_shouldForwardToLoginPage_andSetNullAsUserDetailsToSession() throws Exception {
+    void doGet_shouldForwardToLoginPage_whenUserIsNotLoggedIn() throws Exception {
         // GIVEN
         doReturn(servletContext).when(loginPageServlet).getServletContext();
         doReturn(requestDispatcher).when(servletContext).getRequestDispatcher(anyString());
         doReturn(session).when(httpServletRequest).getSession();
+        doReturn(null).when(session).getAttribute("user_details");
         // WHEN
         loginPageServlet.doGet(httpServletRequest, httpServletResponse);
         // THEN
         verify(servletContext).getRequestDispatcher("/WEB-INF/login.jsp");
         verify(requestDispatcher).forward(httpServletRequest, httpServletResponse);
-        verify(session).setAttribute("user_details", null);
+    }
+
+    @Test
+    void doGet_shouldForwardToLogoutFirst_whenUserIsLoggedIn() throws Exception {
+        // GIVEN
+        doReturn(servletContext).when(loginPageServlet).getServletContext();
+        doReturn(requestDispatcher).when(servletContext).getRequestDispatcher(anyString());
+        doReturn(session).when(httpServletRequest).getSession();
+        doReturn(new AuthenticatedUserDetails(null, null)).when(session).getAttribute("user_details");
+        // WHEN
+        loginPageServlet.doGet(httpServletRequest, httpServletResponse);
+        // THEN
+        verify(servletContext).getRequestDispatcher("/logout");
+        verify(requestDispatcher).forward(httpServletRequest, httpServletResponse);
     }
 
     @Test
