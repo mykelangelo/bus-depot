@@ -1,6 +1,8 @@
 package e2e;
 
+import e2e.page.DriverPage;
 import e2e.page.LoginPage;
+import e2e.page.admin.AdminPage;
 import io.github.bonigarcia.wdm.ChromeDriverManager;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -58,10 +60,10 @@ public class AuthorizationE2ETest implements ScreenShotGeneratingE2ETest {
     @Test
     @DisplayName("Security check: unauthorized user can try to perform an unknown action")
     void shouldLetUnauthorizedUserTryToVisitUnknownPage() {
-        var noSuchURL = ROOT_URL + "/";
+        var noSuchURL = ROOT_URL + "/no-such-page-exists";
         webDriver.get(noSuchURL);
 
-        assertEquals("HTTP Status 404 – Not Found", webDriver.findElement(By.tagName("h1")).getText());
+        assertEquals(LoginPage.getPageUrl(), webDriver.getCurrentUrl());
     }
 
     @ParameterizedTest
@@ -103,19 +105,32 @@ public class AuthorizationE2ETest implements ScreenShotGeneratingE2ETest {
         assertEquals("HTTP Status 403 – Forbidden", webDriver.findElement(By.tagName("h1")).getText());
     }
 
-    @ParameterizedTest
-    @ValueSource(strings = {"driver@company.com", "administrator@company.com"})
-    @DisplayName("Security check: driver or admin  can try to perform an unknown action")
-    void shouldLetUAuthorizedDriverOrAdminTryToVisitUnknownPage(String driverOrAdminEmail) {
+    @Test
+    @DisplayName("Security check: driver can try to perform unknown action")
+    void shouldLetAuthorizedDriverTryToVisitUnknownPage() {
         loginPage.goToPage();
-        loginPage.findEmailField().sendKeys(driverOrAdminEmail);
+        loginPage.findEmailField().sendKeys("driver@company.com");
         loginPage.findPasswordField().sendKeys("correctPasswordWhyNotItsAGreatOne");
         loginPage.findSubmitButton().click();
 
-        var noSuchURL = ROOT_URL + "/";
+        var noSuchURL = ROOT_URL + "/no-such-page-exists";
         webDriver.get(noSuchURL);
 
-        assertEquals("HTTP Status 404 – Not Found", webDriver.findElement(By.tagName("h1")).getText());
+        assertEquals(DriverPage.getPageUrl(), webDriver.getCurrentUrl());
+    }
+
+    @Test
+    @DisplayName("Security check: admin can try to perform unknown action")
+    void shouldLetAuthorizedAdminTryToVisitUnknownPage() {
+        loginPage.goToPage();
+        loginPage.findEmailField().sendKeys("administrator@company.com");
+        loginPage.findPasswordField().sendKeys("correctPasswordWhyNotItsAGreatOne");
+        loginPage.findSubmitButton().click();
+
+        var noSuchURL = ROOT_URL + "/no-such-page-exists";
+        webDriver.get(noSuchURL);
+
+        assertEquals(AdminPage.getPageUrl(), webDriver.getCurrentUrl());
     }
 
     @ParameterizedTest
