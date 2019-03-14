@@ -19,7 +19,7 @@
 
 <c:if test="${empty lastSubmitStatusMessage}">
     <h1 class="admin__greeting-message" style="color: indigo">
-        　Hi, administrator with email ${sessionScope.get('user_details').getEmail()}!
+        　Hi, administrator with email ${sessionScope.get('userDetails').getEmail()}!
     </h1>
 </c:if>
 

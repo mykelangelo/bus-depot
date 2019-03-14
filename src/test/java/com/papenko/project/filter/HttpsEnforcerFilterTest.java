@@ -9,6 +9,7 @@ import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import static com.papenko.project.constant.ApplicationEndpointsURI.LOGIN_PAGE_URI;
 import static com.papenko.project.filter.HttpsEnforcerFilter.X_FORWARDED_PROTO;
 import static org.mockito.Mockito.*;
 
@@ -46,7 +47,7 @@ class HttpsEnforcerFilterTest {
         // GIVEN
         when(httpServletRequest.getHeader(X_FORWARDED_PROTO)).thenReturn("http://the-app.com");
         when(httpServletRequest.getServerName()).thenReturn("the-app.com");
-        when(httpServletRequest.getRequestURI()).thenReturn("/login");
+        when(httpServletRequest.getRequestURI()).thenReturn(LOGIN_PAGE_URI);
         // WHEN
         httpsEnforcerFilter.doFilter(httpServletRequest, httpServletResponse, filterChain);
         // THEN

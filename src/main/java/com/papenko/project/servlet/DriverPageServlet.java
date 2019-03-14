@@ -17,8 +17,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.io.IOException;
 
+import static com.papenko.project.constant.ApplicationEndpointsURI.DRIVER_JSP_PATH;
+import static com.papenko.project.constant.ApplicationEndpointsURI.DRIVER_PAGE_URI;
+import static com.papenko.project.constant.SessionAttributeName.USER_DETAILS;
 
-@WebServlet(urlPatterns = "/driver")
+
+@WebServlet(urlPatterns = DRIVER_PAGE_URI)
 public class DriverPageServlet extends HttpServlet {
     private static final Logger LOGGER = LoggerFactory.getLogger(DriverPageServlet.class);
     private DriverService driverService;
@@ -43,18 +47,18 @@ public class DriverPageServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         LOGGER.debug("GET");
-        var userDetails = (AuthenticatedUserDetails) request.getSession().getAttribute("user_details");
+        var userDetails = (AuthenticatedUserDetails) request.getSession().getAttribute(USER_DETAILS);
         Driver driver = driverService.findDriverByEmail(userDetails.getEmail());
         request.setAttribute("driver", driver);
-        this.getServletContext().getRequestDispatcher("/WEB-INF/driver.jsp").forward(request, response);
+        this.getServletContext().getRequestDispatcher(DRIVER_JSP_PATH).forward(request, response);
     }
 
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         LOGGER.debug("POST");
-        var userDetails = (AuthenticatedUserDetails) request.getSession().getAttribute("user_details");
+        var userDetails = (AuthenticatedUserDetails) request.getSession().getAttribute(USER_DETAILS);
         driverService.setDriverAwarenessToTrue(userDetails.getEmail());
-        response.sendRedirect("/driver");
+        response.sendRedirect(DRIVER_PAGE_URI);
     }
 }

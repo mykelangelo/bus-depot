@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
+import static com.papenko.project.constant.ApplicationEndpointsURI.LOGIN_PAGE_URI;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 
@@ -33,6 +34,6 @@ class LogoutServletTest {
         logoutServlet.doGet(httpServletRequest, httpServletResponse);
         // THEN
         verify(session).invalidate();
-        verify(httpServletResponse).sendRedirect("/login");
+        verify(httpServletResponse).sendRedirect(LOGIN_PAGE_URI);
     }
 }

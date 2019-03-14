@@ -13,6 +13,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
+import static com.papenko.project.constant.ApplicationEndpointsURI.AdminPage.ADMIN_PAGE_URI;
+import static com.papenko.project.constant.ApplicationEndpointsURI.DRIVER_PAGE_URI;
+import static com.papenko.project.constant.ApplicationEndpointsURI.LOGIN_PAGE_URI;
+import static com.papenko.project.constant.SessionAttributeName.USER_DETAILS;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 
@@ -31,11 +35,11 @@ class RootUriServletTest {
     void doGet_shouldRedirectToLoginPage_whenUserIsNotAuthorized() throws IOException {
         // GIVEN
         doReturn(session).when(httpServletRequest).getSession();
-        doReturn(null).when(session).getAttribute("user_details");
+        doReturn(null).when(session).getAttribute(USER_DETAILS);
         // WHEN
         rootUriServlet.doGet(httpServletRequest, httpServletResponse);
         // THEN
-        verify(httpServletResponse).sendRedirect("/login");
+        verify(httpServletResponse).sendRedirect(LOGIN_PAGE_URI);
 
     }
 
@@ -44,11 +48,11 @@ class RootUriServletTest {
         // GIVEN
         doReturn(session).when(httpServletRequest).getSession();
         doReturn(new AuthenticatedUserDetails(null, UserType.DEPOT_ADMIN))
-                .when(session).getAttribute("user_details");
+                .when(session).getAttribute(USER_DETAILS);
         // WHEN
         rootUriServlet.doGet(httpServletRequest, httpServletResponse);
         // THEN
-        verify(httpServletResponse).sendRedirect("/admin");
+        verify(httpServletResponse).sendRedirect(ADMIN_PAGE_URI);
     }
 
     @Test
@@ -56,10 +60,10 @@ class RootUriServletTest {
         // GIVEN
         doReturn(session).when(httpServletRequest).getSession();
         doReturn(new AuthenticatedUserDetails(null, UserType.BUS_DRIVER))
-                .when(session).getAttribute("user_details");
+                .when(session).getAttribute(USER_DETAILS);
         // WHEN
         rootUriServlet.doGet(httpServletRequest, httpServletResponse);
         // THEN
-        verify(httpServletResponse).sendRedirect("/driver");
+        verify(httpServletResponse).sendRedirect(DRIVER_PAGE_URI);
     }
 }

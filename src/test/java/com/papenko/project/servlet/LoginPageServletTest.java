@@ -18,6 +18,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
+import static com.papenko.project.constant.ApplicationEndpointsURI.AdminPage.ADMIN_PAGE_URI;
+import static com.papenko.project.constant.ApplicationEndpointsURI.*;
+import static com.papenko.project.constant.SessionAttributeName.USER_DETAILS;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -44,11 +47,11 @@ class LoginPageServletTest {
         doReturn(servletContext).when(loginPageServlet).getServletContext();
         doReturn(requestDispatcher).when(servletContext).getRequestDispatcher(anyString());
         doReturn(session).when(httpServletRequest).getSession();
-        doReturn(null).when(session).getAttribute("user_details");
+        doReturn(null).when(session).getAttribute(USER_DETAILS);
         // WHEN
         loginPageServlet.doGet(httpServletRequest, httpServletResponse);
         // THEN
-        verify(servletContext).getRequestDispatcher("/WEB-INF/login.jsp");
+        verify(servletContext).getRequestDispatcher(LOGIN_JSP_PATH);
         verify(requestDispatcher).forward(httpServletRequest, httpServletResponse);
     }
 
@@ -58,11 +61,11 @@ class LoginPageServletTest {
         doReturn(servletContext).when(loginPageServlet).getServletContext();
         doReturn(requestDispatcher).when(servletContext).getRequestDispatcher(anyString());
         doReturn(session).when(httpServletRequest).getSession();
-        doReturn(new AuthenticatedUserDetails(null, null)).when(session).getAttribute("user_details");
+        doReturn(new AuthenticatedUserDetails(null, null)).when(session).getAttribute(USER_DETAILS);
         // WHEN
         loginPageServlet.doGet(httpServletRequest, httpServletResponse);
         // THEN
-        verify(servletContext).getRequestDispatcher("/logout");
+        verify(servletContext).getRequestDispatcher(LOGOUT_FORM_URI);
         verify(requestDispatcher).forward(httpServletRequest, httpServletResponse);
     }
 
@@ -78,8 +81,8 @@ class LoginPageServletTest {
         //WHEN
         loginPageServlet.doPost(httpServletRequest, httpServletResponse);
         //THEN
-        verify(httpServletResponse).sendRedirect("/admin");
-        verify(session).setAttribute("user_details", userDetails);
+        verify(httpServletResponse).sendRedirect(ADMIN_PAGE_URI);
+        verify(session).setAttribute(USER_DETAILS, userDetails);
     }
 
     @Test
@@ -94,8 +97,8 @@ class LoginPageServletTest {
         //WHEN
         loginPageServlet.doPost(httpServletRequest, httpServletResponse);
         //THEN
-        verify(httpServletResponse).sendRedirect("/driver");
-        verify(session).setAttribute("user_details", userDetails);
+        verify(httpServletResponse).sendRedirect(DRIVER_PAGE_URI);
+        verify(session).setAttribute(USER_DETAILS, userDetails);
     }
 
     @Test
@@ -109,7 +112,7 @@ class LoginPageServletTest {
         //WHEN
         loginPageServlet.doPost(httpServletRequest, httpServletResponse);
         //THEN
-        verify(servletContext).getRequestDispatcher("/WEB-INF/login.jsp");
+        verify(servletContext).getRequestDispatcher(LOGIN_JSP_PATH);
         verify(requestDispatcher).forward(httpServletRequest, httpServletResponse);
         verify(httpServletRequest).setAttribute("loginErrorMessage", "Invalid email or password");
     }

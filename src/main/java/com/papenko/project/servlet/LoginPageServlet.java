@@ -16,7 +16,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.io.IOException;
 
-@WebServlet(urlPatterns = "/login")
+import static com.papenko.project.constant.ApplicationEndpointsURI.AdminPage.ADMIN_PAGE_URI;
+import static com.papenko.project.constant.ApplicationEndpointsURI.*;
+import static com.papenko.project.constant.SessionAttributeName.USER_DETAILS;
+
+@WebServlet(urlPatterns = LOGIN_PAGE_URI)
 public class LoginPageServlet extends HttpServlet {
     private static final Logger LOGGER = LoggerFactory.getLogger(LoginPageServlet.class);
     private LoginService loginService;
@@ -38,8 +42,8 @@ public class LoginPageServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         LOGGER.debug("GET");
-        var userDetails = request.getSession().getAttribute("user_details");
-        var path = (userDetails == null) ? "/WEB-INF/login.jsp" : "/logout";
+        var userDetails = request.getSession().getAttribute(USER_DETAILS);
+        var path = (userDetails == null) ? LOGIN_JSP_PATH : LOGOUT_FORM_URI;
         this.getServletContext().getRequestDispatcher(path).forward(request, response);
     }
 
@@ -53,23 +57,21 @@ public class LoginPageServlet extends HttpServlet {
             UserType userType = loginService.getUserType(email);
             String pageURI = selectPageURI(userType);
             var userDetails = new AuthenticatedUserDetails(email, userType);
-            request.getSession().setAttribute("user_details", userDetails);
+            request.getSession().setAttribute(USER_DETAILS, userDetails);
             response.sendRedirect(pageURI);
         } else {
             request.setAttribute("loginErrorMessage", "Invalid email or password");
-            this.getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
+            this.getServletContext().getRequestDispatcher(LOGIN_JSP_PATH).forward(request, response);
         }
     }
 
     private String selectPageURI(UserType userType) {
         if (userType == UserType.DEPOT_ADMIN) {
-            return "/admin";
+            return ADMIN_PAGE_URI;
         } else if (userType == UserType.BUS_DRIVER) {
-            return "/driver";
+            return DRIVER_PAGE_URI;
         } else {
-            var e = new IllegalStateException("Only " + UserType.DEPOT_ADMIN + " and " + UserType.BUS_DRIVER + " user types have pages");
-            LOGGER.error("Invalid user type provided " + userType, e);
-            throw e;
+            throw new IllegalStateException("Invalid user type provided: " + userType + ". Only " + UserType.DEPOT_ADMIN + " and " + UserType.BUS_DRIVER + " user types have pages");
         }
     }
 }

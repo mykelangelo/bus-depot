@@ -30,8 +30,7 @@ public class UserRepository {
                 }
             }
         } catch (SQLException e) {
-            LOGGER.error("SQL fails to find user by email " + email, e);
-            throw new RuntimeException(e);
+            throw new RuntimeException("SQL fails to find user by email " + email, e);
         }
         return null;
     }

@@ -15,7 +15,7 @@
 </form>
 
 <h1 class="driver__greeting-message" style="color: indigo">
-    　Hi, bus driver with email ${sessionScope.get('user_details').getEmail()}!
+    　Hi, bus driver with email ${sessionScope.get('userDetails').getEmail()}!
 </h1>
 
 <c:if test="${not driver.isAwareOfAssignment()}">

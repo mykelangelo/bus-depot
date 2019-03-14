@@ -1,8 +1,6 @@
 package e2e;
 
-import e2e.page.DriverPage;
 import e2e.page.LoginPage;
-import e2e.page.admin.AdminPage;
 import io.github.bonigarcia.wdm.ChromeDriverManager;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.TakesScreenshot;
@@ -10,10 +8,11 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
+import static e2e.constant.ApplicationEndpointsURL.AdminPage.ADMIN_PAGE_URL;
+import static e2e.constant.ApplicationEndpointsURL.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class RootUriRedirectionE2ETest implements ScreenShotGeneratingE2ETest {
-    private static final String ROOT_URL = "http://localhost:8080/";
     private WebDriver webDriver;
     private LoginPage loginPage;
 
@@ -46,15 +45,15 @@ public class RootUriRedirectionE2ETest implements ScreenShotGeneratingE2ETest {
 
 
     @Test
-    @DisplayName("Support root URI: redirect unauthorized user to login page")
+    @DisplayName("Support root ApplicationEndpointsURI: redirect unauthorized user to login page")
     void shouldRedirectUnauthorizedUserToLoginPage() {
         webDriver.get(ROOT_URL);
 
-        assertEquals(LoginPage.getPageUrl(), webDriver.getCurrentUrl());
+        assertEquals(LOGIN_PAGE_URL, webDriver.getCurrentUrl());
     }
 
     @Test
-    @DisplayName("Support root URI: redirect admin to admin page")
+    @DisplayName("Support root ApplicationEndpointsURI: redirect admin to admin page")
     void shouldRedirectAdminToAdminPage() {
         loginPage.goToPage();
         loginPage.findEmailField().sendKeys("administrator@company.com");
@@ -63,11 +62,11 @@ public class RootUriRedirectionE2ETest implements ScreenShotGeneratingE2ETest {
 
         webDriver.get(ROOT_URL);
 
-        assertEquals(AdminPage.getPageUrl(), webDriver.getCurrentUrl());
+        assertEquals(ADMIN_PAGE_URL, webDriver.getCurrentUrl());
     }
 
     @Test
-    @DisplayName("Support root URI: redirect driver to driver page")
+    @DisplayName("Support root ApplicationEndpointsURI: redirect driver to driver page")
     void shouldRedirectDriverToDriverPage() {
         loginPage.goToPage();
         loginPage.findEmailField().sendKeys("driver@company.com");
@@ -76,6 +75,6 @@ public class RootUriRedirectionE2ETest implements ScreenShotGeneratingE2ETest {
 
         webDriver.get(ROOT_URL);
 
-        assertEquals(DriverPage.getPageUrl(), webDriver.getCurrentUrl());
+        assertEquals(DRIVER_PAGE_URL, webDriver.getCurrentUrl());
     }
 }

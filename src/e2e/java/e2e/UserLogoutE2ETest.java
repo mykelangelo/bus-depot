@@ -13,6 +13,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
+import static e2e.constant.ApplicationEndpointsURL.AdminPage.ADMIN_PAGE_URL;
+import static e2e.constant.ApplicationEndpointsURL.DRIVER_PAGE_URL;
+import static e2e.constant.ApplicationEndpointsURL.LOGIN_PAGE_URL;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -59,11 +62,11 @@ public class UserLogoutE2ETest implements ScreenShotGeneratingE2ETest {
         loginPage.findPasswordField().sendKeys("correctPasswordWhyNotItsAGreatOne");
         loginPage.findSubmitButton().click();
 
-        assertEquals(DriverPage.getPageUrl(), webDriver.getCurrentUrl());
+        assertEquals(DRIVER_PAGE_URL, webDriver.getCurrentUrl());
 
         loginPage.goToPage();
 
-        webDriver.get(DriverPage.getPageUrl());
+        webDriver.get(DRIVER_PAGE_URL);
         assertEquals("HTTP Status 401 – Unauthorized", webDriver.findElement(By.tagName("h1")).getText());
     }
 
@@ -74,11 +77,11 @@ public class UserLogoutE2ETest implements ScreenShotGeneratingE2ETest {
         loginPage.findPasswordField().sendKeys("correctPasswordWhyNotItsAGreatOne");
         loginPage.findSubmitButton().click();
 
-        assertEquals(AdminPage.getPageUrl(), webDriver.getCurrentUrl());
+        assertEquals(ADMIN_PAGE_URL, webDriver.getCurrentUrl());
 
         loginPage.goToPage();
 
-        webDriver.get(AdminPage.getPageUrl());
+        webDriver.get(ADMIN_PAGE_URL);
         assertEquals("HTTP Status 401 – Unauthorized", webDriver.findElement(By.tagName("h1")).getText());
     }
 
@@ -89,12 +92,12 @@ public class UserLogoutE2ETest implements ScreenShotGeneratingE2ETest {
         loginPage.findPasswordField().sendKeys("correctPasswordWhyNotItsAGreatOne");
         loginPage.findSubmitButton().click();
 
-        assertEquals(AdminPage.getPageUrl(), webDriver.getCurrentUrl());
+        assertEquals(ADMIN_PAGE_URL, webDriver.getCurrentUrl());
 
         adminPage.findLogoutButton().click();
-        assertThat(webDriver.getCurrentUrl()).startsWith(LoginPage.getPageUrl());
+        assertThat(webDriver.getCurrentUrl()).startsWith(LOGIN_PAGE_URL);
 
-        webDriver.get(AdminPage.getPageUrl());
+        webDriver.get(ADMIN_PAGE_URL);
         assertEquals("HTTP Status 401 – Unauthorized", webDriver.findElement(By.tagName("h1")).getText());
     }
 
@@ -106,12 +109,12 @@ public class UserLogoutE2ETest implements ScreenShotGeneratingE2ETest {
         loginPage.findPasswordField().sendKeys("correctPasswordWhyNotItsAGreatOne");
         loginPage.findSubmitButton().click();
 
-        assertEquals(DriverPage.getPageUrl(), webDriver.getCurrentUrl());
+        assertEquals(DRIVER_PAGE_URL, webDriver.getCurrentUrl());
 
         driverPage.findLogoutButton().click();
-        assertThat(webDriver.getCurrentUrl()).startsWith(LoginPage.getPageUrl());
+        assertThat(webDriver.getCurrentUrl()).startsWith(LOGIN_PAGE_URL);
 
-        webDriver.get(DriverPage.getPageUrl());
+        webDriver.get(DRIVER_PAGE_URL);
         assertEquals("HTTP Status 401 – Unauthorized", webDriver.findElement(By.tagName("h1")).getText());
     }
 }

@@ -2,6 +2,7 @@ package com.papenko.project.filter;
 
 import com.papenko.project.entity.AuthenticatedUserDetails;
 import com.papenko.project.entity.UserType;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,9 +16,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static com.papenko.project.constant.ApplicationEndpointsURI.AdminPage.*;
+import static com.papenko.project.constant.ApplicationEndpointsURI.DRIVER_PAGE_URI;
+import static com.papenko.project.constant.SessionAttributeName.USER_DETAILS;
+
 @WebFilter(urlPatterns = "*")
 public class AuthorisationFilter extends HttpFilter {
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthorisationFilter.class);
+    private static final String[] ADMIN_URIS = new String[]{
+            ADMIN_PAGE_URI,
+            ASSIGN_DRIVER_TO_BUS_FORM_URI,
+            VACATE_DRIVER_FORM_URI,
+            ASSIGN_BUS_TO_ROUTE_FORM_URI
+    };
+    private static final String ADMIN_URIS_REGEX = StringUtils.join(ADMIN_URIS, '|');
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
@@ -25,10 +37,11 @@ public class AuthorisationFilter extends HttpFilter {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
         String requestURI = request.getRequestURI();
-        AuthenticatedUserDetails userDetails = (AuthenticatedUserDetails) request.getSession().getAttribute("user_details");
+        AuthenticatedUserDetails userDetails = (AuthenticatedUserDetails) request.getSession().getAttribute(USER_DETAILS);
 
         if (userDetails == null) {
             if (isAdminPageOrFormURI(requestURI) || isDriverPageOrFormURI(requestURI)) {
+                LOGGER.warn("Unauthorized user is trying to access ApplicationEndpointsURI: " + requestURI);
                 response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
                 return;
             }
@@ -36,6 +49,7 @@ public class AuthorisationFilter extends HttpFilter {
             UserType userType = userDetails.getUserType();
             if (userType == UserType.BUS_DRIVER && isAdminPageOrFormURI(requestURI)
                     || userType == UserType.DEPOT_ADMIN && isDriverPageOrFormURI(requestURI)) {
+                LOGGER.warn(userType + " is trying to access forbidden ApplicationEndpointsURI: " + requestURI);
                 response.sendError(HttpServletResponse.SC_FORBIDDEN);
                 return;
             }
@@ -45,10 +59,10 @@ public class AuthorisationFilter extends HttpFilter {
     }
 
     private boolean isDriverPageOrFormURI(String requestURI) {
-        return requestURI.equals("/driver");
+        return requestURI.equals(DRIVER_PAGE_URI);
     }
 
     private boolean isAdminPageOrFormURI(String requestURI) {
-        return requestURI.matches("/admin|/driver-to-bus|/vacate-driver|/bus-to-route");
+        return requestURI.matches(ADMIN_URIS_REGEX);
     }
 }

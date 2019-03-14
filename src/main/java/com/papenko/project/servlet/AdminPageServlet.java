@@ -16,7 +16,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.io.IOException;
 
-@WebServlet(urlPatterns = "/admin")
+import static com.papenko.project.constant.ApplicationEndpointsURI.AdminPage.ADMIN_JSP_PATH;
+import static com.papenko.project.constant.ApplicationEndpointsURI.AdminPage.ADMIN_PAGE_URI;
+import static com.papenko.project.constant.RequestAttributeName.*;
+
+@WebServlet(urlPatterns = ADMIN_PAGE_URI)
 public class AdminPageServlet extends HttpServlet {
     private static final Logger LOGGER = LoggerFactory.getLogger(AdminPageServlet.class);
     private AdminService adminService;
@@ -47,10 +51,10 @@ public class AdminPageServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         LOGGER.debug("GET");
-        request.setAttribute("lastSubmitStatusMessage", request.getParameter("lastSubmitStatusMessage"));
-        request.setAttribute("drivers", adminService.getDrivers());
-        request.setAttribute("buses", adminService.getBuses());
-        request.setAttribute("routes", adminService.getRoutes());
-        getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp").forward(request, response);
+        request.setAttribute(LAST_SUBMIT_STATUS_MESSAGE, request.getParameter(LAST_SUBMIT_STATUS_MESSAGE));
+        request.setAttribute(DRIVERS, adminService.getDrivers());
+        request.setAttribute(BUSES, adminService.getBuses());
+        request.setAttribute(ROUTES, adminService.getRoutes());
+        getServletContext().getRequestDispatcher(ADMIN_JSP_PATH).forward(request, response);
     }
 }

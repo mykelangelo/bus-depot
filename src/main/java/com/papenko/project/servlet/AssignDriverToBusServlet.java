@@ -16,8 +16,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.io.IOException;
 
+import static com.papenko.project.constant.ApplicationEndpointsURI.AdminPage.ASSIGN_DRIVER_TO_BUS_FORM_URI;
 
-@WebServlet(urlPatterns = "/driver-to-bus")
+
+@WebServlet(urlPatterns = ASSIGN_DRIVER_TO_BUS_FORM_URI)
 public class AssignDriverToBusServlet extends HttpServlet {
     private static final Logger LOGGER = LoggerFactory.getLogger(AssignDriverToBusServlet.class);
     private AdminService adminService;

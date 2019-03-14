@@ -15,8 +15,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.io.IOException;
 
+import static com.papenko.project.constant.ApplicationEndpointsURI.AdminPage.VACATE_DRIVER_FORM_URI;
 
-@WebServlet(urlPatterns = "/vacate-driver")
+
+@WebServlet(urlPatterns = VACATE_DRIVER_FORM_URI)
 public class VacateDriverServlet extends HttpServlet {
     private static final Logger LOGGER = LoggerFactory.getLogger(VacateDriverServlet.class);
     private AdminService adminService;

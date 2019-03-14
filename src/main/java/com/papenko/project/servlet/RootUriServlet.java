@@ -11,14 +11,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(urlPatterns = "/")
+import static com.papenko.project.constant.ApplicationEndpointsURI.AdminPage.ADMIN_PAGE_URI;
+import static com.papenko.project.constant.ApplicationEndpointsURI.*;
+import static com.papenko.project.constant.SessionAttributeName.USER_DETAILS;
+
+@WebServlet(urlPatterns = ROOT_URI)
 public class RootUriServlet extends HttpServlet {
     private static final Logger LOGGER = LoggerFactory.getLogger(RootUriServlet.class);
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         LOGGER.debug("GET");
-        var userDetails = (AuthenticatedUserDetails) request.getSession().getAttribute("user_details");
+        var userDetails = (AuthenticatedUserDetails) request.getSession().getAttribute(USER_DETAILS);
         String redirectURI = chooseURI(userDetails);
         response.sendRedirect(redirectURI);
     }
@@ -26,15 +30,13 @@ public class RootUriServlet extends HttpServlet {
     private String chooseURI(AuthenticatedUserDetails userDetails) {
         final String redirectURI;
         if (userDetails == null) {
-            redirectURI = "/login";
+            redirectURI = LOGIN_PAGE_URI;
         } else if (userDetails.getUserType() == UserType.DEPOT_ADMIN) {
-            redirectURI = "/admin";
+            redirectURI = ADMIN_PAGE_URI;
         } else if (userDetails.getUserType() == UserType.BUS_DRIVER) {
-            redirectURI = "/driver";
+            redirectURI = DRIVER_PAGE_URI;
         } else {
-            var e = new IllegalStateException("Only " + UserType.DEPOT_ADMIN + " and " + UserType.BUS_DRIVER + " user types have pages");
-            LOGGER.error("Invalid user type provided " + userDetails.getUserType(), e);
-            throw e;
+            throw new IllegalStateException("Invalid user type provided " + userDetails.getUserType() + ". Only " + UserType.DEPOT_ADMIN + " and " + UserType.BUS_DRIVER + " user types have pages");
         }
         return redirectURI;
     }

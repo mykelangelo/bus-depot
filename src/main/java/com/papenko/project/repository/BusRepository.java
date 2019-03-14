@@ -37,8 +37,7 @@ public class BusRepository {
                 buses.add(new Bus(busSerial, route));
             }
         } catch (SQLException e) {
-            LOGGER.error("SQL fails to find all buses. Current list of buses: " + buses, e);
-            throw new RuntimeException(e);
+            throw new RuntimeException("SQL fails to find all buses. Current list of buses: " + buses, e);
         }
 
         return buses;
@@ -53,8 +52,7 @@ public class BusRepository {
             preparedStatement.setString(2, bus.getSerialNumber());
             preparedStatement.execute();
         } catch (SQLException e) {
-            LOGGER.error("SQL fails to update bus " + bus + " with route " + route, e);
-            throw new RuntimeException(e);
+            throw new RuntimeException("SQL fails to update bus " + bus + " with route " + route, e);
         }
 
         Driver driver = driverRepository.findDriverByBus(bus);
@@ -77,8 +75,7 @@ public class BusRepository {
                 }
             }
         } catch (SQLException e) {
-            LOGGER.error("SQL fails to find bus by serial " + busSerial, e);
-            throw new RuntimeException(e);
+            throw new RuntimeException("SQL fails to find bus by serial " + busSerial, e);
         }
         return null;
     }

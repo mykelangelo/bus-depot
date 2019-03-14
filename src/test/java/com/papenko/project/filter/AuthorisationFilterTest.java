@@ -14,6 +14,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import static com.papenko.project.constant.ApplicationEndpointsURI.AdminPage.*;
+import static com.papenko.project.constant.ApplicationEndpointsURI.DRIVER_PAGE_URI;
+import static com.papenko.project.constant.ApplicationEndpointsURI.LOGIN_PAGE_URI;
+import static com.papenko.project.constant.SessionAttributeName.USER_DETAILS;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -31,10 +35,10 @@ class AuthorisationFilterTest {
     @Test
     void doFilter_shouldSendForbiddenStatusError_whenAdminTriesToVisitDiversPageOrSubmitDriverForm() throws Exception {
         // GIVEN
-        when(httpServletRequest.getRequestURI()).thenReturn("/driver");
+        when(httpServletRequest.getRequestURI()).thenReturn(DRIVER_PAGE_URI);
         when(httpServletRequest.getSession()).thenReturn(session);
         var userDetails = new AuthenticatedUserDetails("flexo.22@bending.unit", UserType.DEPOT_ADMIN);
-        when(session.getAttribute("user_details")).thenReturn(userDetails);
+        when(session.getAttribute(USER_DETAILS)).thenReturn(userDetails);
         // WHEN
         authorisationFilter.doFilter(httpServletRequest, httpServletResponse, filterChain);
         // THEN
@@ -44,13 +48,13 @@ class AuthorisationFilterTest {
 
 
     @ParameterizedTest
-    @ValueSource(strings = {"/login", "/admin", "/driver-to-bus", "/vacate-driver", "/bus-to-route"})
+    @ValueSource(strings = {LOGIN_PAGE_URI, ADMIN_PAGE_URI, ASSIGN_DRIVER_TO_BUS_FORM_URI, VACATE_DRIVER_FORM_URI, ASSIGN_BUS_TO_ROUTE_FORM_URI})
     void doFilter_shouldNotSendError_whenAdminWantsToVisitLoginOrAdminPageOrSubmitAnyOfLoginOrAdminForms(String adminURI) throws Exception {
         // GIVEN
         when(httpServletRequest.getRequestURI()).thenReturn(adminURI);
         when(httpServletRequest.getSession()).thenReturn(session);
         var userDetails = new AuthenticatedUserDetails("rodríguez.22@bending.unit", UserType.DEPOT_ADMIN);
-        when(session.getAttribute("user_details")).thenReturn(userDetails);
+        when(session.getAttribute(USER_DETAILS)).thenReturn(userDetails);
         // WHEN
         authorisationFilter.doFilter(httpServletRequest, httpServletResponse, filterChain);
         // THEN
@@ -59,13 +63,13 @@ class AuthorisationFilterTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"/admin", "/driver-to-bus", "/vacate-driver", "/bus-to-route"})
+    @ValueSource(strings = {ADMIN_PAGE_URI, ASSIGN_DRIVER_TO_BUS_FORM_URI, VACATE_DRIVER_FORM_URI, ASSIGN_BUS_TO_ROUTE_FORM_URI})
     void doFilter_shouldSendForbiddenStatusError_whenDriverTriesToVisitAdminPageOrSubmitAnyOfAdminForms(String adminURI) throws Exception {
         // GIVEN
         when(httpServletRequest.getRequestURI()).thenReturn(adminURI);
         when(httpServletRequest.getSession()).thenReturn(session);
         var userDetails = new AuthenticatedUserDetails("scruffy.janitor@office.staff", UserType.BUS_DRIVER);
-        when(session.getAttribute("user_details")).thenReturn(userDetails);
+        when(session.getAttribute(USER_DETAILS)).thenReturn(userDetails);
         // WHEN
         authorisationFilter.doFilter(httpServletRequest, httpServletResponse, filterChain);
         // THEN
@@ -75,13 +79,13 @@ class AuthorisationFilterTest {
 
 
     @ParameterizedTest
-    @ValueSource(strings = {"/driver", "/login"})
+    @ValueSource(strings = {DRIVER_PAGE_URI, LOGIN_PAGE_URI})
     void doFilter_shouldNotSendError_whenDriverWantsToVisitLoginOrDriverPageOrSubmitLoginOrDriverForm(String loginOrDriverURI) throws Exception {
         // GIVEN
         when(httpServletRequest.getRequestURI()).thenReturn(loginOrDriverURI);
         when(httpServletRequest.getSession()).thenReturn(session);
         var userDetails = new AuthenticatedUserDetails("amy@wong.mars", UserType.BUS_DRIVER);
-        when(session.getAttribute("user_details")).thenReturn(userDetails);
+        when(session.getAttribute(USER_DETAILS)).thenReturn(userDetails);
         // WHEN
         authorisationFilter.doFilter(httpServletRequest, httpServletResponse, filterChain);
         // THEN
@@ -90,12 +94,12 @@ class AuthorisationFilterTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"/driver", "/admin", "/driver-to-bus", "/vacate-driver", "/bus-to-route"})
+    @ValueSource(strings = {DRIVER_PAGE_URI, ADMIN_PAGE_URI, ASSIGN_DRIVER_TO_BUS_FORM_URI, VACATE_DRIVER_FORM_URI, ASSIGN_BUS_TO_ROUTE_FORM_URI})
     void doFilter_shouldSendUnauthorizedStatusError_whenUnauthorizedUserTriesToViewDriverOrAdminPageOrSubmitsAnyOfDriverOrAdminForms(String driverOrAdminURI) throws Exception {
         // GIVEN
         when(httpServletRequest.getRequestURI()).thenReturn(driverOrAdminURI);
         when(httpServletRequest.getSession()).thenReturn(session);
-        when(session.getAttribute("user_details")).thenReturn(null);
+        when(session.getAttribute(USER_DETAILS)).thenReturn(null);
         // WHEN
         authorisationFilter.doFilter(httpServletRequest, httpServletResponse, filterChain);
         // THEN
@@ -107,9 +111,9 @@ class AuthorisationFilterTest {
     @Test
     void doFilter_shouldNotSendError_whenUnauthorizedUserWantsToVisitLoginPageOrSubmitLoginForm() throws Exception {
         // GIVEN
-        when(httpServletRequest.getRequestURI()).thenReturn("/login");
+        when(httpServletRequest.getRequestURI()).thenReturn(LOGIN_PAGE_URI);
         when(httpServletRequest.getSession()).thenReturn(session);
-        when(session.getAttribute("user_details")).thenReturn(null);
+        when(session.getAttribute(USER_DETAILS)).thenReturn(null);
         // WHEN
         authorisationFilter.doFilter(httpServletRequest, httpServletResponse, filterChain);
         // THEN

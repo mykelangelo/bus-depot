@@ -1,23 +1,19 @@
 package e2e.page;
 
+import e2e.constant.ApplicationEndpointsURL;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 public class LoginPage {
-    private static final String LOGIN_PAGE_URL = "http://localhost:8080/login";
     private final WebDriver webDriver;
 
     public LoginPage(WebDriver webDriver) {
         this.webDriver = webDriver;
     }
 
-    public static String getPageUrl() {
-        return LOGIN_PAGE_URL;
-    }
-
     public void goToPage() {
-        webDriver.get(LOGIN_PAGE_URL);
+        webDriver.get(ApplicationEndpointsURL.LOGIN_PAGE_URL);
     }
 
     public WebElement findEmailField() {

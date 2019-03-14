@@ -1,8 +1,6 @@
 package e2e;
 
-import e2e.page.DriverPage;
 import e2e.page.LoginPage;
-import e2e.page.admin.AdminPage;
 import io.github.bonigarcia.wdm.ChromeDriverManager;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -13,10 +11,11 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
+import static e2e.constant.ApplicationEndpointsURL.AdminPage.*;
+import static e2e.constant.ApplicationEndpointsURL.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class AuthorizationE2ETest implements ScreenShotGeneratingE2ETest {
-    private static final String ROOT_URL = "http://localhost:8080";
     private WebDriver webDriver;
     private LoginPage loginPage;
 
@@ -48,11 +47,10 @@ public class AuthorizationE2ETest implements ScreenShotGeneratingE2ETest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"/driver", "/admin", "/driver-to-bus", "/vacate-driver", "/bus-to-route"})
+    @ValueSource(strings = {DRIVER_PAGE_URL, ADMIN_PAGE_URL, ASSIGN_DRIVER_TO_BUS_FORM_URL, VACATE_DRIVER_FORM_URL, ASSIGN_BUS_TO_ROUTE_FORM_URL})
     @DisplayName("Security check: unauthorized user can not perform actions that need authorization")
-    void shouldNotLetUnauthorizedUserVisitDriverOrAdminPageOrSubmitAnyOfTheirForms(String driverOrAdminURI) {
-        var authorizationNeededURL = ROOT_URL + driverOrAdminURI;
-        webDriver.get(authorizationNeededURL);
+    void shouldNotLetUnauthorizedUserVisitDriverOrAdminPageOrSubmitAnyOfTheirForms(String driverOrAdminURL) {
+        webDriver.get(driverOrAdminURL);
 
         assertEquals("HTTP Status 401 – Unauthorized", webDriver.findElement(By.tagName("h1")).getText());
     }
@@ -60,18 +58,16 @@ public class AuthorizationE2ETest implements ScreenShotGeneratingE2ETest {
     @Test
     @DisplayName("Security check: unauthorized user can try to perform an unknown action")
     void shouldLetUnauthorizedUserTryToVisitUnknownPage() {
-        var noSuchURL = ROOT_URL + "/no-such-page-exists";
-        webDriver.get(noSuchURL);
+        webDriver.get(NO_SUCH_PAGE_EXISTS_URL);
 
-        assertEquals(LoginPage.getPageUrl(), webDriver.getCurrentUrl());
+        assertEquals(LOGIN_PAGE_URL, webDriver.getCurrentUrl());
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"/login", "/logout"})
+    @ValueSource(strings = {LOGIN_PAGE_URL, LOGOUT_FORM_URL})
     @DisplayName("Security check: unauthorized user can perform actions that do not need authorization")
-    void shouldLetUnauthorizedUserVisitLoginPageOrSubmitLoginFormOrTryToLogout(String accessibleURI) {
-        var authorizationNotNeededURL = ROOT_URL + accessibleURI;
-        webDriver.get(authorizationNotNeededURL);
+    void shouldLetUnauthorizedUserVisitLoginPageOrSubmitLoginFormOrTryToLogout(String accessibleURL) {
+        webDriver.get(accessibleURL);
 
         assertEquals("Welcome to The Bus Depot!", webDriver.findElement(By.tagName("h1")).getText());
     }
@@ -84,23 +80,21 @@ public class AuthorizationE2ETest implements ScreenShotGeneratingE2ETest {
         loginPage.findPasswordField().sendKeys("correctPasswordWhyNotItsAGreatOne");
         loginPage.findSubmitButton().click();
 
-        var forbiddenForAdminURL = ROOT_URL + "/driver";
-        webDriver.get(forbiddenForAdminURL);
+        webDriver.get(DRIVER_PAGE_URL);
 
         assertEquals("HTTP Status 403 – Forbidden", webDriver.findElement(By.tagName("h1")).getText());
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"/admin", "/driver-to-bus", "/vacate-driver", "/bus-to-route"})
+    @ValueSource(strings = {ADMIN_PAGE_URL, ASSIGN_DRIVER_TO_BUS_FORM_URL, VACATE_DRIVER_FORM_URL, ASSIGN_BUS_TO_ROUTE_FORM_URL})
     @DisplayName("Security check: driver can not perform actions that need admin's authorization")
-    void shouldNotLetAuthorizedDriverVisitAdminPageOrSubmitAnyOfAdminForms(String adminURI) {
+    void shouldNotLetAuthorizedDriverVisitAdminPageOrSubmitAnyOfAdminForms(String adminURL) {
         loginPage.goToPage();
         loginPage.findEmailField().sendKeys("driver@company.com");
         loginPage.findPasswordField().sendKeys("correctPasswordWhyNotItsAGreatOne");
         loginPage.findSubmitButton().click();
 
-        var forbiddenForDriverURL = ROOT_URL + adminURI;
-        webDriver.get(forbiddenForDriverURL);
+        webDriver.get(ADMIN_PAGE_URL);
 
         assertEquals("HTTP Status 403 – Forbidden", webDriver.findElement(By.tagName("h1")).getText());
     }
@@ -113,10 +107,9 @@ public class AuthorizationE2ETest implements ScreenShotGeneratingE2ETest {
         loginPage.findPasswordField().sendKeys("correctPasswordWhyNotItsAGreatOne");
         loginPage.findSubmitButton().click();
 
-        var noSuchURL = ROOT_URL + "/no-such-page-exists";
-        webDriver.get(noSuchURL);
+        webDriver.get(NO_SUCH_PAGE_EXISTS_URL);
 
-        assertEquals(DriverPage.getPageUrl(), webDriver.getCurrentUrl());
+        assertEquals(DRIVER_PAGE_URL, webDriver.getCurrentUrl());
     }
 
     @Test
@@ -127,10 +120,9 @@ public class AuthorizationE2ETest implements ScreenShotGeneratingE2ETest {
         loginPage.findPasswordField().sendKeys("correctPasswordWhyNotItsAGreatOne");
         loginPage.findSubmitButton().click();
 
-        var noSuchURL = ROOT_URL + "/no-such-page-exists";
-        webDriver.get(noSuchURL);
+        webDriver.get(NO_SUCH_PAGE_EXISTS_URL);
 
-        assertEquals(AdminPage.getPageUrl(), webDriver.getCurrentUrl());
+        assertEquals(ADMIN_PAGE_URL, webDriver.getCurrentUrl());
     }
 
     @ParameterizedTest
@@ -142,10 +134,9 @@ public class AuthorizationE2ETest implements ScreenShotGeneratingE2ETest {
         loginPage.findPasswordField().sendKeys("correctPasswordWhyNotItsAGreatOne");
         loginPage.findSubmitButton().click();
 
-        var noAuthorizationNeededURL = ROOT_URL + "/login";
-        webDriver.get(noAuthorizationNeededURL);
+        webDriver.get(LOGIN_PAGE_URL);
 
-        assertEquals(LoginPage.getPageUrl(), webDriver.getCurrentUrl());
+        assertEquals(LOGIN_PAGE_URL, webDriver.getCurrentUrl());
     }
 
     @ParameterizedTest
@@ -157,9 +148,8 @@ public class AuthorizationE2ETest implements ScreenShotGeneratingE2ETest {
         loginPage.findPasswordField().sendKeys("correctPasswordWhyNotItsAGreatOne");
         loginPage.findSubmitButton().click();
 
-        var noAuthorizationNeededURL = ROOT_URL + "/logout";
-        webDriver.get(noAuthorizationNeededURL);
+        webDriver.get(LOGOUT_FORM_URL);
 
-        assertEquals(LoginPage.getPageUrl(), webDriver.getCurrentUrl());
+        assertEquals(LOGIN_PAGE_URL, webDriver.getCurrentUrl());
     }
 }

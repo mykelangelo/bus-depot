@@ -20,6 +20,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
+import static com.papenko.project.constant.ApplicationEndpointsURI.AdminPage.ADMIN_JSP_PATH;
+import static com.papenko.project.constant.RequestAttributeName.*;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
@@ -58,17 +60,17 @@ class AdminPageServletTest {
         // WHEN
         adminPageServlet.doGet(httpServletRequest, httpServletResponse);
         // THEN
-        verify(servletContext).getRequestDispatcher("/WEB-INF/admin.jsp");
+        verify(servletContext).getRequestDispatcher(ADMIN_JSP_PATH);
         verify(requestDispatcher).forward(httpServletRequest, httpServletResponse);
-        verify(httpServletRequest).setAttribute("drivers", List.of(
+        verify(httpServletRequest).setAttribute(DRIVERS, List.of(
                 new Driver("alexa@company.com", new Bus("AA4444AA", new Route("7u")), true),
                 new Driver("bob.jenkins@gmail.com", new Bus("Il1171lI", new Route("7R")), false))
         );
-        verify(httpServletRequest).setAttribute("buses", List.of(
+        verify(httpServletRequest).setAttribute(BUSES, List.of(
                 new Bus("AA4444AA", new Route("7u")),
                 new Bus("Il1171lI", new Route("7R")))
         );
-        verify(httpServletRequest).setAttribute("routes", List.of(new Route("7L"), new Route("7k"), new Route("71")));
+        verify(httpServletRequest).setAttribute(ROUTES, List.of(new Route("7L"), new Route("7k"), new Route("71")));
     }
 
     @Test
@@ -85,21 +87,21 @@ class AdminPageServletTest {
                 new Bus("Il1171lI", new Route("7R")))
         ).when(adminService).getBuses();
         doReturn(List.of(new Route("7L"), new Route("7k"), new Route("71"))).when(adminService).getRoutes();
-        doReturn("Jokes are not funny").when(httpServletRequest).getParameter("lastSubmitStatusMessage");
+        doReturn("Jokes are not funny").when(httpServletRequest).getParameter(LAST_SUBMIT_STATUS_MESSAGE);
         // WHEN
         adminPageServlet.doGet(httpServletRequest, httpServletResponse);
         // THEN
-        verify(servletContext).getRequestDispatcher("/WEB-INF/admin.jsp");
+        verify(servletContext).getRequestDispatcher(ADMIN_JSP_PATH);
         verify(requestDispatcher).forward(httpServletRequest, httpServletResponse);
-        verify(httpServletRequest).setAttribute("drivers", List.of(
+        verify(httpServletRequest).setAttribute(DRIVERS, List.of(
                 new Driver("alexa@company.com", new Bus("AA4444AA", new Route("7u")), true),
                 new Driver("bob.jenkins@gmail.com", new Bus("Il1171lI", new Route("7R")), false))
         );
-        verify(httpServletRequest).setAttribute("buses", List.of(
+        verify(httpServletRequest).setAttribute(BUSES, List.of(
                 new Bus("AA4444AA", new Route("7u")),
                 new Bus("Il1171lI", new Route("7R")))
         );
-        verify(httpServletRequest).setAttribute("routes", List.of(new Route("7L"), new Route("7k"), new Route("71")));
-        verify(httpServletRequest).setAttribute("lastSubmitStatusMessage", "Jokes are not funny");
+        verify(httpServletRequest).setAttribute(ROUTES, List.of(new Route("7L"), new Route("7k"), new Route("71")));
+        verify(httpServletRequest).setAttribute(LAST_SUBMIT_STATUS_MESSAGE, "Jokes are not funny");
     }
 }

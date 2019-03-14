@@ -9,7 +9,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(urlPatterns = "/logout")
+import static com.papenko.project.constant.ApplicationEndpointsURI.LOGIN_PAGE_URI;
+import static com.papenko.project.constant.ApplicationEndpointsURI.LOGOUT_FORM_URI;
+
+@WebServlet(urlPatterns = LOGOUT_FORM_URI)
 public class LogoutServlet extends HttpServlet {
     private static final Logger LOGGER = LoggerFactory.getLogger(LogoutServlet.class);
 
@@ -17,6 +20,6 @@ public class LogoutServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         LOGGER.debug("GET");
         request.getSession().invalidate();
-        response.sendRedirect("/login");
+        response.sendRedirect(LOGIN_PAGE_URI);
     }
 }

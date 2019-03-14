@@ -15,8 +15,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.io.IOException;
 
+import static com.papenko.project.constant.ApplicationEndpointsURI.AdminPage.ASSIGN_BUS_TO_ROUTE_FORM_URI;
 
-@WebServlet(urlPatterns = "/bus-to-route")
+
+@WebServlet(urlPatterns = ASSIGN_BUS_TO_ROUTE_FORM_URI)
 public class AssignBusToRouteServlet extends HttpServlet {
     private static final Logger LOGGER = LoggerFactory.getLogger(AssignBusToRouteServlet.class);
     private AdminService adminService;

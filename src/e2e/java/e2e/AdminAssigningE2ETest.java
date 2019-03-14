@@ -9,6 +9,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
+import static e2e.constant.ApplicationEndpointsURL.AdminPage.ADMIN_PAGE_URL;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -61,7 +62,7 @@ public class AdminAssigningE2ETest implements ScreenShotGeneratingE2ETest {
         adminPage.getDriverToBusForm().findBusDropdownOption("OA0404OA").click();
         adminPage.getDriverToBusForm().findSubmitButton().click();
 
-        assertThat(webDriver.getCurrentUrl()).startsWith(AdminPage.getPageUrl());
+        assertThat(webDriver.getCurrentUrl()).startsWith(ADMIN_PAGE_URL);
         assertEquals("❌", adminPage.getDriversView().findAssignmentAwareness("driver@company.com").getText());
         assertEquals("OA0404OA", adminPage.getDriversView().findBusSerial("driver@company.com").getText());
         assertEquals("You assigned driver with email driver@company.com to bus with serial number OA0404OA",
@@ -82,7 +83,7 @@ public class AdminAssigningE2ETest implements ScreenShotGeneratingE2ETest {
         adminPage.getDriverToBusForm().findBusDropdownOption("AA2552IA").click();
         adminPage.getDriverToBusForm().findSubmitButton().click();
 
-        assertThat(webDriver.getCurrentUrl()).startsWith(AdminPage.getPageUrl());
+        assertThat(webDriver.getCurrentUrl()).startsWith(ADMIN_PAGE_URL);
         assertEquals("✅", adminPage.getDriversView().findAssignmentAwareness("hell.o@company.com").getText());
         assertEquals("AA2552IA", adminPage.getDriversView().findBusSerial("hell.o@company.com").getText());
         assertEquals("✅", adminPage.getDriversView().findAssignmentAwareness("kalibob@company.com").getText());
@@ -100,7 +101,7 @@ public class AdminAssigningE2ETest implements ScreenShotGeneratingE2ETest {
         adminPage.getVacateDriverForm().findDriverDropdownOption("worst.driver@company.com").click();
         adminPage.getVacateDriverForm().findSubmitButton().click();
 
-        assertThat(webDriver.getCurrentUrl()).startsWith(AdminPage.getPageUrl());
+        assertThat(webDriver.getCurrentUrl()).startsWith(ADMIN_PAGE_URL);
         assertEquals("❌", adminPage.getDriversView().findAssignmentAwareness("worst.driver@company.com").getText());
         assertEquals("", adminPage.getDriversView().findBusSerial("worst.driver@company.com").getText());
         assertEquals("You vacated driver with email worst.driver@company.com",
@@ -118,7 +119,7 @@ public class AdminAssigningE2ETest implements ScreenShotGeneratingE2ETest {
         adminPage.getBusToRouteForm().findRouteDropdownOption("7L").click();
         adminPage.getBusToRouteForm().findSubmitButton().click();
 
-        assertThat(webDriver.getCurrentUrl()).startsWith(AdminPage.getPageUrl());
+        assertThat(webDriver.getCurrentUrl()).startsWith(ADMIN_PAGE_URL);
         assertEquals("❌", adminPage.getDriversView().findAssignmentAwareness("some.driver@company.com").getText());
         assertEquals("7L", adminPage.getBusesView().findRouteName("YO7010LO").getText());
         assertEquals("You assigned bus with serial number YO7010LO to route with name 7L",

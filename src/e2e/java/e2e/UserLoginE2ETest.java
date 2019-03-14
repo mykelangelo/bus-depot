@@ -10,6 +10,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
+import static e2e.constant.ApplicationEndpointsURL.AdminPage.ADMIN_PAGE_URL;
+import static e2e.constant.ApplicationEndpointsURL.DRIVER_PAGE_URL;
+import static e2e.constant.ApplicationEndpointsURL.LOGIN_PAGE_URL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class UserLoginE2ETest implements ScreenShotGeneratingE2ETest {
@@ -55,7 +58,7 @@ public class UserLoginE2ETest implements ScreenShotGeneratingE2ETest {
         loginPage.findPasswordField().sendKeys("correctPasswordWhyNotItsAGreatOne");
         loginPage.findSubmitButton().click();
 
-        assertEquals(LoginPage.getPageUrl(), webDriver.getCurrentUrl(), "Didn't stay on login page");
+        assertEquals(LOGIN_PAGE_URL, webDriver.getCurrentUrl(), "Didn't stay on login page");
         assertEquals("Invalid email or password", loginPage.findLoginErrorMessage().getText());
     }
 
@@ -66,7 +69,7 @@ public class UserLoginE2ETest implements ScreenShotGeneratingE2ETest {
         loginPage.findPasswordField().sendKeys("someWrongCredentials");
         loginPage.findSubmitButton().click();
 
-        assertEquals(LoginPage.getPageUrl(), webDriver.getCurrentUrl(), "Didn't stay on login page");
+        assertEquals(LOGIN_PAGE_URL, webDriver.getCurrentUrl(), "Didn't stay on login page");
         assertEquals("Invalid email or password", loginPage.findLoginErrorMessage().getText());
     }
 
@@ -78,7 +81,7 @@ public class UserLoginE2ETest implements ScreenShotGeneratingE2ETest {
         loginPage.findSubmitButton().click();
 
         LOGGER.debug(webDriver.getCurrentUrl());
-        assertEquals(AdminPage.getPageUrl(), webDriver.getCurrentUrl(), "Didn't redirected to admin's page");
+        assertEquals(ADMIN_PAGE_URL, webDriver.getCurrentUrl(), "Didn't redirected to admin's page");
         assertEquals("Hi, administrator with email administrator@company.com!",
                 adminPage.findGreetingMessage().getText(),
                 "Greeting is missing email (or is malformed)");
@@ -92,7 +95,7 @@ public class UserLoginE2ETest implements ScreenShotGeneratingE2ETest {
         loginPage.findSubmitButton().click();
 
         LOGGER.debug(webDriver.getCurrentUrl());
-        assertEquals(DriverPage.getPageUrl(), webDriver.getCurrentUrl(), "Didn't redirected to driver's page");
+        assertEquals(DRIVER_PAGE_URL, webDriver.getCurrentUrl(), "Didn't redirected to driver's page");
         assertEquals("Hi, bus driver with email best.driver@company.com!",
                 driverPage.findGreetingMessage().getText(),
                 "Greeting is missing email (or is malformed)");

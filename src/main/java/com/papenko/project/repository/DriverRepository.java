@@ -30,8 +30,7 @@ public class DriverRepository {
             preparedStatement.setString(2, driver.getUserEmail());
             preparedStatement.execute();
         } catch (SQLException e) {
-            LOGGER.error("SQL fails to update driver " + driver + " with bus " + bus, e);
-            throw new RuntimeException(e);
+            throw new RuntimeException("SQL fails to update driver " + driver + " with bus " + bus, e);
         }
     }
 
@@ -50,8 +49,7 @@ public class DriverRepository {
                 }
             }
         } catch (SQLException e) {
-            LOGGER.error("SQL fails to find driver by email " + driverEmail, e);
-            throw new RuntimeException(e);
+            throw new RuntimeException("SQL fails to find driver by email " + driverEmail, e);
         }
         return null;
     }
@@ -71,8 +69,7 @@ public class DriverRepository {
                 drivers.add(new Driver(userEmail, bus, awareOfAssignment));
             }
         } catch (SQLException e) {
-            LOGGER.error("SQL fails to find all drivers. Current list of drivers: " + drivers, e);
-            throw new RuntimeException(e);
+            throw new RuntimeException("SQL fails to find all drivers. Current list of drivers: " + drivers, e);
         }
 
         return drivers;
@@ -88,8 +85,7 @@ public class DriverRepository {
             preparedStatement.setString(2, driver.getUserEmail());
             preparedStatement.execute();
         } catch (SQLException e) {
-            LOGGER.error("SQL fails to update driver " + driver + " with awareness " + isAwareOfAssignment, e);
-            throw new RuntimeException(e);
+            throw new RuntimeException("SQL fails to update driver " + driver + " with awareness " + isAwareOfAssignment, e);
         }
     }
 
@@ -107,8 +103,7 @@ public class DriverRepository {
                 }
             }
         } catch (SQLException e) {
-            LOGGER.error("SQL fails to find driver by bus " + bus, e);
-            throw new RuntimeException(e);
+            throw new RuntimeException("SQL fails to find driver by bus " + bus, e);
         }
         return null;
     }

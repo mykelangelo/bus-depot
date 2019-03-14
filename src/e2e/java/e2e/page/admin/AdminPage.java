@@ -5,7 +5,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 public class AdminPage {
-    private static final String ADMIN_PAGE_URL = "http://localhost:8080/admin";
     private final WebDriver webDriver;
     private final AssignDriverToBusForm assignDriverToBusForm;
     private final VacateDriverForm vacateDriverForm;
@@ -22,9 +21,6 @@ public class AdminPage {
         driversView = new DriversView(webDriver);
     }
 
-    public static String getPageUrl() {
-        return ADMIN_PAGE_URL;
-    }
 
     public AssignDriverToBusForm getDriverToBusForm() {
         return assignDriverToBusForm;

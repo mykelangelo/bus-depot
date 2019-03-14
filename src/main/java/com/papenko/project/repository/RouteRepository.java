@@ -29,8 +29,7 @@ public class RouteRepository {
                 routes.add(new Route(routeName));
             }
         } catch (SQLException e) {
-            LOGGER.error("SQL fails to find all routes. Current list of routes: " + routes, e);
-            throw new RuntimeException(e);
+            throw new RuntimeException("SQL fails to find all routes. Current list of routes: " + routes, e);
         }
 
         return routes;
@@ -48,8 +47,7 @@ public class RouteRepository {
                 }
             }
         } catch (SQLException e) {
-            LOGGER.error("SQL fails to find route by name " + routeName, e);
-            throw new RuntimeException(e);
+            throw new RuntimeException("SQL fails to find route by name " + routeName, e);
         }
         return null;
     }
