@@ -5,7 +5,6 @@ import io.github.bonigarcia.wdm.ChromeDriverManager;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.openqa.selenium.By;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -52,7 +51,7 @@ public class AuthorizationE2ETest implements ScreenShotGeneratingE2ETest {
     void shouldNotLetUnauthorizedUserVisitDriverOrAdminPageOrSubmitAnyOfTheirForms(String driverOrAdminURL) {
         webDriver.get(driverOrAdminURL);
 
-        assertEquals("HTTP Status 401 – Unauthorized", webDriver.findElement(By.tagName("h1")).getText());
+        assertEquals(LOGIN_PAGE_URL, webDriver.getCurrentUrl());
     }
 
     @Test
@@ -66,10 +65,10 @@ public class AuthorizationE2ETest implements ScreenShotGeneratingE2ETest {
     @ParameterizedTest
     @ValueSource(strings = {LOGIN_PAGE_URL, LOGOUT_FORM_URL})
     @DisplayName("Security check: unauthorized user can perform actions that do not need authorization")
-    void shouldLetUnauthorizedUserVisitLoginPageOrSubmitLoginFormOrTryToLogout(String accessibleURL) {
-        webDriver.get(accessibleURL);
+    void shouldLetUnauthorizedUserVisitLoginPageOrSubmitLoginFormOrTryToLogout(String loginOrLogoutURL) {
+        webDriver.get(loginOrLogoutURL);
 
-        assertEquals("Welcome to The Bus Depot!", webDriver.findElement(By.tagName("h1")).getText());
+        assertEquals(LOGIN_PAGE_URL, webDriver.getCurrentUrl());
     }
 
     @Test
@@ -82,7 +81,7 @@ public class AuthorizationE2ETest implements ScreenShotGeneratingE2ETest {
 
         webDriver.get(DRIVER_PAGE_URL);
 
-        assertEquals("HTTP Status 403 – Forbidden", webDriver.findElement(By.tagName("h1")).getText());
+        assertEquals(ADMIN_PAGE_URL, webDriver.getCurrentUrl());
     }
 
     @ParameterizedTest
@@ -96,7 +95,7 @@ public class AuthorizationE2ETest implements ScreenShotGeneratingE2ETest {
 
         webDriver.get(ADMIN_PAGE_URL);
 
-        assertEquals("HTTP Status 403 – Forbidden", webDriver.findElement(By.tagName("h1")).getText());
+        assertEquals(DRIVER_PAGE_URL, webDriver.getCurrentUrl());
     }
 
     @Test

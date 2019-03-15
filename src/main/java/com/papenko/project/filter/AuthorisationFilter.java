@@ -41,7 +41,7 @@ public class AuthorisationFilter extends HttpFilter {
 
         if (userDetails == null) {
             if (isAdminPageOrFormURI(requestURI) || isDriverPageOrFormURI(requestURI)) {
-                LOGGER.warn("Unauthorized user is trying to access ApplicationEndpointsURIs: " + requestURI);
+                LOGGER.warn("Unauthorized user is trying to access URI: " + requestURI);
                 response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
                 return;
             }
@@ -49,7 +49,7 @@ public class AuthorisationFilter extends HttpFilter {
             UserType userType = userDetails.getUserType();
             if (userType == UserType.BUS_DRIVER && isAdminPageOrFormURI(requestURI)
                     || userType == UserType.DEPOT_ADMIN && isDriverPageOrFormURI(requestURI)) {
-                LOGGER.warn(userType + " is trying to access forbidden ApplicationEndpointsURIs: " + requestURI);
+                LOGGER.warn(userType + " is trying to access forbidden URI: " + requestURI);
                 response.sendError(HttpServletResponse.SC_FORBIDDEN);
                 return;
             }
