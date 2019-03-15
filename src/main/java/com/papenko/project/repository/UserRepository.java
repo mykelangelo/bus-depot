@@ -17,6 +17,7 @@ public class UserRepository {
     }
 
     public User findUserByEmail(String email) {
+        LOGGER.debug("about to find a user by email");
         var sql = "SELECT user_type, password_hash FROM depot_user WHERE email = (?);";
 
         try (var connection = dataSource.getConnection();
@@ -26,12 +27,14 @@ public class UserRepository {
                 if (resultSet.next()) {
                     UserType userType = UserType.valueOf(resultSet.getString("user_type"));
                     String passwordHash = resultSet.getString("password_hash");
+                    LOGGER.debug("found a user by email");
                     return new User(email, userType, passwordHash);
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException("SQL fails to find user by email " + email, e);
+            LOGGER.error("SQL fails to find user by email {}\nStacktrace: {}", email, e);
         }
+        LOGGER.debug("user by email not found");
         return null;
     }
 }

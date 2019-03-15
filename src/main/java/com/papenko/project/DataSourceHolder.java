@@ -18,9 +18,10 @@ public class DataSourceHolder {
     private static final Logger LOGGER = LoggerFactory.getLogger(DataSourceHolder.class);
     private static final String PRODUCTION_DB_URL_ENV_PROPERTY = "JAWSDB_URL";
     private static final String CI_DB_USER_ENV_PROPERTY = "MYSQL_USER";
-    private static DataSource INSTANCE;
+    private static final DataSource DATA_SOURCE_INSTANCE;
 
     static {
+        LOGGER.debug("about to initialize DATA_SOURCE_INSTANCE");
         final HikariConfig hikariConfig;
         final String dataScriptsDirectoryURL;
         if (isProduction()) {
@@ -38,7 +39,7 @@ public class DataSourceHolder {
             hikariConfig = new HikariConfig();
             String username = getenv("MYSQL_USER");
             String password = getenv("MYSQL_PASSWORD");
-            LOGGER.debug("CI database username[{}] password[{}]", username, password);
+            LOGGER.debug("CI database username: [{}] password: [{}]", username, password);
             hikariConfig.setUsername(username);
             hikariConfig.setPassword(password);
             hikariConfig.setJdbcUrl("jdbc:mysql://localhost:3306/test");
@@ -48,13 +49,16 @@ public class DataSourceHolder {
             hikariConfig = new HikariConfig("/db/connection-pool.properties");
         }
         hikariConfig.setDriverClassName(Driver.class.getName());
-        INSTANCE = new HikariDataSource(hikariConfig);
+        DATA_SOURCE_INSTANCE = new HikariDataSource(hikariConfig);
         Flyway.configure()
                 .locations("classpath:db/schema", dataScriptsDirectoryURL)
-                .dataSource(INSTANCE)
+                .dataSource(DATA_SOURCE_INSTANCE)
                 .load()
                 .migrate();
         LOGGER.debug("Initialized");
+    }
+
+    private DataSourceHolder() {
     }
 
     private static boolean isProduction() {
@@ -66,6 +70,6 @@ public class DataSourceHolder {
     }
 
     public static DataSource getInstance() {
-        return INSTANCE;
+        return DATA_SOURCE_INSTANCE;
     }
 }

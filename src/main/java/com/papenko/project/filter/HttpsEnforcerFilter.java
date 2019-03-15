@@ -28,6 +28,7 @@ public class HttpsEnforcerFilter extends HttpFilter {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+        LOGGER.debug("about to filter a request");
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
@@ -35,11 +36,12 @@ public class HttpsEnforcerFilter extends HttpFilter {
         if (isNotBlank(productionOnlyHeader) && !productionOnlyHeader.contains("https")) {
             String pathInfo = defaultIfBlank(request.getRequestURI(), EMPTY);
             String secureUrl = "https://" + request.getServerName() + pathInfo;
-            LOGGER.warn("Request [{}] is not secured, redirecting to [{}]", pathInfo, secureUrl);
+            LOGGER.warn("Request {} is not secured, redirecting to {}", pathInfo, secureUrl);
             response.sendRedirect(secureUrl);
             return;
         }
-
+        LOGGER.debug("request filtered");
         filterChain.doFilter(request, response);
+        LOGGER.debug("finished filtering a request");
     }
 }

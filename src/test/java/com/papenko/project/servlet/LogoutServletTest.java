@@ -3,7 +3,6 @@ package com.papenko.project.servlet;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,14 +16,13 @@ import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class LogoutServletTest {
-    @Spy
-    LogoutServlet logoutServlet;
     @Mock
     HttpServletRequest httpServletRequest;
     @Mock
     HttpServletResponse httpServletResponse;
     @Mock
     HttpSession session;
+    private LogoutServlet logoutServlet = new LogoutServlet();
 
     @Test
     void doGet_shouldInvalidateSession_andRedirectToLoginPage() throws IOException {

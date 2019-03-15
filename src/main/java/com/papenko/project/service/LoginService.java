@@ -16,19 +16,23 @@ public class LoginService {
     }
 
     public boolean checkCredentials(String email, String passwordInPlainText) {
-        LOGGER.debug("checking credentials");
+        LOGGER.debug("about to check credentials");
         User user = userRepository.findUserByEmail(email);
 
         if (user != null) {
-            return BCrypt.checkpw(passwordInPlainText, user.getPasswordHash());
+            boolean passwordCheckResult = BCrypt.checkpw(passwordInPlainText, user.getPasswordHash());
+            LOGGER.debug("finished checking credentials");
+            return passwordCheckResult;
         } else {
-            LOGGER.debug("user is null");
+            LOGGER.debug("user is null; finished checking credentials");
             return false;
         }
     }
 
-
     public UserType getUserType(String email) {
-        return userRepository.findUserByEmail(email).getUserType();
+        LOGGER.debug("about to get user by email");
+        UserType userType = userRepository.findUserByEmail(email).getUserType();
+        LOGGER.debug("finished getting user by email");
+        return userType;
     }
 }

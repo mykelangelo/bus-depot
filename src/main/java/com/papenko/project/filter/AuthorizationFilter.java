@@ -21,8 +21,8 @@ import static com.papenko.project.constant.ApplicationEndpointsURIs.DRIVER_PAGE_
 import static com.papenko.project.constant.SessionAttributesNames.USER_DETAILS;
 
 @WebFilter(urlPatterns = "*")
-public class AuthorisationFilter extends HttpFilter {
-    private static final Logger LOGGER = LoggerFactory.getLogger(AuthorisationFilter.class);
+public class AuthorizationFilter extends HttpFilter {
+    private static final Logger LOGGER = LoggerFactory.getLogger(AuthorizationFilter.class);
     private static final String[] ADMIN_URIS = new String[]{
             ADMIN_PAGE_URI,
             ASSIGN_DRIVER_TO_BUS_FORM_URI,
@@ -33,6 +33,7 @@ public class AuthorisationFilter extends HttpFilter {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+        LOGGER.debug("about to filter a request");
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
@@ -41,7 +42,7 @@ public class AuthorisationFilter extends HttpFilter {
 
         if (userDetails == null) {
             if (isAdminPageOrFormURI(requestURI) || isDriverPageOrFormURI(requestURI)) {
-                LOGGER.warn("Unauthorized user is trying to access URI: " + requestURI);
+                LOGGER.warn("Unauthorized user is trying to access URI: {}", requestURI);
                 response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
                 return;
             }
@@ -49,13 +50,14 @@ public class AuthorisationFilter extends HttpFilter {
             UserType userType = userDetails.getUserType();
             if (userType == UserType.BUS_DRIVER && isAdminPageOrFormURI(requestURI)
                     || userType == UserType.DEPOT_ADMIN && isDriverPageOrFormURI(requestURI)) {
-                LOGGER.warn(userType + " is trying to access forbidden URI: " + requestURI);
+                LOGGER.warn("{} is trying to access forbidden URI: {}", userType, requestURI);
                 response.sendError(HttpServletResponse.SC_FORBIDDEN);
                 return;
             }
         }
-
+        LOGGER.debug("request filtered");
         filterChain.doFilter(request, response);
+        LOGGER.debug("finished filtering a request");
     }
 
     private boolean isDriverPageOrFormURI(String requestURI) {

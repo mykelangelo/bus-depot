@@ -21,7 +21,7 @@ import static com.papenko.project.constant.SessionAttributesNames.USER_DETAILS;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class AuthorisationFilterTest {
+class AuthorizationFilterTest {
     @Mock
     HttpServletRequest httpServletRequest;
     @Mock
@@ -30,7 +30,7 @@ class AuthorisationFilterTest {
     HttpSession session;
     @Mock
     FilterChain filterChain;
-    private AuthorisationFilter authorisationFilter = new AuthorisationFilter();
+    private AuthorizationFilter authorizationFilter = new AuthorizationFilter();
 
     @Test
     void doFilter_shouldSendForbiddenStatusError_whenAdminTriesToVisitDiversPageOrSubmitDriverForm() throws Exception {
@@ -40,7 +40,7 @@ class AuthorisationFilterTest {
         var userDetails = new AuthenticatedUserDetails("flexo.22@bending.unit", UserType.DEPOT_ADMIN);
         when(session.getAttribute(USER_DETAILS)).thenReturn(userDetails);
         // WHEN
-        authorisationFilter.doFilter(httpServletRequest, httpServletResponse, filterChain);
+        authorizationFilter.doFilter(httpServletRequest, httpServletResponse, filterChain);
         // THEN
         verify(httpServletResponse).sendError(HttpServletResponse.SC_FORBIDDEN);
         verifyZeroInteractions(filterChain);
@@ -56,7 +56,7 @@ class AuthorisationFilterTest {
         var userDetails = new AuthenticatedUserDetails("rodríguez.22@bending.unit", UserType.DEPOT_ADMIN);
         when(session.getAttribute(USER_DETAILS)).thenReturn(userDetails);
         // WHEN
-        authorisationFilter.doFilter(httpServletRequest, httpServletResponse, filterChain);
+        authorizationFilter.doFilter(httpServletRequest, httpServletResponse, filterChain);
         // THEN
         verify(filterChain).doFilter(httpServletRequest, httpServletResponse);
         verifyZeroInteractions(httpServletResponse);
@@ -71,7 +71,7 @@ class AuthorisationFilterTest {
         var userDetails = new AuthenticatedUserDetails("scruffy.janitor@office.staff", UserType.BUS_DRIVER);
         when(session.getAttribute(USER_DETAILS)).thenReturn(userDetails);
         // WHEN
-        authorisationFilter.doFilter(httpServletRequest, httpServletResponse, filterChain);
+        authorizationFilter.doFilter(httpServletRequest, httpServletResponse, filterChain);
         // THEN
         verify(httpServletResponse).sendError(HttpServletResponse.SC_FORBIDDEN);
         verifyZeroInteractions(filterChain);
@@ -87,7 +87,7 @@ class AuthorisationFilterTest {
         var userDetails = new AuthenticatedUserDetails("amy@wong.mars", UserType.BUS_DRIVER);
         when(session.getAttribute(USER_DETAILS)).thenReturn(userDetails);
         // WHEN
-        authorisationFilter.doFilter(httpServletRequest, httpServletResponse, filterChain);
+        authorizationFilter.doFilter(httpServletRequest, httpServletResponse, filterChain);
         // THEN
         verify(filterChain).doFilter(httpServletRequest, httpServletResponse);
         verifyZeroInteractions(httpServletResponse);
@@ -101,7 +101,7 @@ class AuthorisationFilterTest {
         when(httpServletRequest.getSession()).thenReturn(session);
         when(session.getAttribute(USER_DETAILS)).thenReturn(null);
         // WHEN
-        authorisationFilter.doFilter(httpServletRequest, httpServletResponse, filterChain);
+        authorizationFilter.doFilter(httpServletRequest, httpServletResponse, filterChain);
         // THEN
         verify(httpServletResponse).sendError(HttpServletResponse.SC_UNAUTHORIZED);
         verifyZeroInteractions(filterChain);
@@ -115,7 +115,7 @@ class AuthorisationFilterTest {
         when(httpServletRequest.getSession()).thenReturn(session);
         when(session.getAttribute(USER_DETAILS)).thenReturn(null);
         // WHEN
-        authorisationFilter.doFilter(httpServletRequest, httpServletResponse, filterChain);
+        authorizationFilter.doFilter(httpServletRequest, httpServletResponse, filterChain);
         // THEN
         verify(filterChain).doFilter(httpServletRequest, httpServletResponse);
         verifyZeroInteractions(httpServletResponse);

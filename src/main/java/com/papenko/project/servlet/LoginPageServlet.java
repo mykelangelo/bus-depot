@@ -16,7 +16,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.io.IOException;
 
-import static com.papenko.project.constant.ApplicationEndpointsURIs.AdminPage.ADMIN_PAGE_URI;
 import static com.papenko.project.constant.ApplicationEndpointsURIs.*;
 import static com.papenko.project.constant.RequestAttributesNames.LOGIN_ERROR_MESSAGE;
 import static com.papenko.project.constant.RequestParametersNames.EMAIL;
@@ -58,23 +57,15 @@ public class LoginPageServlet extends HttpServlet {
 
         if (loginService.checkCredentials(email, password)) {
             UserType userType = loginService.getUserType(email);
-            String pageURI = selectPageURI(userType);
+
             var userDetails = new AuthenticatedUserDetails(email, userType);
             request.getSession().setAttribute(USER_DETAILS, userDetails);
+
+            String pageURI = userType.getPageUri();
             response.sendRedirect(pageURI);
         } else {
             request.setAttribute(LOGIN_ERROR_MESSAGE, "Invalid email or password");
             this.getServletContext().getRequestDispatcher(LOGIN_JSP_PATH).forward(request, response);
-        }
-    }
-
-    private String selectPageURI(UserType userType) {
-        if (userType == UserType.DEPOT_ADMIN) {
-            return ADMIN_PAGE_URI;
-        } else if (userType == UserType.BUS_DRIVER) {
-            return DRIVER_PAGE_URI;
-        } else {
-            throw new IllegalStateException("Invalid user type provided: " + userType + ". Only " + UserType.DEPOT_ADMIN + " and " + UserType.BUS_DRIVER + " user types have pages");
         }
     }
 }

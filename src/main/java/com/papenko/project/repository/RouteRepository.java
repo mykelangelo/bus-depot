@@ -18,6 +18,7 @@ public class RouteRepository {
     }
 
     public List<Route> findAllRoutes() {
+        LOGGER.debug("about to find all routes");
         var sql = "SELECT route_name FROM route;";
         List<Route> routes = new ArrayList<>();
 
@@ -29,13 +30,14 @@ public class RouteRepository {
                 routes.add(new Route(routeName));
             }
         } catch (SQLException e) {
-            throw new RuntimeException("SQL fails to find all routes. Current list of routes: " + routes, e);
+            LOGGER.error("SQL fails to find all routes. Current list of routes: {}\nStacktrace: {}", routes, e);
         }
-
+        LOGGER.debug("found all {} routes", routes.size());
         return routes;
     }
 
     public Route findRouteByName(String routeName) {
+        LOGGER.debug("about to find a route by name");
         var sql = "SELECT route_name FROM route " +
                 "WHERE route_name = (?);";
         try (var connection = dataSource.getConnection();
@@ -43,12 +45,14 @@ public class RouteRepository {
             preparedStatement.setString(1, routeName);
             try (var resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
+                    LOGGER.debug("found a route by name");
                     return new Route(routeName);
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException("SQL fails to find route by name " + routeName, e);
+            LOGGER.error("SQL fails to find route by name {}\nStacktrace: {}", routeName, e);
         }
+        LOGGER.debug("route by name not found");
         return null;
     }
 }

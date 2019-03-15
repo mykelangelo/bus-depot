@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,7 +20,6 @@ import static org.mockito.Mockito.verify;
 @DisplayName("AssignBusToRouteServlet")
 @ExtendWith(MockitoExtension.class)
 class AssignBusToRouteServletTest {
-    @Spy
     @InjectMocks
     AssignBusToRouteServlet assignBusToRouteServlet;
     @Mock

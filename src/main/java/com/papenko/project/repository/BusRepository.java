@@ -24,6 +24,7 @@ public class BusRepository {
     }
 
     public List<Bus> findAllBuses() {
+        LOGGER.debug("about to find all buses");
         var sql = "SELECT bus_serial, route_name FROM bus;";
         List<Bus> buses = new ArrayList<>();
 
@@ -37,13 +38,15 @@ public class BusRepository {
                 buses.add(new Bus(busSerial, route));
             }
         } catch (SQLException e) {
-            throw new RuntimeException("SQL fails to find all buses. Current list of buses: " + buses, e);
+            LOGGER.error("SQL fails to find all buses. Current list of buses: {}\nStacktrace: {}", buses, e);
         }
 
+        LOGGER.debug("found all {} buses", buses.size());
         return buses;
     }
 
     public void updateBusSetRoute(Bus bus, Route route) {
+        LOGGER.debug("about to update bus with a new route");
         var sql = "UPDATE bus SET route_name = (?) " +
                 "WHERE bus_serial = (?);";
         try (var connection = dataSource.getConnection();
@@ -52,16 +55,19 @@ public class BusRepository {
             preparedStatement.setString(2, bus.getSerialNumber());
             preparedStatement.execute();
         } catch (SQLException e) {
-            throw new RuntimeException("SQL fails to update bus " + bus + " with route " + route, e);
+            LOGGER.error("SQL fails to update bus {} with route {}\nStacktrace: {}", bus, route, e);
         }
+        LOGGER.debug("updated bus with a new route");
 
         Driver driver = driverRepository.findDriverByBus(bus);
         if (driver != null) {
             driverRepository.updateDriverSetAwareness(driver, false);
+            LOGGER.debug("also set awareness of driver in this bus to false");
         }
     }
 
     public Bus findBusBySerialNumber(String busSerial) {
+        LOGGER.debug("about to find a bus by serial number");
         var sql = "SELECT route_name FROM bus " +
                 "WHERE bus_serial = (?);";
         try (var connection = dataSource.getConnection();
@@ -71,12 +77,14 @@ public class BusRepository {
                 if (resultSet.next()) {
                     String routeName = resultSet.getString("route_name");
                     Route route = routeRepository.findRouteByName(routeName);
+                    LOGGER.debug("found a bus by serial number");
                     return new Bus(busSerial, route);
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException("SQL fails to find bus by serial " + busSerial, e);
+            LOGGER.error("SQL fails to find bus by serial: {}\nStacktrace: {}", busSerial, e);
         }
+        LOGGER.debug("bus by serial number not found");
         return null;
     }
 }

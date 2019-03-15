@@ -5,7 +5,6 @@ import com.papenko.project.entity.UserType;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,14 +21,13 @@ import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class RootUriServletTest {
-    @Spy
-    RootUriServlet rootUriServlet;
     @Mock
     HttpServletRequest httpServletRequest;
     @Mock
     HttpServletResponse httpServletResponse;
     @Mock
     HttpSession session;
+    private RootUriServlet rootUriServlet = new RootUriServlet();
 
     @Test
     void doGet_shouldRedirectToLoginPage_whenUserIsNotAuthorized() throws IOException {

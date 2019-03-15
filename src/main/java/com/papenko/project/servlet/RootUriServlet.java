@@ -1,7 +1,6 @@
 package com.papenko.project.servlet;
 
 import com.papenko.project.entity.AuthenticatedUserDetails;
-import com.papenko.project.entity.UserType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,8 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static com.papenko.project.constant.ApplicationEndpointsURIs.AdminPage.ADMIN_PAGE_URI;
-import static com.papenko.project.constant.ApplicationEndpointsURIs.*;
+import static com.papenko.project.constant.ApplicationEndpointsURIs.LOGIN_PAGE_URI;
+import static com.papenko.project.constant.ApplicationEndpointsURIs.ROOT_URI;
 import static com.papenko.project.constant.SessionAttributesNames.USER_DETAILS;
 
 @WebServlet(urlPatterns = ROOT_URI)
@@ -28,16 +27,11 @@ public class RootUriServlet extends HttpServlet {
     }
 
     private String chooseURI(AuthenticatedUserDetails userDetails) {
-        final String redirectURI;
         if (userDetails == null) {
-            redirectURI = LOGIN_PAGE_URI;
-        } else if (userDetails.getUserType() == UserType.DEPOT_ADMIN) {
-            redirectURI = ADMIN_PAGE_URI;
-        } else if (userDetails.getUserType() == UserType.BUS_DRIVER) {
-            redirectURI = DRIVER_PAGE_URI;
+            return LOGIN_PAGE_URI;
         } else {
-            throw new IllegalStateException("Invalid user type provided " + userDetails.getUserType() + ". Only " + UserType.DEPOT_ADMIN + " and " + UserType.BUS_DRIVER + " user types have pages");
+            var userType = userDetails.getUserType();
+            return userType.getPageUri();
         }
-        return redirectURI;
     }
 }
