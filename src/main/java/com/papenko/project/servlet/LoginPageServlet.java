@@ -16,9 +16,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.io.IOException;
 
-import static com.papenko.project.constant.ApplicationEndpointsURI.AdminPage.ADMIN_PAGE_URI;
-import static com.papenko.project.constant.ApplicationEndpointsURI.*;
-import static com.papenko.project.constant.SessionAttributeName.USER_DETAILS;
+import static com.papenko.project.constant.ApplicationEndpointsURIs.AdminPage.ADMIN_PAGE_URI;
+import static com.papenko.project.constant.ApplicationEndpointsURIs.*;
+import static com.papenko.project.constant.RequestAttributesNames.LOGIN_ERROR_MESSAGE;
+import static com.papenko.project.constant.RequestParametersNames.EMAIL;
+import static com.papenko.project.constant.RequestParametersNames.PASSWORD;
+import static com.papenko.project.constant.SessionAttributesNames.USER_DETAILS;
 
 @WebServlet(urlPatterns = LOGIN_PAGE_URI)
 public class LoginPageServlet extends HttpServlet {
@@ -50,8 +53,8 @@ public class LoginPageServlet extends HttpServlet {
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         LOGGER.debug("POST");
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
+        String email = request.getParameter(EMAIL);
+        String password = request.getParameter(PASSWORD);
 
         if (loginService.checkCredentials(email, password)) {
             UserType userType = loginService.getUserType(email);
@@ -60,7 +63,7 @@ public class LoginPageServlet extends HttpServlet {
             request.getSession().setAttribute(USER_DETAILS, userDetails);
             response.sendRedirect(pageURI);
         } else {
-            request.setAttribute("loginErrorMessage", "Invalid email or password");
+            request.setAttribute(LOGIN_ERROR_MESSAGE, "Invalid email or password");
             this.getServletContext().getRequestDispatcher(LOGIN_JSP_PATH).forward(request, response);
         }
     }

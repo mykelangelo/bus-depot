@@ -16,9 +16,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.io.IOException;
 
-import static com.papenko.project.constant.ApplicationEndpointsURI.AdminPage.ADMIN_JSP_PATH;
-import static com.papenko.project.constant.ApplicationEndpointsURI.AdminPage.ADMIN_PAGE_URI;
-import static com.papenko.project.constant.RequestAttributeName.*;
+import static com.papenko.project.constant.ApplicationEndpointsURIs.AdminPage.ADMIN_JSP_PATH;
+import static com.papenko.project.constant.ApplicationEndpointsURIs.AdminPage.ADMIN_PAGE_URI;
+import static com.papenko.project.constant.RequestAttributesNames.*;
 
 @WebServlet(urlPatterns = ADMIN_PAGE_URI)
 public class AdminPageServlet extends HttpServlet {

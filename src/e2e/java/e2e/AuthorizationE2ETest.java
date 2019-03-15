@@ -11,8 +11,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
-import static e2e.constant.ApplicationEndpointsURL.AdminPage.*;
-import static e2e.constant.ApplicationEndpointsURL.*;
+import static e2e.constant.ApplicationEndpointsURLs.AdminPage.*;
+import static e2e.constant.ApplicationEndpointsURLs.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class AuthorizationE2ETest implements ScreenShotGeneratingE2ETest {

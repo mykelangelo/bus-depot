@@ -14,10 +14,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import static com.papenko.project.constant.ApplicationEndpointsURI.AdminPage.*;
-import static com.papenko.project.constant.ApplicationEndpointsURI.DRIVER_PAGE_URI;
-import static com.papenko.project.constant.ApplicationEndpointsURI.LOGIN_PAGE_URI;
-import static com.papenko.project.constant.SessionAttributeName.USER_DETAILS;
+import static com.papenko.project.constant.ApplicationEndpointsURIs.AdminPage.*;
+import static com.papenko.project.constant.ApplicationEndpointsURIs.DRIVER_PAGE_URI;
+import static com.papenko.project.constant.ApplicationEndpointsURIs.LOGIN_PAGE_URI;
+import static com.papenko.project.constant.SessionAttributesNames.USER_DETAILS;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)

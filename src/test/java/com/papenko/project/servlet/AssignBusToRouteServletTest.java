@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static com.papenko.project.constant.RequestParametersNames.BUS_SERIAL;
+import static com.papenko.project.constant.RequestParametersNames.ROUTE_NAME;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 
@@ -33,8 +35,8 @@ class AssignBusToRouteServletTest {
     @Test
     void doPost_shouldSetBusToRoute_andRedirectToAdminPage_andSetLastSubmitStatusMessageAsParameter() throws IOException {
         // GIVEN
-        doReturn("AI7007AA").when(httpServletRequest).getParameter("bus-serial");
-        doReturn("7L").when(httpServletRequest).getParameter("route-name");
+        doReturn("AI7007AA").when(httpServletRequest).getParameter(BUS_SERIAL);
+        doReturn("7L").when(httpServletRequest).getParameter(ROUTE_NAME);
         // WHEN
         assignBusToRouteServlet.doPost(httpServletRequest, httpServletResponse);
         // THEN

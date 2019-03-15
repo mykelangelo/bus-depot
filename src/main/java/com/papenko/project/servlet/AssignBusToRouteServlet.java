@@ -15,7 +15,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.io.IOException;
 
-import static com.papenko.project.constant.ApplicationEndpointsURI.AdminPage.ASSIGN_BUS_TO_ROUTE_FORM_URI;
+import static com.papenko.project.constant.ApplicationEndpointsURIs.AdminPage.ASSIGN_BUS_TO_ROUTE_FORM_URI;
+import static com.papenko.project.constant.RequestParametersNames.BUS_SERIAL;
+import static com.papenko.project.constant.RequestParametersNames.ROUTE_NAME;
 
 
 @WebServlet(urlPatterns = ASSIGN_BUS_TO_ROUTE_FORM_URI)
@@ -51,8 +53,8 @@ public class AssignBusToRouteServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         LOGGER.debug("POST");
-        String busSerial = request.getParameter("bus-serial");
-        String routeName = request.getParameter("route-name");
+        String busSerial = request.getParameter(BUS_SERIAL);
+        String routeName = request.getParameter(ROUTE_NAME);
         adminService.assignBusToRoute(busSerial, routeName);
         response.sendRedirect("/admin?lastSubmitStatusMessage=You assigned bus with serial number " +
                 busSerial + " to route with name " + routeName);

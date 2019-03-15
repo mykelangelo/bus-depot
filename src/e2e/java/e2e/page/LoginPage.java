@@ -1,6 +1,6 @@
 package e2e.page;
 
-import e2e.constant.ApplicationEndpointsURL;
+import e2e.constant.ApplicationEndpointsURLs;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -13,7 +13,7 @@ public class LoginPage {
     }
 
     public void goToPage() {
-        webDriver.get(ApplicationEndpointsURL.LOGIN_PAGE_URL);
+        webDriver.get(ApplicationEndpointsURLs.LOGIN_PAGE_URL);
     }
 
     public WebElement findEmailField() {

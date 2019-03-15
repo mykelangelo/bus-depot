@@ -1,6 +1,6 @@
 package com.papenko.project.constant;
 
-public interface ApplicationEndpointsURI {
+public interface ApplicationEndpointsURIs {
     String DRIVER_PAGE_URI = "/driver";
     String DRIVER_JSP_PATH = "/WEB-INF/driver.jsp";
     String LOGIN_PAGE_URI = "/login";

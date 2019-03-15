@@ -9,8 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static com.papenko.project.constant.ApplicationEndpointsURI.LOGIN_PAGE_URI;
-import static com.papenko.project.constant.ApplicationEndpointsURI.LOGOUT_FORM_URI;
+import static com.papenko.project.constant.ApplicationEndpointsURIs.LOGIN_PAGE_URI;
+import static com.papenko.project.constant.ApplicationEndpointsURIs.LOGOUT_FORM_URI;
 
 @WebServlet(urlPatterns = LOGOUT_FORM_URI)
 public class LogoutServlet extends HttpServlet {

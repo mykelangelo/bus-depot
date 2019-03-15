@@ -1,6 +1,6 @@
 package e2e.constant;
 
-public interface ApplicationEndpointsURL {
+public interface ApplicationEndpointsURLs {
     String ROOT_URL = "http://localhost:8080";
     String DRIVER_PAGE_URL = "http://localhost:8080/driver";
     String LOGIN_PAGE_URL = "http://localhost:8080/login";

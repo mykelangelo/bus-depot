@@ -17,9 +17,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.io.IOException;
 
-import static com.papenko.project.constant.ApplicationEndpointsURI.DRIVER_JSP_PATH;
-import static com.papenko.project.constant.ApplicationEndpointsURI.DRIVER_PAGE_URI;
-import static com.papenko.project.constant.SessionAttributeName.USER_DETAILS;
+import static com.papenko.project.constant.ApplicationEndpointsURIs.DRIVER_JSP_PATH;
+import static com.papenko.project.constant.ApplicationEndpointsURIs.DRIVER_PAGE_URI;
+import static com.papenko.project.constant.RequestAttributesNames.DRIVER;
+import static com.papenko.project.constant.SessionAttributesNames.USER_DETAILS;
 
 
 @WebServlet(urlPatterns = DRIVER_PAGE_URI)
@@ -49,7 +50,7 @@ public class DriverPageServlet extends HttpServlet {
         LOGGER.debug("GET");
         var userDetails = (AuthenticatedUserDetails) request.getSession().getAttribute(USER_DETAILS);
         Driver driver = driverService.findDriverByEmail(userDetails.getEmail());
-        request.setAttribute("driver", driver);
+        request.setAttribute(DRIVER, driver);
         this.getServletContext().getRequestDispatcher(DRIVER_JSP_PATH).forward(request, response);
     }
 

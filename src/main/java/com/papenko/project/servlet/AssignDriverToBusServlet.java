@@ -16,7 +16,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.io.IOException;
 
-import static com.papenko.project.constant.ApplicationEndpointsURI.AdminPage.ASSIGN_DRIVER_TO_BUS_FORM_URI;
+import static com.papenko.project.constant.ApplicationEndpointsURIs.AdminPage.ASSIGN_DRIVER_TO_BUS_FORM_URI;
+import static com.papenko.project.constant.RequestParametersNames.BUS_SERIAL;
+import static com.papenko.project.constant.RequestParametersNames.DRIVER_EMAIL;
 
 
 @WebServlet(urlPatterns = ASSIGN_DRIVER_TO_BUS_FORM_URI)
@@ -51,8 +53,8 @@ public class AssignDriverToBusServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         LOGGER.debug("POST");
-        String driverEmail = request.getParameter("driver-email");
-        String busSerial = request.getParameter("bus-serial");
+        String driverEmail = request.getParameter(DRIVER_EMAIL);
+        String busSerial = request.getParameter(BUS_SERIAL);
         Driver driverAlreadyInBus = adminService.getDriverInBus(busSerial);
         if (driverAlreadyInBus == null) {
             adminService.assignDriverToBus(driverEmail, busSerial);

@@ -17,9 +17,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-import static com.papenko.project.constant.ApplicationEndpointsURI.DRIVER_JSP_PATH;
-import static com.papenko.project.constant.ApplicationEndpointsURI.DRIVER_PAGE_URI;
-import static com.papenko.project.constant.SessionAttributeName.USER_DETAILS;
+import static com.papenko.project.constant.ApplicationEndpointsURIs.DRIVER_JSP_PATH;
+import static com.papenko.project.constant.ApplicationEndpointsURIs.DRIVER_PAGE_URI;
+import static com.papenko.project.constant.RequestAttributesNames.DRIVER;
+import static com.papenko.project.constant.SessionAttributesNames.USER_DETAILS;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
@@ -57,7 +58,7 @@ class DriverPageServletTest {
         // THEN
         verify(servletContext).getRequestDispatcher(DRIVER_JSP_PATH);
         verify(requestDispatcher).forward(httpServletRequest, httpServletResponse);
-        verify(httpServletRequest).setAttribute("driver",
+        verify(httpServletRequest).setAttribute(DRIVER,
                 new Driver("patrick.star@bikini.bottom", new Bus("99ggg99", new Route("77")), true));
     }
 

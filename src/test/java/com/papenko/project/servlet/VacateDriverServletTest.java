@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static com.papenko.project.constant.RequestParametersNames.DRIVER_EMAIL;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 
@@ -32,7 +33,7 @@ class VacateDriverServletTest {
     @Test
     void doPost_shouldVacateDriverFromBus_andRedirectToAdminPage_andSetLastSubmitStatusMessageAsParameter() throws IOException {
         // GIVEN
-        doReturn("bob.jenkins@gmail.com").when(httpServletRequest).getParameter("driver-email");
+        doReturn("bob.jenkins@gmail.com").when(httpServletRequest).getParameter(DRIVER_EMAIL);
         // WHEN
         vacateDriver.doPost(httpServletRequest, httpServletResponse);
         // THEN

@@ -8,8 +8,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
-import static e2e.constant.ApplicationEndpointsURL.AdminPage.ADMIN_PAGE_URL;
-import static e2e.constant.ApplicationEndpointsURL.*;
+import static e2e.constant.ApplicationEndpointsURLs.AdminPage.ADMIN_PAGE_URL;
+import static e2e.constant.ApplicationEndpointsURLs.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class RootUriRedirectionE2ETest implements ScreenShotGeneratingE2ETest {
@@ -45,7 +45,7 @@ public class RootUriRedirectionE2ETest implements ScreenShotGeneratingE2ETest {
 
 
     @Test
-    @DisplayName("Support root ApplicationEndpointsURI: redirect unauthorized user to login page")
+    @DisplayName("Support root ApplicationEndpointsURIs: redirect unauthorized user to login page")
     void shouldRedirectUnauthorizedUserToLoginPage() {
         webDriver.get(ROOT_URL);
 
@@ -53,7 +53,7 @@ public class RootUriRedirectionE2ETest implements ScreenShotGeneratingE2ETest {
     }
 
     @Test
-    @DisplayName("Support root ApplicationEndpointsURI: redirect admin to admin page")
+    @DisplayName("Support root ApplicationEndpointsURIs: redirect admin to admin page")
     void shouldRedirectAdminToAdminPage() {
         loginPage.goToPage();
         loginPage.findEmailField().sendKeys("administrator@company.com");
@@ -66,7 +66,7 @@ public class RootUriRedirectionE2ETest implements ScreenShotGeneratingE2ETest {
     }
 
     @Test
-    @DisplayName("Support root ApplicationEndpointsURI: redirect driver to driver page")
+    @DisplayName("Support root ApplicationEndpointsURIs: redirect driver to driver page")
     void shouldRedirectDriverToDriverPage() {
         loginPage.goToPage();
         loginPage.findEmailField().sendKeys("driver@company.com");

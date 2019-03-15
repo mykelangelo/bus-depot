@@ -15,7 +15,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.io.IOException;
 
-import static com.papenko.project.constant.ApplicationEndpointsURI.AdminPage.VACATE_DRIVER_FORM_URI;
+import static com.papenko.project.constant.ApplicationEndpointsURIs.AdminPage.VACATE_DRIVER_FORM_URI;
+import static com.papenko.project.constant.RequestParametersNames.DRIVER_EMAIL;
 
 
 @WebServlet(urlPatterns = VACATE_DRIVER_FORM_URI)
@@ -49,7 +50,7 @@ public class VacateDriverServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         LOGGER.debug("POST");
-        String driverEmail = request.getParameter("driver-email");
+        String driverEmail = request.getParameter(DRIVER_EMAIL);
         adminService.vacateDriverFromBus(driverEmail);
         response.sendRedirect("/admin?lastSubmitStatusMessage=You vacated driver with email " + driverEmail);
     }

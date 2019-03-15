@@ -9,7 +9,7 @@ import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import static com.papenko.project.constant.ApplicationEndpointsURI.LOGIN_PAGE_URI;
+import static com.papenko.project.constant.ApplicationEndpointsURIs.LOGIN_PAGE_URI;
 import static com.papenko.project.filter.HttpsEnforcerFilter.X_FORWARDED_PROTO;
 import static org.mockito.Mockito.*;
 

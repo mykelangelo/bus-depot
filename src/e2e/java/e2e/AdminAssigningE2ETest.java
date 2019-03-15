@@ -9,7 +9,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
-import static e2e.constant.ApplicationEndpointsURL.AdminPage.ADMIN_PAGE_URL;
+import static e2e.constant.ApplicationEndpointsURLs.AdminPage.ADMIN_PAGE_URL;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

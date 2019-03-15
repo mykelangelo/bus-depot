@@ -16,6 +16,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static com.papenko.project.constant.RequestParametersNames.BUS_SERIAL;
+import static com.papenko.project.constant.RequestParametersNames.DRIVER_EMAIL;
 import static org.mockito.Mockito.*;
 
 @DisplayName("AssignDriverToBusServlet")
@@ -34,8 +36,8 @@ class AssignDriverToBusServletTest {
     @Test
     void doPost_shouldSetDriverToBus_andRedirectToAdminPage_andSetLastSubmitStatusMessageAsParameter_whenBusWasPreviouslyEmpty() throws IOException {
         // GIVEN
-        doReturn("bob.jenkins@gmail.com").when(httpServletRequest).getParameter("driver-email");
-        doReturn("AA4444AA").when(httpServletRequest).getParameter("bus-serial");
+        doReturn("bob.jenkins@gmail.com").when(httpServletRequest).getParameter(DRIVER_EMAIL);
+        doReturn("AA4444AA").when(httpServletRequest).getParameter(BUS_SERIAL);
         doReturn(null).when(adminService).getDriverInBus("AA4444AA");
         // WHEN
         assignDriverToBusServlet.doPost(httpServletRequest, httpServletResponse);
@@ -47,8 +49,8 @@ class AssignDriverToBusServletTest {
     @Test
     void doPost_shouldRedirectToAdminPage_andSetLastSubmitStatusMessageAsParameter_whenBusWasAlreadyOccupied() throws IOException {
         // GIVEN
-        doReturn("new@driver").when(httpServletRequest).getParameter("driver-email");
-        doReturn("OI0102OI").when(httpServletRequest).getParameter("bus-serial");
+        doReturn("new@driver").when(httpServletRequest).getParameter(DRIVER_EMAIL);
+        doReturn("OI0102OI").when(httpServletRequest).getParameter(BUS_SERIAL);
         doReturn(new Driver("old@driver", new Bus("OI0102OI", new Route("999")), true))
                 .when(adminService).getDriverInBus("OI0102OI");
         // WHEN

@@ -11,9 +11,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static com.papenko.project.constant.ApplicationEndpointsURI.AdminPage.ADMIN_PAGE_URI;
-import static com.papenko.project.constant.ApplicationEndpointsURI.*;
-import static com.papenko.project.constant.SessionAttributeName.USER_DETAILS;
+import static com.papenko.project.constant.ApplicationEndpointsURIs.AdminPage.ADMIN_PAGE_URI;
+import static com.papenko.project.constant.ApplicationEndpointsURIs.*;
+import static com.papenko.project.constant.SessionAttributesNames.USER_DETAILS;
 
 @WebServlet(urlPatterns = ROOT_URI)
 public class RootUriServlet extends HttpServlet {
