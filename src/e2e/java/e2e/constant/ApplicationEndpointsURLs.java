@@ -1,11 +1,11 @@
 package e2e.constant;
 
 public interface ApplicationEndpointsURLs {
-    String ROOT_URL = "http://localhost:8080";
+    String GO_HOME_URL = "http://localhost:8080/go-home";
     String DRIVER_PAGE_URL = "http://localhost:8080/driver";
     String LOGIN_PAGE_URL = "http://localhost:8080/login";
     String LOGOUT_FORM_URL = "http://localhost:8080/logout";
-    String NO_SUCH_PAGE_EXISTS_URL = "http://localhost:8080/no-such-page-exists";
+    String NO_SUCH_PAGE_EXISTS_URL = "http://localhost:8080/";
 
     interface AdminPage {
         String ADMIN_PAGE_URL = "http://localhost:8080/admin";

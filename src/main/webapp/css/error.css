@@ -1,0 +1,49 @@
+@import url(http://fonts.googleapis.com/css?family=Bree+Serif|Source+Sans+Pro:300,400);
+
+/*CSS borrowed from https://webdesignviews.com/simple-and-effective-404-page/*/
+
+* {
+    padding: 0;
+}
+
+body {
+    font-family: 'Source Sans Pro', sans-serif;
+    background: #3f6eb3;
+    color: #1f3759;
+}
+
+a:hover {
+    color: #9fb7d9;
+    text-decoration: none;
+}
+
+a:visited {
+    color: #1f3759;
+    text-decoration: none;
+}
+
+a.underline, .underline {
+    text-decoration: underline;
+}
+
+#main-body {
+    text-align: center;
+}
+
+.enormous-font {
+    font-size: 10em;
+    margin-bottom: 0;
+}
+
+.big-font {
+    font-size: 2em;
+}
+
+hr {
+    width: 25%;
+    height: 1px;
+    background: #1f3759;
+    border: 0;
+}
+
+

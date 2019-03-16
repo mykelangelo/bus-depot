@@ -7,6 +7,7 @@ import io.github.bonigarcia.wdm.ChromeDriverManager;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.openqa.selenium.By;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -66,7 +67,7 @@ public class UserLogoutE2ETest implements ScreenShotGeneratingE2ETest {
         loginPage.goToPage();
 
         webDriver.get(DRIVER_PAGE_URL);
-        assertEquals(LOGIN_PAGE_URL, webDriver.getCurrentUrl());
+        assertEquals("YOU'VE COME TO THE WONG PLACE", webDriver.findElement(By.className("big-font")).getText());
     }
 
     @Test
@@ -81,7 +82,7 @@ public class UserLogoutE2ETest implements ScreenShotGeneratingE2ETest {
         loginPage.goToPage();
 
         webDriver.get(ADMIN_PAGE_URL);
-        assertEquals(LOGIN_PAGE_URL, webDriver.getCurrentUrl());
+        assertEquals("YOU'VE COME TO THE WONG PLACE", webDriver.findElement(By.className("big-font")).getText());
     }
 
     @Test
@@ -97,7 +98,7 @@ public class UserLogoutE2ETest implements ScreenShotGeneratingE2ETest {
         assertThat(webDriver.getCurrentUrl()).startsWith(LOGIN_PAGE_URL);
 
         webDriver.get(ADMIN_PAGE_URL);
-        assertEquals(LOGIN_PAGE_URL, webDriver.getCurrentUrl());
+        assertEquals("YOU'VE COME TO THE WONG PLACE", webDriver.findElement(By.className("big-font")).getText());
     }
 
     @ParameterizedTest
@@ -114,6 +115,6 @@ public class UserLogoutE2ETest implements ScreenShotGeneratingE2ETest {
         assertThat(webDriver.getCurrentUrl()).startsWith(LOGIN_PAGE_URL);
 
         webDriver.get(DRIVER_PAGE_URL);
-        assertEquals(LOGIN_PAGE_URL, webDriver.getCurrentUrl());
+        assertEquals("YOU'VE COME TO THE WONG PLACE", webDriver.findElement(By.className("big-font")).getText());
     }
 }

@@ -10,13 +10,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static com.papenko.project.constant.ApplicationEndpointsURIs.GO_HOME_URI;
 import static com.papenko.project.constant.ApplicationEndpointsURIs.LOGIN_PAGE_URI;
-import static com.papenko.project.constant.ApplicationEndpointsURIs.ROOT_URI;
 import static com.papenko.project.constant.SessionAttributesNames.USER_DETAILS;
 
-@WebServlet(urlPatterns = ROOT_URI)
-public class RootUriServlet extends HttpServlet {
-    private static final Logger LOGGER = LoggerFactory.getLogger(RootUriServlet.class);
+@WebServlet(urlPatterns = GO_HOME_URI)
+public class GoHomeServlet extends HttpServlet {
+    private static final Logger LOGGER = LoggerFactory.getLogger(GoHomeServlet.class);
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {

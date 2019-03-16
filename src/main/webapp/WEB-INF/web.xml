@@ -6,31 +6,36 @@
          version="4.0">
     <error-page>
         <!-- Default -->
-        <location>/WEB-INF/error/general.html</location>
+        <location>/error/general.html</location>
     </error-page>
     <error-page>
         <!-- Missing login -->
         <error-code>401</error-code>
-        <location>/</location>
+        <location>/error/4xx.html</location>
     </error-page>
     <error-page>
         <!-- Forbidden directory listing -->
         <error-code>403</error-code>
-        <location>/</location>
+        <location>/error/4xx.html</location>
+    </error-page>
+    <error-page>
+        <!-- Page not found -->
+        <error-code>404</error-code>
+        <location>/error/4xx.html</location>
     </error-page>
     <error-page>
         <!-- Method not allowed -->
         <error-code>405</error-code>
-        <location>/</location>
+        <location>/error/4xx.html</location>
     </error-page>
     <error-page>
         <!-- Uncaught exception -->
         <error-code>500</error-code>
-        <location>/WEB-INF/error/oops.html</location>
+        <location>/error/5xx.html</location>
     </error-page>
     <error-page>
         <!-- Unsupported servlet method -->
         <error-code>503</error-code>
-        <location>/WEB-INF/error/oops.html</location>
+        <location>/error/5xx.html</location>
     </error-page>
 </web-app>

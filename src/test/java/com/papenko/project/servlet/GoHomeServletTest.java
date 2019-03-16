@@ -20,14 +20,14 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-class RootUriServletTest {
+class GoHomeServletTest {
     @Mock
     HttpServletRequest httpServletRequest;
     @Mock
     HttpServletResponse httpServletResponse;
     @Mock
     HttpSession session;
-    private RootUriServlet rootUriServlet = new RootUriServlet();
+    private GoHomeServlet goHomeServlet = new GoHomeServlet();
 
     @Test
     void doGet_shouldRedirectToLoginPage_whenUserIsNotAuthorized() throws IOException {
@@ -35,7 +35,7 @@ class RootUriServletTest {
         doReturn(session).when(httpServletRequest).getSession();
         doReturn(null).when(session).getAttribute(USER_DETAILS);
         // WHEN
-        rootUriServlet.doGet(httpServletRequest, httpServletResponse);
+        goHomeServlet.doGet(httpServletRequest, httpServletResponse);
         // THEN
         verify(httpServletResponse).sendRedirect(LOGIN_PAGE_URI);
 
@@ -48,7 +48,7 @@ class RootUriServletTest {
         doReturn(new AuthenticatedUserDetails(null, UserType.DEPOT_ADMIN))
                 .when(session).getAttribute(USER_DETAILS);
         // WHEN
-        rootUriServlet.doGet(httpServletRequest, httpServletResponse);
+        goHomeServlet.doGet(httpServletRequest, httpServletResponse);
         // THEN
         verify(httpServletResponse).sendRedirect(ADMIN_PAGE_URI);
     }
@@ -60,7 +60,7 @@ class RootUriServletTest {
         doReturn(new AuthenticatedUserDetails(null, UserType.BUS_DRIVER))
                 .when(session).getAttribute(USER_DETAILS);
         // WHEN
-        rootUriServlet.doGet(httpServletRequest, httpServletResponse);
+        goHomeServlet.doGet(httpServletRequest, httpServletResponse);
         // THEN
         verify(httpServletResponse).sendRedirect(DRIVER_PAGE_URI);
     }

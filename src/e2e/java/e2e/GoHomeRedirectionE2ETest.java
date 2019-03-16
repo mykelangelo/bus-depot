@@ -12,7 +12,7 @@ import static e2e.constant.ApplicationEndpointsURLs.AdminPage.ADMIN_PAGE_URL;
 import static e2e.constant.ApplicationEndpointsURLs.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class RootUriRedirectionE2ETest implements ScreenShotGeneratingE2ETest {
+public class GoHomeRedirectionE2ETest implements ScreenShotGeneratingE2ETest {
     private WebDriver webDriver;
     private LoginPage loginPage;
 
@@ -47,7 +47,7 @@ public class RootUriRedirectionE2ETest implements ScreenShotGeneratingE2ETest {
     @Test
     @DisplayName("Support root ApplicationEndpointsURIs: redirect unauthorized user to login page")
     void shouldRedirectUnauthorizedUserToLoginPage() {
-        webDriver.get(ROOT_URL);
+        webDriver.get(GO_HOME_URL);
 
         assertEquals(LOGIN_PAGE_URL, webDriver.getCurrentUrl());
     }
@@ -60,7 +60,7 @@ public class RootUriRedirectionE2ETest implements ScreenShotGeneratingE2ETest {
         loginPage.findPasswordField().sendKeys("correctPasswordWhyNotItsAGreatOne");
         loginPage.findSubmitButton().click();
 
-        webDriver.get(ROOT_URL);
+        webDriver.get(GO_HOME_URL);
 
         assertEquals(ADMIN_PAGE_URL, webDriver.getCurrentUrl());
     }
@@ -73,7 +73,7 @@ public class RootUriRedirectionE2ETest implements ScreenShotGeneratingE2ETest {
         loginPage.findPasswordField().sendKeys("correctPasswordWhyNotItsAGreatOne");
         loginPage.findSubmitButton().click();
 
-        webDriver.get(ROOT_URL);
+        webDriver.get(GO_HOME_URL);
 
         assertEquals(DRIVER_PAGE_URL, webDriver.getCurrentUrl());
     }

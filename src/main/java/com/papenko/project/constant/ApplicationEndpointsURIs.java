@@ -6,7 +6,7 @@ public interface ApplicationEndpointsURIs {
     String LOGIN_PAGE_URI = "/login";
     String LOGIN_JSP_PATH = "/WEB-INF/login.jsp";
     String LOGOUT_FORM_URI = "/logout";
-    String ROOT_URI = "/";
+    String GO_HOME_URI = "/go-home";
 
     interface AdminPage {
         String ADMIN_PAGE_URI = "/admin";

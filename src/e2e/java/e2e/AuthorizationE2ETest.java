@@ -5,6 +5,7 @@ import io.github.bonigarcia.wdm.ChromeDriverManager;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.openqa.selenium.By;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -51,7 +52,7 @@ public class AuthorizationE2ETest implements ScreenShotGeneratingE2ETest {
     void shouldNotLetUnauthorizedUserVisitDriverOrAdminPageOrSubmitAnyOfTheirForms(String driverOrAdminURL) {
         webDriver.get(driverOrAdminURL);
 
-        assertEquals(LOGIN_PAGE_URL, webDriver.getCurrentUrl());
+        assertEquals("YOU'VE COME TO THE WONG PLACE", webDriver.findElement(By.className("big-font")).getText());
     }
 
     @Test
@@ -59,7 +60,7 @@ public class AuthorizationE2ETest implements ScreenShotGeneratingE2ETest {
     void shouldLetUnauthorizedUserTryToVisitUnknownPage() {
         webDriver.get(NO_SUCH_PAGE_EXISTS_URL);
 
-        assertEquals(LOGIN_PAGE_URL, webDriver.getCurrentUrl());
+        assertEquals("YOU'VE COME TO THE WONG PLACE", webDriver.findElement(By.className("big-font")).getText());
     }
 
     @ParameterizedTest
@@ -81,7 +82,7 @@ public class AuthorizationE2ETest implements ScreenShotGeneratingE2ETest {
 
         webDriver.get(DRIVER_PAGE_URL);
 
-        assertEquals(ADMIN_PAGE_URL, webDriver.getCurrentUrl());
+        assertEquals("YOU'VE COME TO THE WONG PLACE", webDriver.findElement(By.className("big-font")).getText());
     }
 
     @ParameterizedTest
@@ -93,35 +94,23 @@ public class AuthorizationE2ETest implements ScreenShotGeneratingE2ETest {
         loginPage.findPasswordField().sendKeys("correctPasswordWhyNotItsAGreatOne");
         loginPage.findSubmitButton().click();
 
-        webDriver.get(ADMIN_PAGE_URL);
+        webDriver.get(adminURL);
 
-        assertEquals(DRIVER_PAGE_URL, webDriver.getCurrentUrl());
+        assertEquals("YOU'VE COME TO THE WONG PLACE", webDriver.findElement(By.className("big-font")).getText());
     }
 
-    @Test
-    @DisplayName("Security check: driver can try to perform unknown action")
-    void shouldLetAuthorizedDriverTryToVisitUnknownPage() {
+    @ParameterizedTest
+    @ValueSource(strings = {"driver@company.com", "administrator@company.com"})
+    @DisplayName("Security check: driver and admin can try to perform unknown action")
+    void shouldLetAuthorizedDriverAndAdminTryToVisitUnknownPage(String driverOrAdminEmail) {
         loginPage.goToPage();
-        loginPage.findEmailField().sendKeys("driver@company.com");
+        loginPage.findEmailField().sendKeys(driverOrAdminEmail);
         loginPage.findPasswordField().sendKeys("correctPasswordWhyNotItsAGreatOne");
         loginPage.findSubmitButton().click();
 
         webDriver.get(NO_SUCH_PAGE_EXISTS_URL);
 
-        assertEquals(DRIVER_PAGE_URL, webDriver.getCurrentUrl());
-    }
-
-    @Test
-    @DisplayName("Security check: admin can try to perform unknown action")
-    void shouldLetAuthorizedAdminTryToVisitUnknownPage() {
-        loginPage.goToPage();
-        loginPage.findEmailField().sendKeys("administrator@company.com");
-        loginPage.findPasswordField().sendKeys("correctPasswordWhyNotItsAGreatOne");
-        loginPage.findSubmitButton().click();
-
-        webDriver.get(NO_SUCH_PAGE_EXISTS_URL);
-
-        assertEquals(ADMIN_PAGE_URL, webDriver.getCurrentUrl());
+        assertEquals("YOU'VE COME TO THE WONG PLACE", webDriver.findElement(By.className("big-font")).getText());
     }
 
     @ParameterizedTest
@@ -136,6 +125,7 @@ public class AuthorizationE2ETest implements ScreenShotGeneratingE2ETest {
         webDriver.get(LOGIN_PAGE_URL);
 
         assertEquals(LOGIN_PAGE_URL, webDriver.getCurrentUrl());
+        assertEquals("Welcome to The Bus Depot!", webDriver.findElement(By.tagName("h1")).getText());
     }
 
     @ParameterizedTest
@@ -150,5 +140,6 @@ public class AuthorizationE2ETest implements ScreenShotGeneratingE2ETest {
         webDriver.get(LOGOUT_FORM_URL);
 
         assertEquals(LOGIN_PAGE_URL, webDriver.getCurrentUrl());
+        assertEquals("Welcome to The Bus Depot!", webDriver.findElement(By.tagName("h1")).getText());
     }
 }
