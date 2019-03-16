@@ -12,6 +12,11 @@ body {
     color: #1f3759;
 }
 
+a:link {
+    color: #9fb7d9;
+    text-decoration: none;
+}
+
 a:hover {
     color: #9fb7d9;
     text-decoration: none;
