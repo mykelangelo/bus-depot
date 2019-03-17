@@ -45,18 +45,19 @@ public class AssignBusToRouteServlet extends HttpServlet {
 
 
     private DataSource getDataSource() {
-        LOGGER.debug("about to get dataSource");
         return DataSourceHolder.getInstance();
     }
 
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        LOGGER.debug("POST");
+        LOGGER.debug("about to POST");
         String busSerial = request.getParameter(BUS_SERIAL);
         String routeName = request.getParameter(ROUTE_NAME);
         adminService.assignBusToRoute(busSerial, routeName);
+        LOGGER.debug("redirecting...");
         response.sendRedirect("/admin?lastSubmitStatusMessage=You assigned bus with serial number " +
                 busSerial + " to route with name " + routeName);
+        LOGGER.debug("finished POST");
     }
 }

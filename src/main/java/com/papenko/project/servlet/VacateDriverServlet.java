@@ -43,15 +43,16 @@ public class VacateDriverServlet extends HttpServlet {
     }
 
     private DataSource getDataSource() {
-        LOGGER.debug("about to get dataSource");
         return DataSourceHolder.getInstance();
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        LOGGER.debug("POST");
+        LOGGER.debug("about to POST");
         String driverEmail = request.getParameter(DRIVER_EMAIL);
         adminService.vacateDriverFromBus(driverEmail);
+        LOGGER.debug("redirecting...");
         response.sendRedirect("/admin?lastSubmitStatusMessage=You vacated driver with email " + driverEmail);
+        LOGGER.debug("finished POST");
     }
 }

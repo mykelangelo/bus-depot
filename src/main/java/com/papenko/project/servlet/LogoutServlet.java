@@ -18,8 +18,10 @@ public class LogoutServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        LOGGER.debug("GET");
+        LOGGER.debug("about to GET");
         request.getSession().invalidate();
+        LOGGER.debug("redirecting...");
         response.sendRedirect(LOGIN_PAGE_URI);
+        LOGGER.debug("finished GET");
     }
 }

@@ -20,10 +20,12 @@ public class GoHomeServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        LOGGER.debug("GET");
+        LOGGER.debug("about to GET");
         var userDetails = (AuthenticatedUserDetails) request.getSession().getAttribute(USER_DETAILS);
         String redirectURI = chooseURI(userDetails);
+        LOGGER.debug("forwarding...");
         response.sendRedirect(redirectURI);
+        LOGGER.debug("finished GET");
     }
 
     private String chooseURI(AuthenticatedUserDetails userDetails) {

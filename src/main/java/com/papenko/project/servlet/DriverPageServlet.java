@@ -41,25 +41,28 @@ public class DriverPageServlet extends HttpServlet {
     }
 
     private DataSource getDataSource() {
-        LOGGER.debug("about to get dataSource");
         return DataSourceHolder.getInstance();
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        LOGGER.debug("GET");
+        LOGGER.debug("about to GET");
         var userDetails = (AuthenticatedUserDetails) request.getSession().getAttribute(USER_DETAILS);
         Driver driver = driverService.findDriverByEmail(userDetails.getEmail());
         request.setAttribute(DRIVER, driver);
+        LOGGER.debug("forwarding...");
         this.getServletContext().getRequestDispatcher(DRIVER_JSP_PATH).forward(request, response);
+        LOGGER.debug("finished GET");
     }
 
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        LOGGER.debug("POST");
+        LOGGER.debug("about to POST");
         var userDetails = (AuthenticatedUserDetails) request.getSession().getAttribute(USER_DETAILS);
         driverService.setDriverAwarenessToTrue(userDetails.getEmail());
+        LOGGER.debug("redirecting...");
         response.sendRedirect(DRIVER_PAGE_URI);
+        LOGGER.debug("finished POST");
     }
 }

@@ -46,16 +46,16 @@ public class AssignDriverToBusServlet extends HttpServlet {
 
 
     private DataSource getDataSource() {
-        LOGGER.debug("about to get dataSource");
         return DataSourceHolder.getInstance();
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        LOGGER.debug("POST");
+        LOGGER.debug("about to POST");
         String driverEmail = request.getParameter(DRIVER_EMAIL);
         String busSerial = request.getParameter(BUS_SERIAL);
         Driver driverAlreadyInBus = adminService.getDriverInBus(busSerial);
+        LOGGER.debug("redirecting...");
         if (driverAlreadyInBus == null) {
             adminService.assignDriverToBus(driverEmail, busSerial);
             response.sendRedirect("/admin?lastSubmitStatusMessage=You assigned driver with email " +
@@ -65,5 +65,6 @@ public class AssignDriverToBusServlet extends HttpServlet {
                     driverEmail + " to bus with serial number " + busSerial +
                     ", but this bus is already used by driver with email " + driverAlreadyInBus.getUserEmail());
         }
+        LOGGER.debug("finished POST");
     }
 }

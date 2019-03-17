@@ -44,17 +44,18 @@ public class AdminPageServlet extends HttpServlet {
     }
 
     private DataSource getDataSource() {
-        LOGGER.debug("about to get dataSource");
         return DataSourceHolder.getInstance();
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        LOGGER.debug("GET");
+        LOGGER.debug("about to GET");
         request.setAttribute(LAST_SUBMIT_STATUS_MESSAGE, request.getParameter(LAST_SUBMIT_STATUS_MESSAGE));
         request.setAttribute(DRIVERS, adminService.getDrivers());
         request.setAttribute(BUSES, adminService.getBuses());
         request.setAttribute(ROUTES, adminService.getRoutes());
+        LOGGER.debug("forwarding...");
         getServletContext().getRequestDispatcher(ADMIN_JSP_PATH).forward(request, response);
+        LOGGER.debug("finished GET");
     }
 }

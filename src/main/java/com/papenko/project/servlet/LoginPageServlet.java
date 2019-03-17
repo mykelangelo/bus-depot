@@ -37,21 +37,22 @@ public class LoginPageServlet extends HttpServlet {
     }
 
     private DataSource getDataSource() {
-        LOGGER.debug("about to get dataSource");
         return DataSourceHolder.getInstance();
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        LOGGER.debug("GET");
+        LOGGER.debug("about to GET");
         var userDetails = request.getSession().getAttribute(USER_DETAILS);
         var path = (userDetails == null) ? LOGIN_JSP_PATH : LOGOUT_FORM_URI;
+        LOGGER.debug("forwarding...");
         this.getServletContext().getRequestDispatcher(path).forward(request, response);
+        LOGGER.debug("finished GET");
     }
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        LOGGER.debug("POST");
+        LOGGER.debug("about to POST");
         String email = request.getParameter(EMAIL);
         String password = request.getParameter(PASSWORD);
 
@@ -62,10 +63,13 @@ public class LoginPageServlet extends HttpServlet {
             request.getSession().setAttribute(USER_DETAILS, userDetails);
 
             String pageURI = userType.getPageUri();
+            LOGGER.debug("redirecting...");
             response.sendRedirect(pageURI);
         } else {
             request.setAttribute(LOGIN_ERROR_MESSAGE, "Invalid email or password");
+            LOGGER.debug("forwarding...");
             this.getServletContext().getRequestDispatcher(LOGIN_JSP_PATH).forward(request, response);
         }
+        LOGGER.debug("finished POST");
     }
 }
