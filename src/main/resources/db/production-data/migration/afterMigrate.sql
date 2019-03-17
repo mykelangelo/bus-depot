@@ -1,8 +1,3 @@
-TRUNCATE TABLE bus_driver;
-TRUNCATE TABLE bus;
-TRUNCATE TABLE route;
-TRUNCATE TABLE depot_user;
-
 INSERT IGNORE INTO depot_user
   (email, user_type, password_hash)
 VALUES ('human.admin@bus-depot.com', 'DEPOT_ADMIN', '$2a$10$BTrA6YQEY1JiSh5rLPheq.U89JgbCtXcr06ignTdA93bg5mp9OHLW'),
