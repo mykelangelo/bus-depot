@@ -12,5 +12,6 @@ public interface ApplicationEndpointsURLs {
         String ASSIGN_DRIVER_TO_BUS_FORM_URL = "http://localhost:8080/driver-to-bus";
         String VACATE_DRIVER_FORM_URL = "http://localhost:8080/vacate-driver";
         String ASSIGN_BUS_TO_ROUTE_FORM_URL = "http://localhost:8080/bus-to-route";
+        String ADD_ROUTE_URL = "http://localhost:8080/add-route";
     }
 }

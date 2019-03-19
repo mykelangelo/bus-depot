@@ -31,7 +31,7 @@ public class DriverRepository {
             preparedStatement.setString(2, driver.getUserEmail());
             preparedStatement.execute();
         } catch (SQLException e) {
-            LOGGER.error("SQL fails to update driver {} with bus {}\nStacktrace: {}", driver, bus, e);
+            LOGGER.error("SQL fails to update driver {} with bus {}", driver, bus, e);
         }
         LOGGER.debug("updated driver with a new bus");
     }
@@ -53,7 +53,7 @@ public class DriverRepository {
                 }
             }
         } catch (SQLException e) {
-            LOGGER.error("SQL fails to find driver by email {}\nStacktrace: {}", driverEmail, e);
+            LOGGER.error("SQL fails to find driver by email {}", driverEmail, e);
         }
         LOGGER.debug("driver by email not found");
         return null;
@@ -75,7 +75,7 @@ public class DriverRepository {
                 drivers.add(new Driver(userEmail, bus, awareOfAssignment));
             }
         } catch (SQLException e) {
-            LOGGER.error("SQL fails to find all drivers. Current list of drivers: {}\nStacktrace: {}", drivers, e);
+            LOGGER.error("SQL fails to find all drivers. Current list of drivers: {}", drivers, e);
         }
 
         LOGGER.debug("found all {} drivers", drivers.size());
@@ -93,7 +93,7 @@ public class DriverRepository {
             preparedStatement.setString(2, driver.getUserEmail());
             preparedStatement.execute();
         } catch (SQLException e) {
-            LOGGER.error("SQL fails to update driver {} with awareness {}\nStacktrace: {}", driver, isAwareOfAssignment, e);
+            LOGGER.error("SQL fails to update driver {} with awareness {}", driver, isAwareOfAssignment, e);
         }
         LOGGER.debug("updated driver with new awareness status");
     }
@@ -114,7 +114,7 @@ public class DriverRepository {
                 }
             }
         } catch (SQLException e) {
-            LOGGER.error("SQL fails to find driver by bus {}\nStacktrace: {}", bus, e);
+            LOGGER.error("SQL fails to find driver by bus {}", bus, e);
         }
         LOGGER.debug("driver by bus not found");
         return null;

@@ -32,7 +32,7 @@ public class UserRepository {
                 }
             }
         } catch (SQLException e) {
-            LOGGER.error("SQL fails to find user by email {}\nStacktrace: {}", email, e);
+            LOGGER.error("SQL fails to find user by email {}", email, e);
         }
         LOGGER.debug("user by email not found");
         return null;

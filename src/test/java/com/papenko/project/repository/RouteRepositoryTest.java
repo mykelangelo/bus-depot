@@ -73,4 +73,24 @@ class RouteRepositoryTest {
         // THEN
         assertNull(route);
     }
+
+    @Test
+    void createRoute_shouldInsertNewRouteWithNameGivenIntoTableRoute_whenNoSuchRouteExistsInTableRoute() {
+        // GIVEN
+        // WHEN
+        routeRepository.createRoute("N8");
+        // THEN
+        assertEquals(new Route("N8"), routeRepository.findRouteByName("N8"));
+    }
+
+    @Test
+    void createRoute_shouldNotInsertNewRouteIntoTableRoute_whenRouteWithNameGivenAlreadyExistsInTableRoute() {
+        // GIVEN
+        embeddedMysql.executeScripts("depot_database",
+                () -> "INSERT INTO route (route_name) VALUE ('M8');");
+        // WHEN
+        routeRepository.createRoute("M8");
+        // THEN
+        assertEquals(new Route("M8"), routeRepository.findRouteByName("M8"));
+    }
 }

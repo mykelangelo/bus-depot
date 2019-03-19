@@ -74,4 +74,10 @@ public class AdminService {
         LOGGER.debug("finished getting driver in a bus");
         return driverByBus;
     }
+
+    public void addRoute(String routeName) {
+        LOGGER.debug("about to create a route");
+        routeRepository.createRoute(routeName);
+        LOGGER.debug("finished creating a route");
+    }
 }

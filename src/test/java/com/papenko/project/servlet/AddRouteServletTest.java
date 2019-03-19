@@ -5,20 +5,22 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static com.papenko.project.constant.RequestParametersNames.DRIVER_EMAIL;
+import static com.papenko.project.constant.RequestParametersNames.ROUTE_NAME;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-class VacateDriverServletTest {
+class AddRouteServletTest {
+    @Spy
     @InjectMocks
-    VacateDriverServlet vacateDriver;
+    AddRouteServlet addRouteServlet;
     @Mock
     AdminService adminService;
     @Mock
@@ -27,13 +29,13 @@ class VacateDriverServletTest {
     HttpServletResponse httpServletResponse;
 
     @Test
-    void doPost_shouldVacateDriverFromBus_andRedirectToAdminPage_andSetLastSubmitStatusMessageAsParameter() throws IOException {
+    void doPost_shouldAddNewRouteWithNameGivenToDatabase_andRedirectToAdminPage_andSetLastSubmitStatusMessageAsParameter() throws IOException {
         // GIVEN
-        doReturn("bob.jenkins@gmail.com").when(httpServletRequest).getParameter(DRIVER_EMAIL);
+        doReturn("N1").when(httpServletRequest).getParameter(ROUTE_NAME);
         // WHEN
-        vacateDriver.doPost(httpServletRequest, httpServletResponse);
+        addRouteServlet.doPost(httpServletRequest, httpServletResponse);
         // THEN
-        verify(adminService).vacateDriverFromBus("bob.jenkins@gmail.com");
-        verify(httpServletResponse).sendRedirect("/admin?lastSubmitStatusMessage=You vacated driver with email bob.jenkins@gmail.com");
+        verify(adminService).addRoute("N1");
+        verify(httpServletResponse).sendRedirect("/admin?lastSubmitStatusMessage=You added new route with name N1");
     }
 }

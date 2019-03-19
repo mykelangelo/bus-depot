@@ -1,7 +1,6 @@
 package com.papenko.project.servlet;
 
 import com.papenko.project.service.AdminService;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -17,7 +16,6 @@ import static com.papenko.project.constant.RequestParametersNames.ROUTE_NAME;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 
-@DisplayName("AssignBusToRouteServlet")
 @ExtendWith(MockitoExtension.class)
 class AssignBusToRouteServletTest {
     @InjectMocks

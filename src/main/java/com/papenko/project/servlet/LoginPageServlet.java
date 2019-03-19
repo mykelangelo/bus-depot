@@ -43,8 +43,8 @@ public class LoginPageServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         LOGGER.debug("about to GET");
-        var userDetails = request.getSession().getAttribute(USER_DETAILS);
-        var path = (userDetails == null) ? LOGIN_JSP_PATH : LOGOUT_FORM_URI;
+        Object userDetails = request.getSession().getAttribute(USER_DETAILS);
+        String path = (userDetails == null) ? LOGIN_JSP_PATH : LOGOUT_FORM_URI;
         LOGGER.debug("forwarding...");
         this.getServletContext().getRequestDispatcher(path).forward(request, response);
         LOGGER.debug("finished GET");

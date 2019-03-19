@@ -4,7 +4,6 @@ import com.papenko.project.entity.Bus;
 import com.papenko.project.entity.Driver;
 import com.papenko.project.entity.Route;
 import com.papenko.project.service.AdminService;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -19,7 +18,6 @@ import static com.papenko.project.constant.RequestParametersNames.BUS_SERIAL;
 import static com.papenko.project.constant.RequestParametersNames.DRIVER_EMAIL;
 import static org.mockito.Mockito.*;
 
-@DisplayName("AssignDriverToBusServlet")
 @ExtendWith(MockitoExtension.class)
 class AssignDriverToBusServletTest {
     @InjectMocks

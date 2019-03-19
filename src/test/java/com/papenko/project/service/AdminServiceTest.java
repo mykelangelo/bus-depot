@@ -118,4 +118,13 @@ class AdminServiceTest {
         assertEquals(new Driver("ao@lo.cn", new Bus("AOL01AOL", new Route("314")), true),
                 driver);
     }
+
+    @Test
+    void addRoute_shouldInitiateCreationOfNewRouteWithNameGivenInDatabase() {
+        // GIVEN
+        // WHEN
+        adminService.addRoute("N30");
+        // THEN
+        verify(routeRepository).createRoute("N30");
+    }
 }

@@ -30,7 +30,7 @@ public class RouteRepository {
                 routes.add(new Route(routeName));
             }
         } catch (SQLException e) {
-            LOGGER.error("SQL fails to find all routes. Current list of routes: {}\nStacktrace: {}", routes, e);
+            LOGGER.error("SQL fails to find all routes. Current list of routes: {}", routes, e);
         }
         LOGGER.debug("found all {} routes", routes.size());
         return routes;
@@ -50,9 +50,27 @@ public class RouteRepository {
                 }
             }
         } catch (SQLException e) {
-            LOGGER.error("SQL fails to find route by name {}\nStacktrace: {}", routeName, e);
+            LOGGER.error("SQL fails to find route by name {}", routeName, e);
         }
         LOGGER.debug("route by name not found");
         return null;
+    }
+
+    public void createRoute(String routeName) {
+        LOGGER.debug("about to create a route");
+        Route routeByName = findRouteByName(routeName);
+        if (routeByName != null) {
+            LOGGER.debug("such route already exists");
+            return;
+        }
+        var sql = "INSERT INTO route (route_name) VALUE ((?));";
+        try (var connection = dataSource.getConnection();
+             var preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1, routeName);
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            LOGGER.error("SQL fails to create a route {}", routeName, e);
+        }
+        LOGGER.debug("created a route");
     }
 }

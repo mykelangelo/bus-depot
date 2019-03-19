@@ -63,6 +63,7 @@
     <input type="submit" class="driver-to-bus__submit-button" value="Assign">
 </form>
 <hr>
+
 <form action="${pageContext.request.contextPath}/vacate-driver" method="post">
     <label>
         　Select driver:
@@ -82,6 +83,7 @@
     <input type="submit" class="vacate-driver__submit-button" value="Vacate">
 </form>
 <hr>
+
 <form action="${pageContext.request.contextPath}/bus-to-route" method="post">
     <label>
         　Select bus:
@@ -116,6 +118,16 @@
     <input type="submit" class="bus-to-route__submit-button" value="Assign">
 </form>
 <hr>
+
+<form action="${pageContext.request.contextPath}/add-route" method="post">
+    <label>
+        　Create new route:
+        <input name="route-name" class="add-route__route-name" placeholder="input name here, e.g. 89k" required>
+    </label>
+    <input type="submit" class="add-route__submit-button" value="Add route">
+</form>
+<hr>
+
 <table>
     <tr>
         <td>　　</td>

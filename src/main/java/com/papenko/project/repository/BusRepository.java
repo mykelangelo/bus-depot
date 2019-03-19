@@ -38,7 +38,7 @@ public class BusRepository {
                 buses.add(new Bus(busSerial, route));
             }
         } catch (SQLException e) {
-            LOGGER.error("SQL fails to find all buses. Current list of buses: {}\nStacktrace: {}", buses, e);
+            LOGGER.error("SQL fails to find all buses. Current list of buses: {}", buses, e);
         }
 
         LOGGER.debug("found all {} buses", buses.size());
@@ -55,7 +55,7 @@ public class BusRepository {
             preparedStatement.setString(2, bus.getSerialNumber());
             preparedStatement.execute();
         } catch (SQLException e) {
-            LOGGER.error("SQL fails to update bus {} with route {}\nStacktrace: {}", bus, route, e);
+            LOGGER.error("SQL fails to update bus {} with route {}", bus, route, e);
         }
         LOGGER.debug("updated bus with a new route");
 
@@ -82,7 +82,7 @@ public class BusRepository {
                 }
             }
         } catch (SQLException e) {
-            LOGGER.error("SQL fails to find bus by serial: {}\nStacktrace: {}", busSerial, e);
+            LOGGER.error("SQL fails to find bus by serial: {}", busSerial, e);
         }
         LOGGER.debug("bus by serial number not found");
         return null;
