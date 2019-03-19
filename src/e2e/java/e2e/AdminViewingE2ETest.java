@@ -79,4 +79,10 @@ public class AdminViewingE2ETest implements ScreenShotGeneratingE2ETest {
         assertEquals("❌",
                 adminPage.getDriversView().findAssignmentAwareness("newbie@company.com").getText());
     }
+
+    @Test
+    @DisplayName("Admin flow: view routes")
+    void shouldViewRouteName() {
+        assertEquals("71", adminPage.getRoutesView().findRouteName("71").getText());
+    }
 }

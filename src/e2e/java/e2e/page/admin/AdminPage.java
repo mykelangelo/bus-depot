@@ -11,6 +11,7 @@ public class AdminPage {
     private final AssignBusToRouteForm assignBusToRouteForm;
     private final BusesView busesView;
     private final DriversView driversView;
+    private final RoutesView routesView;
 
     public AdminPage(WebDriver webDriver) {
         this.webDriver = webDriver;
@@ -19,6 +20,7 @@ public class AdminPage {
         vacateDriverForm = new VacateDriverForm(webDriver);
         busesView = new BusesView(webDriver);
         driversView = new DriversView(webDriver);
+        routesView = new RoutesView(webDriver);
     }
 
 
@@ -40,6 +42,10 @@ public class AdminPage {
 
     public DriversView getDriversView() {
         return driversView;
+    }
+
+    public RoutesView getRoutesView() {
+        return routesView;
     }
 
     public WebElement findLogoutButton() {

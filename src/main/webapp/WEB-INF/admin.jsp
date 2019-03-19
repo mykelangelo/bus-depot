@@ -122,6 +122,26 @@
         <td>
             <table>
                 <thead>
+                All Routes:
+                </thead>
+                <tr>
+                    <th>
+                        Name
+                    </th>
+                </tr>
+                <c:forEach var="route" items="${routes}">
+                    <tr>
+                        <td class="routes-view__route-name-for-${route.getName()}">
+                                ${route.getName()}
+                        </td>
+                    </tr>
+                </c:forEach>
+            </table>
+        </td>
+        <td>　 　</td>
+        <td>
+            <table>
+                <thead>
                 　　All Buses:
                 </thead>
                 <tr>
@@ -146,7 +166,7 @@
                 </c:forEach>
             </table>
         </td>
-        <td>　   　</td>
+        <td>　  　</td>
         <td>
             <table>
                 <thead>
