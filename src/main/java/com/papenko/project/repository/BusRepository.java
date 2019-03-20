@@ -3,6 +3,9 @@ package com.papenko.project.repository;
 import com.papenko.project.entity.Bus;
 import com.papenko.project.entity.Driver;
 import com.papenko.project.entity.Route;
+import com.papenko.project.exception.bus.BusRouteChangeException;
+import com.papenko.project.exception.bus.BusSearchException;
+import com.papenko.project.exception.bus.BusesSearchException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,7 +41,7 @@ public class BusRepository {
                 buses.add(new Bus(busSerial, route));
             }
         } catch (SQLException e) {
-            LOGGER.error("SQL fails to find all buses. Current list of buses: {}", buses, e);
+            throw new BusesSearchException(buses, e);
         }
 
         LOGGER.debug("found all {} buses", buses.size());
@@ -55,7 +58,7 @@ public class BusRepository {
             preparedStatement.setString(2, bus.getSerialNumber());
             preparedStatement.execute();
         } catch (SQLException e) {
-            LOGGER.error("SQL fails to update bus {} with route {}", bus, route, e);
+            throw new BusRouteChangeException(bus, route, e);
         }
         LOGGER.debug("updated bus with a new route");
 
@@ -82,7 +85,7 @@ public class BusRepository {
                 }
             }
         } catch (SQLException e) {
-            LOGGER.error("SQL fails to find bus by serial: {}", busSerial, e);
+            throw new BusSearchException(busSerial, e);
         }
         LOGGER.debug("bus by serial number not found");
         return null;

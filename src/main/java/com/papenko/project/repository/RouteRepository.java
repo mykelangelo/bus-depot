@@ -1,6 +1,9 @@
 package com.papenko.project.repository;
 
 import com.papenko.project.entity.Route;
+import com.papenko.project.exception.route.RouteCreationException;
+import com.papenko.project.exception.route.RouteSearchException;
+import com.papenko.project.exception.route.RoutesSearchException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,7 +33,7 @@ public class RouteRepository {
                 routes.add(new Route(routeName));
             }
         } catch (SQLException e) {
-            LOGGER.error("SQL fails to find all routes. Current list of routes: {}", routes, e);
+            throw new RoutesSearchException(routes, e);
         }
         LOGGER.debug("found all {} routes", routes.size());
         return routes;
@@ -50,7 +53,7 @@ public class RouteRepository {
                 }
             }
         } catch (SQLException e) {
-            LOGGER.error("SQL fails to find route by name {}", routeName, e);
+            throw new RouteSearchException(routeName, e);
         }
         LOGGER.debug("route by name not found");
         return null;
@@ -69,7 +72,7 @@ public class RouteRepository {
             preparedStatement.setString(1, routeName);
             preparedStatement.execute();
         } catch (SQLException e) {
-            LOGGER.error("SQL fails to create a route {}", routeName, e);
+            throw new RouteCreationException(routeName, e);
         }
         LOGGER.debug("created a route");
     }

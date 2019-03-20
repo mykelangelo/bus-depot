@@ -2,6 +2,10 @@ package com.papenko.project.repository;
 
 import com.papenko.project.entity.Bus;
 import com.papenko.project.entity.Driver;
+import com.papenko.project.exception.driver.DriverAwarenessChangeException;
+import com.papenko.project.exception.driver.DriverBusChangeException;
+import com.papenko.project.exception.driver.DriverSearchException;
+import com.papenko.project.exception.driver.DriversSearchException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,7 +35,7 @@ public class DriverRepository {
             preparedStatement.setString(2, driver.getUserEmail());
             preparedStatement.execute();
         } catch (SQLException e) {
-            LOGGER.error("SQL fails to update driver {} with bus {}", driver, bus, e);
+            throw new DriverBusChangeException(driver, bus, e);
         }
         LOGGER.debug("updated driver with a new bus");
     }
@@ -53,7 +57,7 @@ public class DriverRepository {
                 }
             }
         } catch (SQLException e) {
-            LOGGER.error("SQL fails to find driver by email {}", driverEmail, e);
+            throw new DriverSearchException(driverEmail, e);
         }
         LOGGER.debug("driver by email not found");
         return null;
@@ -75,7 +79,7 @@ public class DriverRepository {
                 drivers.add(new Driver(userEmail, bus, awareOfAssignment));
             }
         } catch (SQLException e) {
-            LOGGER.error("SQL fails to find all drivers. Current list of drivers: {}", drivers, e);
+            throw new DriversSearchException(drivers, e);
         }
 
         LOGGER.debug("found all {} drivers", drivers.size());
@@ -93,7 +97,7 @@ public class DriverRepository {
             preparedStatement.setString(2, driver.getUserEmail());
             preparedStatement.execute();
         } catch (SQLException e) {
-            LOGGER.error("SQL fails to update driver {} with awareness {}", driver, isAwareOfAssignment, e);
+            throw new DriverAwarenessChangeException(driver, isAwareOfAssignment, e);
         }
         LOGGER.debug("updated driver with new awareness status");
     }
@@ -114,7 +118,7 @@ public class DriverRepository {
                 }
             }
         } catch (SQLException e) {
-            LOGGER.error("SQL fails to find driver by bus {}", bus, e);
+            throw new DriverSearchException(bus, e);
         }
         LOGGER.debug("driver by bus not found");
         return null;
