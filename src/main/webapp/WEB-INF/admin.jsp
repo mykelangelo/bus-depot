@@ -128,6 +128,26 @@
 </form>
 <hr>
 
+<form action="${pageContext.request.contextPath}/delete-route" method="post">
+    <label>
+        Delete route:
+        <select class="delete-route__route-dropdown"
+                required
+                name="route-name">
+            <option selected disabled hidden value>
+                Routes
+            </option>
+            <c:forEach var="route" items="${routes}">
+                <option class="delete-route__route-dropdown-option-${route.getName()}">
+                        ${route.getName()}
+                </option>
+            </c:forEach>
+        </select>
+    </label>
+    <input type="submit" class="delete-route__submit-button" value="Delete route">
+</form>
+<hr>
+
 <table>
     <tr>
         <td>　　</td>

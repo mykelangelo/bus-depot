@@ -13,7 +13,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class AdminCreatingE2ETest implements ScreenShotGeneratingE2ETest {
+public class AdminDeletingE2ETest implements ScreenShotGeneratingE2ETest {
     private WebDriver webDriver;
     private AdminPage adminPage;
 
@@ -52,15 +52,32 @@ public class AdminCreatingE2ETest implements ScreenShotGeneratingE2ETest {
     }
 
     @Test
-    @DisplayName("Admin flow: create route")
-    void shouldCreateNewRoute_andGetCorrespondingMessage_andSeeThisRouteInListOfRoutes() {
-        assertThrows(NoSuchElementException.class, () -> adminPage.getRoutesView().findRouteName("G9"));
+    @DisplayName("Admin flow: delete unused route")
+    void shouldDeleteRoute_andGetCorrespondingMessage_andNotSeeThisRouteInListsOfRoutes_whenRouteIsNotUsedByAnyBus() {
+        assertEquals("K9", adminPage.getRoutesView().findRouteName("K9").getText());
 
-        adminPage.getAddRouteForm().findNameField().sendKeys("G9");
-        adminPage.getAddRouteForm().findAddButton().click();
+        adminPage.getDeleteRouteForm().findRouteDropDown().click();
+        adminPage.getDeleteRouteForm().findRouteDropDownOption("K9").click();
+        adminPage.getDeleteRouteForm().findDeleteButton().click();
 
-        assertEquals("G9", adminPage.getRoutesView().findRouteName("G9").getText());
-        assertEquals("You added new route with name G9",
+        adminPage.getDeleteRouteForm().findRouteDropDown().click();
+        assertThrows(NoSuchElementException.class, () -> adminPage.getDeleteRouteForm().findRouteDropDownOption("K9").click());
+        assertThrows(NoSuchElementException.class, () -> adminPage.getRoutesView().findRouteName("K9"));
+        assertEquals("You deleted route with name K9",
+                adminPage.findLastSubmitStatusMessage().getText());
+    }
+
+    @Test
+    @DisplayName("Admin flow: fail to delete used route")
+    void shouldNotDeleteRoute_andGetCorrespondingMessage_andStillSeeThisBusInListOfRoutes_whenRouteIsUsedByAnyBuses() {
+        assertEquals("72", adminPage.getRoutesView().findRouteName("72").getText());
+
+        adminPage.getDeleteRouteForm().findRouteDropDown().click();
+        adminPage.getDeleteRouteForm().findRouteDropDownOption("72").click();
+        adminPage.getDeleteRouteForm().findDeleteButton().click();
+
+        assertEquals("72", adminPage.getRoutesView().findRouteName("72").getText());
+        assertEquals("You tried to delete route with name 72 but it's used - please assign bus(es) AI7007AA to other route(s) before deleting this route",
                 adminPage.findLastSubmitStatusMessage().getText());
     }
 }

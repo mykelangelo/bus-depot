@@ -127,4 +127,27 @@ class AdminServiceTest {
         // THEN
         verify(routeRepository).createRoute("N30");
     }
+
+    @Test
+    void deleteRoute_shouldInitiateDeletionOfRouteWithNameGivenFromDatabase() {
+        // GIVEN
+        given(routeRepository.findRouteByName("I-60")).willReturn(new Route("I-60"));
+        // WHEN
+        adminService.deleteRoute("I-60");
+        // THEN
+        verify(routeRepository).deleteRoute(new Route("I-60"));
+    }
+
+    @Test
+    void getBusesOnRoute_shouldReturnAllBusesOnGivenRoute() {
+        // GIVEN
+        given(routeRepository.findRouteByName("I-2")).willReturn(new Route("I-2"));
+        given(busRepository.findBusesByRoute(new Route("I-2")))
+                .willReturn(List.of(new Bus("U2", new Route("I-2")), new Bus("U52", new Route("I-2"))));
+        // WHEN
+        List<Bus> busesOnRoute = adminService.getBusesOnRoute("I-2");
+        // THEN
+        assertEquals(List.of(new Bus("U2", new Route("I-2")), new Bus("U52", new Route("I-2"))),
+                busesOnRoute);
+    }
 }

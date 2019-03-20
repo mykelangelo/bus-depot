@@ -15,5 +15,6 @@ public interface ApplicationEndpointsURIs {
         String VACATE_DRIVER_FORM_URI = "/vacate-driver";
         String ASSIGN_BUS_TO_ROUTE_FORM_URI = "/bus-to-route";
         String ADD_ROUTE_URI = "/add-route";
+        String DELETE_ROUTE_URI = "/delete-route";
     }
 }

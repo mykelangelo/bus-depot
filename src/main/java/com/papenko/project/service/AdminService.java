@@ -80,4 +80,19 @@ public class AdminService {
         routeRepository.createRoute(routeName);
         LOGGER.debug("finished creating a route");
     }
+
+    public void deleteRoute(String routeName) {
+        LOGGER.debug("about to delete a route");
+        Route routeToDelete = routeRepository.findRouteByName(routeName);
+        routeRepository.deleteRoute(routeToDelete);
+        LOGGER.debug("finished deleting a route");
+    }
+
+    public List<Bus> getBusesOnRoute(String routeName) {
+        LOGGER.debug("about to get buses on route");
+        Route route = routeRepository.findRouteByName(routeName);
+        List<Bus> busesOnRoute = busRepository.findBusesByRoute(route);
+        LOGGER.debug("finished getting buses on route");
+        return busesOnRoute;
+    }
 }

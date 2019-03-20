@@ -2,6 +2,7 @@ package com.papenko.project.repository;
 
 import com.papenko.project.entity.Route;
 import com.papenko.project.exception.route.RouteCreationException;
+import com.papenko.project.exception.route.RouteDeletionException;
 import com.papenko.project.exception.route.RouteSearchException;
 import com.papenko.project.exception.route.RoutesSearchException;
 import org.slf4j.Logger;
@@ -75,5 +76,18 @@ public class RouteRepository {
             throw new RouteCreationException(routeName, e);
         }
         LOGGER.debug("created a route");
+    }
+
+    public void deleteRoute(Route route) {
+        LOGGER.debug("about to delete a route");
+        var sql = "DELETE FROM route WHERE route_name = (?);";
+        try (var connection = dataSource.getConnection();
+             var preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1, route.getName());
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            throw new RouteDeletionException(route, e);
+        }
+        LOGGER.debug("deleted a route");
     }
 }

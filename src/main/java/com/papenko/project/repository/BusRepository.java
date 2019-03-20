@@ -90,4 +90,25 @@ public class BusRepository {
         LOGGER.debug("bus by serial number not found");
         return null;
     }
+
+    public List<Bus> findBusesByRoute(Route route) {
+        LOGGER.debug("about to find buses by route");
+        var sql = "SELECT bus_serial FROM bus WHERE route_name = (?);";
+        List<Bus> buses = new ArrayList<>();
+
+        try (var connection = dataSource.getConnection();
+             var preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1, route.getName());
+            try (var resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    String busSerial = resultSet.getString("bus_serial");
+                    buses.add(new Bus(busSerial, route));
+                }
+            }
+        } catch (SQLException e) {
+            throw new BusesSearchException(buses, route, e);
+        }
+        LOGGER.debug("found {} buses by route", buses.size());
+        return buses;
+    }
 }

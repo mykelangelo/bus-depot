@@ -93,4 +93,16 @@ class RouteRepositoryTest {
         // THEN
         assertEquals(new Route("M8"), routeRepository.findRouteByName("M8"));
     }
+
+    @Test
+    void deleteRoute_shouldDeleteRouteFromTableRoute() {
+        // GIVEN
+        embeddedMysql.executeScripts("depot_database",
+                () -> "INSERT INTO route (route_name) VALUE ('Q8');");
+        // WHEN
+        routeRepository.deleteRoute(new Route("Q8"));
+        // THEN
+        assertNull(routeRepository.findRouteByName("Q8"));
+    }
+
 }

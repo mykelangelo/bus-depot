@@ -123,4 +123,17 @@ class BusRepositoryTest {
         // THEN
         assertNull(bus);
     }
+
+    @Test
+    void findBusesByRoute_shouldReturnListWithEveryBusOnRoute() {
+        // GIVEN
+        embeddedMysql.executeScripts("depot_database",
+                () -> "INSERT INTO route (route_name) VALUES ('7L'), ('11'); " +
+                        "INSERT INTO bus (bus_serial, route_name) VALUES ('IA9669SA', '7L'), ('USA 8', '11'), ('USS 55', '11');");
+        // WHEN
+        List<Bus> busesByRoute = busRepository.findBusesByRoute(new Route("11"));
+        // THEN
+        assertEquals(List.of(new Bus("USA 8", new Route("11")), new Bus("USS 55", new Route("11"))),
+                busesByRoute);
+    }
 }
