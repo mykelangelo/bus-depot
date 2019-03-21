@@ -24,7 +24,7 @@ public class LoginPage {
         return webDriver.findElement(By.className("login__password"));
     }
 
-    public WebElement findSubmitButton() {
+    public WebElement findLogInButton() {
         return webDriver.findElement(By.className("login__submit"));
     }
 

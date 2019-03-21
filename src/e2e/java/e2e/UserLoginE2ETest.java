@@ -56,7 +56,7 @@ public class UserLoginE2ETest implements ScreenShotGeneratingE2ETest {
     void shouldStayOnPage_andDisplayErrorMessage_whenEmailIsNotRecognised() {
         loginPage.findEmailField().sendKeys("hacker@company.com");
         loginPage.findPasswordField().sendKeys("correctPasswordWhyNotItsAGreatOne");
-        loginPage.findSubmitButton().click();
+        loginPage.findLogInButton().click();
 
         assertEquals(LOGIN_PAGE_URL, webDriver.getCurrentUrl(), "Didn't stay on login page");
         assertEquals("Invalid email or password", loginPage.findLoginErrorMessage().getText());
@@ -67,7 +67,7 @@ public class UserLoginE2ETest implements ScreenShotGeneratingE2ETest {
     void shouldStayOnPage_andDisplayErrorMessage_whenPasswordIsWrong() {
         loginPage.findEmailField().sendKeys("administrator@company.com");
         loginPage.findPasswordField().sendKeys("someWrongCredentials");
-        loginPage.findSubmitButton().click();
+        loginPage.findLogInButton().click();
 
         assertEquals(LOGIN_PAGE_URL, webDriver.getCurrentUrl(), "Didn't stay on login page");
         assertEquals("Invalid email or password", loginPage.findLoginErrorMessage().getText());
@@ -78,7 +78,7 @@ public class UserLoginE2ETest implements ScreenShotGeneratingE2ETest {
     void shouldLetDepotAdministratorLogIn_andDisplayGreetingMessage_whenCredentialsAreCorrect() {
         loginPage.findEmailField().sendKeys("administrator@company.com");
         loginPage.findPasswordField().sendKeys("correctPasswordWhyNotItsAGreatOne");
-        loginPage.findSubmitButton().click();
+        loginPage.findLogInButton().click();
 
         LOGGER.debug(webDriver.getCurrentUrl());
         assertEquals(ADMIN_PAGE_URL, webDriver.getCurrentUrl(), "Didn't redirected to admin's page");
@@ -92,7 +92,7 @@ public class UserLoginE2ETest implements ScreenShotGeneratingE2ETest {
     void shouldLetBusDriverLogIn_andDisplayGreetingMessage_whenCredentialsAreCorrect() {
         loginPage.findEmailField().sendKeys("best.driver@company.com");
         loginPage.findPasswordField().sendKeys("correctPasswordWhyNotItsAGreatOne");
-        loginPage.findSubmitButton().click();
+        loginPage.findLogInButton().click();
 
         LOGGER.debug(webDriver.getCurrentUrl());
         assertEquals(DRIVER_PAGE_URL, webDriver.getCurrentUrl(), "Didn't redirected to driver's page");

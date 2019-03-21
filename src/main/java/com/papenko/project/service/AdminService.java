@@ -3,9 +3,11 @@ package com.papenko.project.service;
 import com.papenko.project.entity.Bus;
 import com.papenko.project.entity.Driver;
 import com.papenko.project.entity.Route;
+import com.papenko.project.entity.User;
 import com.papenko.project.repository.BusRepository;
 import com.papenko.project.repository.DriverRepository;
 import com.papenko.project.repository.RouteRepository;
+import com.papenko.project.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,11 +18,13 @@ public class AdminService {
     private final DriverRepository driverRepository;
     private final BusRepository busRepository;
     private final RouteRepository routeRepository;
+    private UserRepository userRepository;
 
-    public AdminService(DriverRepository driverRepository, BusRepository busRepository, RouteRepository routeRepository) {
+    public AdminService(DriverRepository driverRepository, BusRepository busRepository, RouteRepository routeRepository, UserRepository userRepository) {
         this.driverRepository = driverRepository;
         this.busRepository = busRepository;
         this.routeRepository = routeRepository;
+        this.userRepository = userRepository;
     }
 
     public List<Driver> getDrivers() {
@@ -117,5 +121,14 @@ public class AdminService {
         Bus busToDelete = busRepository.findBusBySerialNumber(busSerial);
         busRepository.deleteBus(busToDelete);
         LOGGER.debug("finished deleting a bus");
+    }
+
+    public void deleteDriver(String driverEmail) {
+        LOGGER.debug("about to delete a driver");
+        Driver driver = driverRepository.findDriverByEmail(driverEmail);
+        driverRepository.deleteDriver(driver);
+        User user = userRepository.findUserByEmail(driverEmail);
+        userRepository.deleteUser(user);
+        LOGGER.debug("finished deleting a driver");
     }
 }

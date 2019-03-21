@@ -11,11 +11,11 @@ public class DeleteRouteForm {
         this.webDriver = webDriver;
     }
 
-    public WebElement findRouteDropDown() {
+    public WebElement findRouteDropdown() {
         return webDriver.findElement(By.className("delete-route__route-dropdown"));
     }
 
-    public WebElement findRouteDropDownOption(String routeName) {
+    public WebElement findRouteDropdownOption(String routeName) {
         return webDriver.findElement(By.className("delete-route__route-dropdown-option-" + routeName));
     }
 

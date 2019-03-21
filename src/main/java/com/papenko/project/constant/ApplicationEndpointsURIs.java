@@ -18,5 +18,6 @@ public interface ApplicationEndpointsURIs {
         String DELETE_ROUTE_URI = "/delete-route";
         String ADD_BUS_URI = "/add-bus";
         String DELETE_BUS_URI = "/delete-bus";
+        String DELETE_DRIVER_URI = "/delete-driver";
     }
 }

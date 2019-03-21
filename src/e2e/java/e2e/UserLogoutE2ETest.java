@@ -60,7 +60,7 @@ public class UserLogoutE2ETest implements ScreenShotGeneratingE2ETest {
     void shouldLogoutDriver_andNotLetDriverBackOnDriverPage_whenDriverVisitsLoginPage() {
         loginPage.findEmailField().sendKeys("kalibob@company.com");
         loginPage.findPasswordField().sendKeys("correctPasswordWhyNotItsAGreatOne");
-        loginPage.findSubmitButton().click();
+        loginPage.findLogInButton().click();
 
         assertEquals(DRIVER_PAGE_URL, webDriver.getCurrentUrl());
 
@@ -75,7 +75,7 @@ public class UserLogoutE2ETest implements ScreenShotGeneratingE2ETest {
     void shouldLogoutAdmin_andNotLetAdminBackOnAdminPage_whenAdminVisitsLoginPage() {
         loginPage.findEmailField().sendKeys("administrator@company.com");
         loginPage.findPasswordField().sendKeys("correctPasswordWhyNotItsAGreatOne");
-        loginPage.findSubmitButton().click();
+        loginPage.findLogInButton().click();
 
         assertEquals(ADMIN_PAGE_URL, webDriver.getCurrentUrl());
 
@@ -90,7 +90,7 @@ public class UserLogoutE2ETest implements ScreenShotGeneratingE2ETest {
     void shouldLogoutAdmin_andRedirectAdminToLoginPage_andNotLetAdminBackOnAdminPage_whenAdminClicksLogoutButton() {
         loginPage.findEmailField().sendKeys("administrator@company.com");
         loginPage.findPasswordField().sendKeys("correctPasswordWhyNotItsAGreatOne");
-        loginPage.findSubmitButton().click();
+        loginPage.findLogInButton().click();
 
         assertEquals(ADMIN_PAGE_URL, webDriver.getCurrentUrl());
 
@@ -107,7 +107,7 @@ public class UserLogoutE2ETest implements ScreenShotGeneratingE2ETest {
     void shouldLogoutDriver_andRedirectDriverToLoginPage_andNotLetDriverBackOnDriverPage_whenDifferentDriversClickLogoutButton(String driverEmail) {
         loginPage.findEmailField().sendKeys(driverEmail);
         loginPage.findPasswordField().sendKeys("correctPasswordWhyNotItsAGreatOne");
-        loginPage.findSubmitButton().click();
+        loginPage.findLogInButton().click();
 
         assertEquals(DRIVER_PAGE_URL, webDriver.getCurrentUrl());
 

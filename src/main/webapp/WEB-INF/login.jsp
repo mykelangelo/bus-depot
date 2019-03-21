@@ -41,7 +41,7 @@
         </tr>
         <tr>
             <td colspan="2">
-                <input type="submit" class="login__submit" value="Submit">
+                <input type="submit" class="login__submit" value="Log in">
             </td>
         </tr>
     </table>

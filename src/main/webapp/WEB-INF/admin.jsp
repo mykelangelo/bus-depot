@@ -159,12 +159,12 @@
 
 <form action="${pageContext.request.contextPath}/delete-bus" method="post">
     <label>
-        　Delete route:
+        　Delete bus:
         <select class="delete-bus__bus-dropdown"
                 required
                 name="bus-serial">
             <option selected disabled hidden value>
-                Routes
+                Buses
             </option>
             <c:forEach var="bus" items="${buses}">
                 <option class="delete-bus__bus-dropdown-option-${bus.getSerialNumber()}">
@@ -174,6 +174,26 @@
         </select>
     </label>
     <input type="submit" class="delete-bus__submit-button" value="Delete bus">
+</form>
+<hr>
+
+<form action="${pageContext.request.contextPath}/delete-driver" method="post">
+    <label>
+        　Delete driver:
+        <select class="delete-driver__driver-dropdown"
+                required
+                name="driver-email">
+            <option selected disabled hidden value>
+                Drivers
+            </option>
+            <c:forEach var="driver" items="${drivers}">
+                <option class="delete-driver__driver-dropdown-option-${driver.getUserEmail().replace('@', '_')}">
+                        ${driver.getUserEmail()}
+                </option>
+            </c:forEach>
+        </select>
+    </label>
+    <input type="submit" class="delete-driver__submit-button" value="Delete driver">
 </form>
 <hr>
 

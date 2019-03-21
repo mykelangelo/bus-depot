@@ -47,7 +47,7 @@ public class AuthorizationE2ETest implements ScreenShotGeneratingE2ETest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {DRIVER_PAGE_URL, ADMIN_PAGE_URL, ASSIGN_DRIVER_TO_BUS_FORM_URL, VACATE_DRIVER_FORM_URL, ASSIGN_BUS_TO_ROUTE_FORM_URL, ADD_ROUTE_URL, DELETE_ROUTE_URL, ADD_BUS_URL, DELETE_BUS_URL})
+    @ValueSource(strings = {DRIVER_PAGE_URL, ADMIN_PAGE_URL, ASSIGN_DRIVER_TO_BUS_FORM_URL, VACATE_DRIVER_FORM_URL, ASSIGN_BUS_TO_ROUTE_FORM_URL, ADD_ROUTE_URL, DELETE_ROUTE_URL, ADD_BUS_URL, DELETE_BUS_URL, DELETE_DRIVER_URL})
     @DisplayName("Security check: unauthorized user can not perform actions that need authorization")
     void shouldNotLetUnauthorizedUserVisitDriverOrAdminPageOrSubmitAnyOfTheirForms(String driverOrAdminURL) {
         webDriver.get(driverOrAdminURL);
@@ -78,7 +78,7 @@ public class AuthorizationE2ETest implements ScreenShotGeneratingE2ETest {
         loginPage.goToPage();
         loginPage.findEmailField().sendKeys("administrator@company.com");
         loginPage.findPasswordField().sendKeys("correctPasswordWhyNotItsAGreatOne");
-        loginPage.findSubmitButton().click();
+        loginPage.findLogInButton().click();
 
         webDriver.get(DRIVER_PAGE_URL);
 
@@ -86,13 +86,13 @@ public class AuthorizationE2ETest implements ScreenShotGeneratingE2ETest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {ADMIN_PAGE_URL, ASSIGN_DRIVER_TO_BUS_FORM_URL, VACATE_DRIVER_FORM_URL, ASSIGN_BUS_TO_ROUTE_FORM_URL, ADD_ROUTE_URL, DELETE_ROUTE_URL, ADD_BUS_URL, DELETE_BUS_URL})
+    @ValueSource(strings = {ADMIN_PAGE_URL, ASSIGN_DRIVER_TO_BUS_FORM_URL, VACATE_DRIVER_FORM_URL, ASSIGN_BUS_TO_ROUTE_FORM_URL, ADD_ROUTE_URL, DELETE_ROUTE_URL, ADD_BUS_URL, DELETE_BUS_URL, DELETE_DRIVER_URL})
     @DisplayName("Security check: driver can not perform actions that need admin's authorization")
     void shouldNotLetAuthorizedDriverVisitAdminPageOrSubmitAnyOfAdminForms(String adminURL) {
         loginPage.goToPage();
         loginPage.findEmailField().sendKeys("driver@company.com");
         loginPage.findPasswordField().sendKeys("correctPasswordWhyNotItsAGreatOne");
-        loginPage.findSubmitButton().click();
+        loginPage.findLogInButton().click();
 
         webDriver.get(adminURL);
 
@@ -106,7 +106,7 @@ public class AuthorizationE2ETest implements ScreenShotGeneratingE2ETest {
         loginPage.goToPage();
         loginPage.findEmailField().sendKeys(driverOrAdminEmail);
         loginPage.findPasswordField().sendKeys("correctPasswordWhyNotItsAGreatOne");
-        loginPage.findSubmitButton().click();
+        loginPage.findLogInButton().click();
 
         webDriver.get(NO_SUCH_PAGE_EXISTS_URL);
 
@@ -120,7 +120,7 @@ public class AuthorizationE2ETest implements ScreenShotGeneratingE2ETest {
         loginPage.goToPage();
         loginPage.findEmailField().sendKeys(driverOrAdminEmail);
         loginPage.findPasswordField().sendKeys("correctPasswordWhyNotItsAGreatOne");
-        loginPage.findSubmitButton().click();
+        loginPage.findLogInButton().click();
 
         webDriver.get(LOGIN_PAGE_URL);
 
@@ -135,7 +135,7 @@ public class AuthorizationE2ETest implements ScreenShotGeneratingE2ETest {
         loginPage.goToPage();
         loginPage.findEmailField().sendKeys(driverOrAdminEmail);
         loginPage.findPasswordField().sendKeys("correctPasswordWhyNotItsAGreatOne");
-        loginPage.findSubmitButton().click();
+        loginPage.findLogInButton().click();
 
         webDriver.get(LOGOUT_FORM_URL);
 

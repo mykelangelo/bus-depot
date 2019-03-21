@@ -9,7 +9,8 @@ VALUES ('administrator@company.com', 'DEPOT_ADMIN', '$2a$10$IjbakaL8jaGveRFlWFHc
        ('kalibob@company.com', 'BUS_DRIVER', '$2a$10$IjbakaL8jaGveRFlWFHcLuU00Dc0z3LsUkjrCRNtUia7pSzp3nnyy'),
        ('newbie@company.com', 'BUS_DRIVER', '$2a$10$IjbakaL8jaGveRFlWFHcLuU00Dc0z3LsUkjrCRNtUia7pSzp3nnyy'),
        ('an.un.en.n@company.com', 'BUS_DRIVER', '$2a$10$IjbakaL8jaGveRFlWFHcLuU00Dc0z3LsUkjrCRNtUia7pSzp3nnyy'),
-       ('zoidberg@company.com', 'BUS_DRIVER', '$2a$10$IjbakaL8jaGveRFlWFHcLuU00Dc0z3LsUkjrCRNtUia7pSzp3nnyy');
+       ('zoidberg@company.com', 'BUS_DRIVER', '$2a$10$IjbakaL8jaGveRFlWFHcLuU00Dc0z3LsUkjrCRNtUia7pSzp3nnyy'),
+       ('borax.kid@company.com', 'BUS_DRIVER', '$2a$10$IjbakaL8jaGveRFlWFHcLuU00Dc0z3LsUkjrCRNtUia7pSzp3nnyy');
 -- password: correctPasswordWhyNotItsAGreatOne
 
 INSERT IGNORE INTO route (route_name)
@@ -40,4 +41,5 @@ VALUES ('driver@company.com', 'AI7007AA', TRUE),
        ('kalibob@company.com', NULL, TRUE),
        ('newbie@company.com', NULL, FALSE),
        ('an.un.en.n@company.com', 'DO2019NT', FALSE),
-       ('zoidberg@company.com', 'UC4444NT', TRUE);
+       ('zoidberg@company.com', 'UC4444NT', TRUE),
+       ('borax.kid@company.com', NULL, TRUE);

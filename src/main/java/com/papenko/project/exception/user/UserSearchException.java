@@ -1,4 +1,4 @@
-package com.papenko.project.exception;
+package com.papenko.project.exception.user;
 
 public class UserSearchException extends RuntimeException {
     public UserSearchException(String email, Exception exception) {

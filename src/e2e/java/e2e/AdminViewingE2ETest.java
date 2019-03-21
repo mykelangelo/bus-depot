@@ -35,7 +35,7 @@ public class AdminViewingE2ETest implements ScreenShotGeneratingE2ETest {
 
         loginPage.findEmailField().sendKeys("administrator@company.com");
         loginPage.findPasswordField().sendKeys("correctPasswordWhyNotItsAGreatOne");
-        loginPage.findSubmitButton().click();
+        loginPage.findLogInButton().click();
     }
 
     @AfterEach

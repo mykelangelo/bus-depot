@@ -2,7 +2,8 @@ package com.papenko.project.repository;
 
 import com.papenko.project.entity.User;
 import com.papenko.project.entity.UserType;
-import com.papenko.project.exception.UserSearchException;
+import com.papenko.project.exception.user.UserDeletionException;
+import com.papenko.project.exception.user.UserSearchException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,7 +21,6 @@ public class UserRepository {
     public User findUserByEmail(String email) {
         LOGGER.debug("about to find a user by email");
         var sql = "SELECT user_type, password_hash FROM depot_user WHERE email = (?);";
-
         try (var connection = dataSource.getConnection();
              var preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setString(1, email);
@@ -37,5 +37,18 @@ public class UserRepository {
         }
         LOGGER.debug("user by email not found");
         return null;
+    }
+
+    public void deleteUser(User user) {
+        LOGGER.debug("about to delete a user");
+        var sql = "DELETE FROM depot_user WHERE email = (?);";
+        try (var connection = dataSource.getConnection();
+             var preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1, user.getEmail());
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            throw new UserDeletionException(user, e);
+        }
+        LOGGER.debug("deleted a user");
     }
 }

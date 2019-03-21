@@ -5,6 +5,7 @@ import com.papenko.project.entity.Bus;
 import com.papenko.project.repository.BusRepository;
 import com.papenko.project.repository.DriverRepository;
 import com.papenko.project.repository.RouteRepository;
+import com.papenko.project.repository.UserRepository;
 import com.papenko.project.service.AdminService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -40,6 +41,9 @@ public class DeleteRouteServlet extends HttpServlet {
                         getDataSource()
                 ),
                 new RouteRepository(
+                        getDataSource()
+                ),
+                new UserRepository(
                         getDataSource()
                 )
         );

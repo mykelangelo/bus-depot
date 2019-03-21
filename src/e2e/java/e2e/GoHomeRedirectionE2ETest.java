@@ -58,7 +58,7 @@ public class GoHomeRedirectionE2ETest implements ScreenShotGeneratingE2ETest {
         loginPage.goToPage();
         loginPage.findEmailField().sendKeys("administrator@company.com");
         loginPage.findPasswordField().sendKeys("correctPasswordWhyNotItsAGreatOne");
-        loginPage.findSubmitButton().click();
+        loginPage.findLogInButton().click();
 
         webDriver.get(GO_HOME_URL);
 
@@ -71,7 +71,7 @@ public class GoHomeRedirectionE2ETest implements ScreenShotGeneratingE2ETest {
         loginPage.goToPage();
         loginPage.findEmailField().sendKeys("driver@company.com");
         loginPage.findPasswordField().sendKeys("correctPasswordWhyNotItsAGreatOne");
-        loginPage.findSubmitButton().click();
+        loginPage.findLogInButton().click();
 
         webDriver.get(GO_HOME_URL);
 

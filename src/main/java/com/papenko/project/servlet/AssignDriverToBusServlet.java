@@ -5,6 +5,7 @@ import com.papenko.project.entity.Driver;
 import com.papenko.project.repository.BusRepository;
 import com.papenko.project.repository.DriverRepository;
 import com.papenko.project.repository.RouteRepository;
+import com.papenko.project.repository.UserRepository;
 import com.papenko.project.service.AdminService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,6 +40,9 @@ public class AssignDriverToBusServlet extends HttpServlet {
                         getDataSource()
                 ),
                 new RouteRepository(
+                        getDataSource()
+                ),
+                new UserRepository(
                         getDataSource()
                 )
         );

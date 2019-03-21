@@ -173,4 +173,18 @@ class DriverRepositoryTest {
         // THEN
         assertNull(driver);
     }
+
+    @Test
+    void deleteDriver_shouldDeleteDriverFromTableBusDriver() {
+        // GIVEN
+        embeddedMysql.executeScripts("depot_database",
+                () -> "INSERT INTO depot_user (email, user_type, password_hash)" +
+                        " VALUES ('driver@surprise.me', 'BUS_DRIVER', '$2a$10$rRsTiuqd3V5hQJwsLi3CneRCcKxK0eiKKO1JlGIxAnx9NIP4GsHbG');" +
+                        "INSERT INTO bus_driver (user_email, bus_serial, aware_of_assignment)" +
+                        " VALUE ('driver@surprise.me', NULL, TRUE);");
+        // WHEN
+        driverRepository.deleteDriver(new Driver("driver@surprise.me", null, true));
+        // THEN
+        assertNull(driverRepository.findDriverByEmail("driver@surprise.me"));
+    }
 }

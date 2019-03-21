@@ -48,7 +48,7 @@ class AuthorizationFilterTest {
 
 
     @ParameterizedTest
-    @ValueSource(strings = {LOGIN_PAGE_URI, ADMIN_PAGE_URI, ASSIGN_DRIVER_TO_BUS_FORM_URI, VACATE_DRIVER_FORM_URI, ASSIGN_BUS_TO_ROUTE_FORM_URI, ADD_ROUTE_URI, DELETE_ROUTE_URI, ADD_BUS_URI, DELETE_BUS_URI})
+    @ValueSource(strings = {LOGIN_PAGE_URI, ADMIN_PAGE_URI, ASSIGN_DRIVER_TO_BUS_FORM_URI, VACATE_DRIVER_FORM_URI, ASSIGN_BUS_TO_ROUTE_FORM_URI, ADD_ROUTE_URI, DELETE_ROUTE_URI, ADD_BUS_URI, DELETE_BUS_URI, DELETE_DRIVER_URI})
     void doFilter_shouldNotSendError_whenAdminWantsToVisitLoginOrAdminPageOrSubmitAnyOfLoginOrAdminForms(String adminURI) throws Exception {
         // GIVEN
         when(httpServletRequest.getRequestURI()).thenReturn(adminURI);
@@ -63,7 +63,7 @@ class AuthorizationFilterTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {ADMIN_PAGE_URI, ASSIGN_DRIVER_TO_BUS_FORM_URI, VACATE_DRIVER_FORM_URI, ASSIGN_BUS_TO_ROUTE_FORM_URI, ADD_ROUTE_URI, DELETE_ROUTE_URI, ADD_BUS_URI, DELETE_BUS_URI})
+    @ValueSource(strings = {ADMIN_PAGE_URI, ASSIGN_DRIVER_TO_BUS_FORM_URI, VACATE_DRIVER_FORM_URI, ASSIGN_BUS_TO_ROUTE_FORM_URI, ADD_ROUTE_URI, DELETE_ROUTE_URI, ADD_BUS_URI, DELETE_BUS_URI, DELETE_DRIVER_URI})
     void doFilter_shouldSendForbiddenStatusError_whenDriverTriesToVisitAdminPageOrSubmitAnyOfAdminForms(String adminURI) throws Exception {
         // GIVEN
         when(httpServletRequest.getRequestURI()).thenReturn(adminURI);
@@ -94,7 +94,7 @@ class AuthorizationFilterTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {DRIVER_PAGE_URI, ADMIN_PAGE_URI, ASSIGN_DRIVER_TO_BUS_FORM_URI, VACATE_DRIVER_FORM_URI, ASSIGN_BUS_TO_ROUTE_FORM_URI, ADD_ROUTE_URI, DELETE_ROUTE_URI, ADD_BUS_URI, DELETE_BUS_URI})
+    @ValueSource(strings = {DRIVER_PAGE_URI, ADMIN_PAGE_URI, ASSIGN_DRIVER_TO_BUS_FORM_URI, VACATE_DRIVER_FORM_URI, ASSIGN_BUS_TO_ROUTE_FORM_URI, ADD_ROUTE_URI, DELETE_ROUTE_URI, ADD_BUS_URI, DELETE_BUS_URI, DELETE_DRIVER_URI})
     void doFilter_shouldSendUnauthorizedStatusError_whenUnauthorizedUserTriesToViewDriverOrAdminPageOrSubmitsAnyOfDriverOrAdminForms(String driverOrAdminURI) throws Exception {
         // GIVEN
         when(httpServletRequest.getRequestURI()).thenReturn(driverOrAdminURI);

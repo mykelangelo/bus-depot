@@ -1,11 +1,10 @@
 package com.papenko.project.service;
 
-import com.papenko.project.entity.Bus;
-import com.papenko.project.entity.Driver;
-import com.papenko.project.entity.Route;
+import com.papenko.project.entity.*;
 import com.papenko.project.repository.BusRepository;
 import com.papenko.project.repository.DriverRepository;
 import com.papenko.project.repository.RouteRepository;
+import com.papenko.project.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -27,6 +26,8 @@ class AdminServiceTest {
     RouteRepository routeRepository;
     @Mock
     DriverRepository driverRepository;
+    @Mock
+    UserRepository userRepository;
     @InjectMocks
     AdminService adminService;
 
@@ -191,5 +192,17 @@ class AdminServiceTest {
         adminService.deleteBus("UTH60");
         // THEN
         verify(busRepository).deleteBus(new Bus("UTH60", null));
+    }
+
+    @Test
+    void deleteDriver_shouldInitiateDeletionFromDatabaseBothDriverAndUserWithEmailGiven() {
+        // GIVEN
+        given(driverRepository.findDriverByEmail("Lord.Nibbler@cute.animal")).willReturn(new Driver("Lord.Nibbler@cute.animal", null, false));
+        given(userRepository.findUserByEmail("Lord.Nibbler@cute.animal")).willReturn(new User("Lord.Nibbler@cute.animal", UserType.BUS_DRIVER, "$2a$10$IjbakaL8jaGveRFlWFHcLuU00Dc0z3LsUkjrCRNtUia7pSzp3nnyy"));
+        // WHEN
+        adminService.deleteDriver("Lord.Nibbler@cute.animal");
+        // THEN
+        verify(driverRepository).deleteDriver(new Driver("Lord.Nibbler@cute.animal", null, false));
+        verify(userRepository).deleteUser(new User("Lord.Nibbler@cute.animal", UserType.BUS_DRIVER, "$2a$10$IjbakaL8jaGveRFlWFHcLuU00Dc0z3LsUkjrCRNtUia7pSzp3nnyy"));
     }
 }

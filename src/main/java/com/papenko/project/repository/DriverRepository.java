@@ -2,10 +2,7 @@ package com.papenko.project.repository;
 
 import com.papenko.project.entity.Bus;
 import com.papenko.project.entity.Driver;
-import com.papenko.project.exception.driver.DriverAwarenessChangeException;
-import com.papenko.project.exception.driver.DriverBusChangeException;
-import com.papenko.project.exception.driver.DriverSearchException;
-import com.papenko.project.exception.driver.DriversSearchException;
+import com.papenko.project.exception.driver.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -122,5 +119,18 @@ public class DriverRepository {
         }
         LOGGER.debug("driver by bus not found");
         return null;
+    }
+
+    public void deleteDriver(Driver driver) {
+        LOGGER.debug("about to delete a driver");
+        var sql = "DELETE FROM bus_driver WHERE user_email = (?)";
+        try (var connection = dataSource.getConnection();
+             var preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1, driver.getUserEmail());
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            throw new DriverDeletionException(driver, e);
+        }
+        LOGGER.debug("deleted a driver");
     }
 }

@@ -50,7 +50,7 @@ public class DriverViewingE2ETest implements ScreenShotGeneratingE2ETest {
     void shouldViewVacationMessage() {
         loginPage.findEmailField().sendKeys("kalibob@company.com");
         loginPage.findPasswordField().sendKeys("correctPasswordWhyNotItsAGreatOne");
-        loginPage.findSubmitButton().click();
+        loginPage.findLogInButton().click();
 
         assertEquals("You're free of any work currently. Have fun on your vacation!", driverPage.findVacatedMessage().getText());
     }
@@ -60,7 +60,7 @@ public class DriverViewingE2ETest implements ScreenShotGeneratingE2ETest {
     void shouldViewBusSerial_andItsRoute_whenDriverIsAwareOfTheirAssignment() {
         loginPage.findEmailField().sendKeys("hell.o@company.com");
         loginPage.findPasswordField().sendKeys("correctPasswordWhyNotItsAGreatOne");
-        loginPage.findSubmitButton().click();
+        loginPage.findLogInButton().click();
 
         assertEquals("AA2552IA", driverPage.findBusSerial().getText());
         assertEquals("7k", driverPage.findRouteName().getText());
@@ -71,7 +71,7 @@ public class DriverViewingE2ETest implements ScreenShotGeneratingE2ETest {
     void shouldAcceptNewAssignment_thenViewBusSerial_andItsRoute_whenDriverIsUnawareOfTheirAssignment() {
         loginPage.findEmailField().sendKeys("an.un.en.n@company.com");
         loginPage.findPasswordField().sendKeys("correctPasswordWhyNotItsAGreatOne");
-        loginPage.findSubmitButton().click();
+        loginPage.findLogInButton().click();
 
         assertEquals("You have been assigned to a new bus and/or route.",
                 driverPage.findUnawareMessage().getText());
@@ -85,7 +85,7 @@ public class DriverViewingE2ETest implements ScreenShotGeneratingE2ETest {
     void shouldAcceptNewAssignment_thenViewVacationMessage_whenDriverIsUnawareOfTheirAssignment() {
         loginPage.findEmailField().sendKeys("newbie@company.com");
         loginPage.findPasswordField().sendKeys("correctPasswordWhyNotItsAGreatOne");
-        loginPage.findSubmitButton().click();
+        loginPage.findLogInButton().click();
 
         assertEquals("You have been assigned to a new bus and/or route.",
                 driverPage.findUnawareMessage().getText());

@@ -11,11 +11,11 @@ public class DeleteBusForm {
         this.webDriver = webDriver;
     }
 
-    public WebElement findBusDropDown() {
+    public WebElement findBusDropdown() {
         return webDriver.findElement(By.className("delete-bus__bus-dropdown"));
     }
 
-    public WebElement findBusDropDownOption(String busSerial) {
+    public WebElement findBusDropdownOption(String busSerial) {
         return webDriver.findElement(By.className("delete-bus__bus-dropdown-option-" + busSerial));
     }
 

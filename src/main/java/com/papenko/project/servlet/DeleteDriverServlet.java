@@ -16,14 +16,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.io.IOException;
 
-import static com.papenko.project.constant.ApplicationEndpointsURIs.AdminPage.ASSIGN_BUS_TO_ROUTE_FORM_URI;
-import static com.papenko.project.constant.RequestParametersNames.BUS_SERIAL;
-import static com.papenko.project.constant.RequestParametersNames.ROUTE_NAME;
+import static com.papenko.project.constant.ApplicationEndpointsURIs.AdminPage.DELETE_DRIVER_URI;
+import static com.papenko.project.constant.RequestParametersNames.DRIVER_EMAIL;
 
-
-@WebServlet(urlPatterns = ASSIGN_BUS_TO_ROUTE_FORM_URI)
-public class AssignBusToRouteServlet extends HttpServlet {
-    private static final Logger LOGGER = LoggerFactory.getLogger(AssignBusToRouteServlet.class);
+@WebServlet(urlPatterns = DELETE_DRIVER_URI)
+public class DeleteDriverServlet extends HttpServlet {
+    private static final Logger LOGGER = LoggerFactory.getLogger(DeleteDriverServlet.class);
     private AdminService adminService;
 
     @Override
@@ -47,21 +45,17 @@ public class AssignBusToRouteServlet extends HttpServlet {
         );
     }
 
-
     private DataSource getDataSource() {
         return DataSourceHolder.getInstance();
     }
 
-
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         LOGGER.debug("about to POST");
-        String busSerial = request.getParameter(BUS_SERIAL);
-        String routeName = request.getParameter(ROUTE_NAME);
-        adminService.assignBusToRoute(busSerial, routeName);
+        String driverEmail = request.getParameter(DRIVER_EMAIL);
+        adminService.deleteDriver(driverEmail);
         LOGGER.debug("redirecting...");
-        response.sendRedirect("/admin?lastSubmitStatusMessage=You assigned bus with serial number " +
-                busSerial + " to route with name " + routeName);
+        response.sendRedirect("/admin?lastSubmitStatusMessage=You deleted driver with email " + driverEmail);
         LOGGER.debug("finished POST");
     }
 }

@@ -63,4 +63,16 @@ class UserRepositoryTest {
         // THEN
         assertNull(user);
     }
+
+    @Test
+    void deleteUser_shouldDeleteUserFromTableDepotUser() {
+        // GIVEN
+        embeddedMysql.executeScripts("depot_database",
+                () -> "INSERT INTO depot_user (email, user_type, password_hash)" +
+                        " VALUE ('thomas@jefferson.us', 'BUS_DRIVER', '$2a$10$rRsTiuqd3V5hQJwsLi3CneRCcKxK0eiKKO1JlGIxAnx9NIP4GsHbG');");
+        // WHEN
+        userRepository.deleteUser(new User("thomas@jefferson.us", UserType.BUS_DRIVER, "$2a$10$rRsTiuqd3V5hQJwsLi3CneRCcKxK0eiKKO1JlGIxAnx9NIP4GsHbG"));
+        // THEN
+        assertNull(userRepository.findUserByEmail("thomas@jefferson.us"));
+    }
 }
