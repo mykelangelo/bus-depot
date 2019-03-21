@@ -130,7 +130,7 @@
 
 <form action="${pageContext.request.contextPath}/delete-route" method="post">
     <label>
-        Delete route:
+        　Delete route:
         <select class="delete-route__route-dropdown"
                 required
                 name="route-name">
@@ -156,6 +156,27 @@
     <input type="submit" class="add-bus__submit-button" value="Add bus">
 </form>
 <hr>
+
+<form action="${pageContext.request.contextPath}/delete-bus" method="post">
+    <label>
+        　Delete route:
+        <select class="delete-bus__bus-dropdown"
+                required
+                name="bus-serial">
+            <option selected disabled hidden value>
+                Routes
+            </option>
+            <c:forEach var="bus" items="${buses}">
+                <option class="delete-bus__bus-dropdown-option-${bus.getSerialNumber()}">
+                        ${bus.getSerialNumber()}
+                </option>
+            </c:forEach>
+        </select>
+    </label>
+    <input type="submit" class="delete-bus__submit-button" value="Delete bus">
+</form>
+<hr>
+
 
 <table>
     <tr>

@@ -3,10 +3,7 @@ package com.papenko.project.repository;
 import com.papenko.project.entity.Bus;
 import com.papenko.project.entity.Driver;
 import com.papenko.project.entity.Route;
-import com.papenko.project.exception.bus.BusCreationException;
-import com.papenko.project.exception.bus.BusRouteChangeException;
-import com.papenko.project.exception.bus.BusSearchException;
-import com.papenko.project.exception.bus.BusesSearchException;
+import com.papenko.project.exception.bus.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -124,5 +121,18 @@ public class BusRepository {
             throw new BusCreationException(busSerial, e);
         }
         LOGGER.debug("created a bus");
+    }
+
+    public void deleteBus(Bus bus) {
+        LOGGER.debug("about to delete a bus");
+        var sql = "DELETE FROM bus WHERE bus_serial = (?);";
+        try (var connection = dataSource.getConnection();
+             var preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1, bus.getSerialNumber());
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            throw new BusDeletionException(bus, e);
+        }
+        LOGGER.debug("deleted a bus");
     }
 }

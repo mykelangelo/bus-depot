@@ -31,7 +31,7 @@ class DeleteRouteServletTest {
     HttpServletResponse httpServletResponse;
 
     @Test
-    void doPost_shouldDeleteRouteWithNameGivenFromDatabase_andRedirectToAdminPage_andSetLastSubmitStatusMessageAsParameter_whenRouteIsUnused() throws IOException {
+    void doPost_shouldDeleteFromDatabaseRouteWithNameGiven_andRedirectToAdminPage_andSetLastSubmitStatusMessageAsParameter_whenRouteIsUnused() throws IOException {
         // GIVEN
         doReturn("F8").when(httpServletRequest).getParameter(ROUTE_NAME);
         doReturn(List.of()).when(adminService).getBusesOnRoute("F8");
@@ -43,7 +43,7 @@ class DeleteRouteServletTest {
     }
 
     @Test
-    void doPost_shouldNotDeleteRouteWithNameGivenFromDatabase_andRedirectToAdminPage_andSetLastSubmitStatusMessageAsParameter_whenRouteIsUsed() throws IOException {
+    void doPost_shouldNotDeleteFromDatabaseRouteWithNameGiven_andRedirectToAdminPage_andSetLastSubmitStatusMessageAsParameter_whenRouteIsUsed() throws IOException {
         // GIVEN
         doReturn("K1").when(httpServletRequest).getParameter(ROUTE_NAME);
         doReturn(List.of(new Bus("NRC 7", new Route("K1")), new Bus("PM 6", new Route("K1")))).when(adminService).getBusesOnRoute("K1");

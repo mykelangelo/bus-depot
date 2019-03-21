@@ -17,5 +17,6 @@ public interface ApplicationEndpointsURIs {
         String ADD_ROUTE_URI = "/add-route";
         String DELETE_ROUTE_URI = "/delete-route";
         String ADD_BUS_URI = "/add-bus";
+        String DELETE_BUS_URI = "/delete-bus";
     }
 }

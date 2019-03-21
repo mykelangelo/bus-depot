@@ -69,7 +69,7 @@ public class AdminDeletingE2ETest implements ScreenShotGeneratingE2ETest {
 
     @Test
     @DisplayName("Admin flow: fail to delete used route")
-    void shouldNotDeleteRoute_andGetCorrespondingMessage_andStillSeeThisBusInListOfRoutes_whenRouteIsUsedByAnyBuses() {
+    void shouldNotDeleteRoute_andGetCorrespondingMessage_andStillSeeThisRouteInListOfRoutes_whenRouteIsUsedByAnyBuses() {
         assertEquals("72", adminPage.getRoutesView().findRouteName("72").getText());
 
         adminPage.getDeleteRouteForm().findRouteDropDown().click();
@@ -78,6 +78,36 @@ public class AdminDeletingE2ETest implements ScreenShotGeneratingE2ETest {
 
         assertEquals("72", adminPage.getRoutesView().findRouteName("72").getText());
         assertEquals("You tried to delete route with name 72 but it's used - please assign bus(es) AI7007AA to other route(s) before deleting this route",
+                adminPage.findLastSubmitStatusMessage().getText());
+    }
+
+    @Test
+    @DisplayName("Admin flow: delete unused bus")
+    void shouldDeleteBus_andGetCorrespondingMessage_andNotSeeThisBusInListsOfBuses_whenBusIsNotUsedByAnyDriver() {
+        assertEquals("DE1373LT", adminPage.getBusesView().findBusSerial("DE1373LT").getText());
+
+        adminPage.getDeleteBusForm().findBusDropDown().click();
+        adminPage.getDeleteBusForm().findBusDropDownOption("DE1373LT").click();
+        adminPage.getDeleteBusForm().findDeleteButton().click();
+
+        adminPage.getDeleteBusForm().findBusDropDown().click();
+        assertThrows(NoSuchElementException.class, () -> adminPage.getDeleteBusForm().findBusDropDownOption("DE1373LT").click());
+        assertThrows(NoSuchElementException.class, () -> adminPage.getBusesView().findBusSerial("DE1373LT"));
+        assertEquals("You deleted bus with serial number DE1373LT",
+                adminPage.findLastSubmitStatusMessage().getText());
+    }
+
+    @Test
+    @DisplayName("Admin flow: fail to delete used bus")
+    void shouldNotDeleteBus_andGetCorrespondingMessage_andStillSeeThisBusInListOfBuses_whenBusIsUsedBySomeDriver() {
+        assertEquals("UC4444NT", adminPage.getBusesView().findBusSerial("UC4444NT").getText());
+
+        adminPage.getDeleteBusForm().findBusDropDown().click();
+        adminPage.getDeleteBusForm().findBusDropDownOption("UC4444NT").click();
+        adminPage.getDeleteBusForm().findDeleteButton().click();
+
+        assertEquals("UC4444NT", adminPage.getBusesView().findBusSerial("UC4444NT").getText());
+        assertEquals("You tried to delete bus with serial number UC4444NT but it's used - please assign driver zoidberg@company.com to other bus before deleting this bus",
                 adminPage.findLastSubmitStatusMessage().getText());
     }
 }

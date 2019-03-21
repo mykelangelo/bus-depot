@@ -182,4 +182,14 @@ class AdminServiceTest {
         // THEN
         verifyNoMoreInteractions(busRepository);
     }
+
+    @Test
+    void deleteBus_shouldInitiateDeletionFromDatabaseOfBusWithSerialGiven() {
+        // GIVEN
+        given(busRepository.findBusBySerialNumber("UTH60")).willReturn(new Bus("UTH60", null));
+        // WHEN
+        adminService.deleteBus("UTH60");
+        // THEN
+        verify(busRepository).deleteBus(new Bus("UTH60", null));
+    }
 }

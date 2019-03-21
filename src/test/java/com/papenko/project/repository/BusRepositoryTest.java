@@ -149,7 +149,7 @@ class BusRepositoryTest {
     }
 
     @Test
-    void createRoute_shouldThrowRouteCreationException_whenRouteWithNameGivenAlreadyExistsInTableRoute() {
+    void createBus_shouldThrowBusCreationException_whenBusWithSerialGivenAlreadyExistsInTableBus() {
         // GIVEN
         embeddedMysql.executeScripts("depot_database",
                 () -> "INSERT INTO bus (bus_serial, route_name) VALUE ('HMS 45', NULL);");
@@ -157,5 +157,17 @@ class BusRepositoryTest {
         Executable routeCreation = () -> busRepository.createBus("HMS 45");
         // THEN
         assertThrows(BusCreationException.class, routeCreation);
+    }
+
+
+    @Test
+    void deleteBus_shouldDeleteBusFromTableBus() {
+        // GIVEN
+        embeddedMysql.executeScripts("depot_database",
+                () -> "INSERT INTO bus (bus_serial, route_name) VALUE ('IQ 01', NULL);");
+        // WHEN
+        busRepository.deleteBus(new Bus("IQ 01", null));
+        // THEN
+        assertNull(busRepository.findBusBySerialNumber("IQ 01"));
     }
 }

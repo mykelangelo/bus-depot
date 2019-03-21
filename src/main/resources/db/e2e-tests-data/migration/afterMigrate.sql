@@ -8,7 +8,8 @@ VALUES ('administrator@company.com', 'DEPOT_ADMIN', '$2a$10$IjbakaL8jaGveRFlWFHc
        ('hell.o@company.com', 'BUS_DRIVER', '$2a$10$IjbakaL8jaGveRFlWFHcLuU00Dc0z3LsUkjrCRNtUia7pSzp3nnyy'),
        ('kalibob@company.com', 'BUS_DRIVER', '$2a$10$IjbakaL8jaGveRFlWFHcLuU00Dc0z3LsUkjrCRNtUia7pSzp3nnyy'),
        ('newbie@company.com', 'BUS_DRIVER', '$2a$10$IjbakaL8jaGveRFlWFHcLuU00Dc0z3LsUkjrCRNtUia7pSzp3nnyy'),
-       ('an.un.en.n@company.com', 'BUS_DRIVER', '$2a$10$IjbakaL8jaGveRFlWFHcLuU00Dc0z3LsUkjrCRNtUia7pSzp3nnyy');
+       ('an.un.en.n@company.com', 'BUS_DRIVER', '$2a$10$IjbakaL8jaGveRFlWFHcLuU00Dc0z3LsUkjrCRNtUia7pSzp3nnyy'),
+       ('zoidberg@company.com', 'BUS_DRIVER', '$2a$10$IjbakaL8jaGveRFlWFHcLuU00Dc0z3LsUkjrCRNtUia7pSzp3nnyy');
 -- password: correctPasswordWhyNotItsAGreatOne
 
 INSERT IGNORE INTO route (route_name)
@@ -26,7 +27,9 @@ VALUES ('AI7007AA', '72'),
        ('AA2552IA', '7k'),
        ('OA0404OA', '7k'),
        ('Gg6969Gg', '7L'),
-       ('DO2019NT', 'UN7');
+       ('DO2019NT', 'UN7'),
+       ('DE1373LT', NULL),
+       ('UC4444NT', NULL);
 
 INSERT IGNORE INTO bus_driver (user_email, bus_serial, aware_of_assignment)
 VALUES ('driver@company.com', 'AI7007AA', TRUE),
@@ -36,4 +39,5 @@ VALUES ('driver@company.com', 'AI7007AA', TRUE),
        ('hell.o@company.com', 'AA2552IA', TRUE),
        ('kalibob@company.com', NULL, TRUE),
        ('newbie@company.com', NULL, FALSE),
-       ('an.un.en.n@company.com', 'DO2019NT', FALSE);
+       ('an.un.en.n@company.com', 'DO2019NT', FALSE),
+       ('zoidberg@company.com', 'UC4444NT', TRUE);

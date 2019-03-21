@@ -111,4 +111,11 @@ public class AdminService {
         busRepository.createBus(busSerial);
         LOGGER.debug("finished adding a route");
     }
+
+    public void deleteBus(String busSerial) {
+        LOGGER.debug("about to delete a bus");
+        Bus busToDelete = busRepository.findBusBySerialNumber(busSerial);
+        busRepository.deleteBus(busToDelete);
+        LOGGER.debug("finished deleting a bus");
+    }
 }
