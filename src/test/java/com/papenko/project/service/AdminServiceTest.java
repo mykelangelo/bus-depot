@@ -17,6 +17,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 @ExtendWith(MockitoExtension.class)
 class AdminServiceTest {
@@ -120,8 +121,9 @@ class AdminServiceTest {
     }
 
     @Test
-    void addRoute_shouldInitiateCreationOfNewRouteWithNameGivenInDatabase() {
+    void addRoute_shouldInitiateCreationInDatabaseOfNewRouteWithNameGiven_whenNoSuchRouteExists() {
         // GIVEN
+        given(routeRepository.findRouteByName("N30")).willReturn(null);
         // WHEN
         adminService.addRoute("N30");
         // THEN
@@ -129,7 +131,17 @@ class AdminServiceTest {
     }
 
     @Test
-    void deleteRoute_shouldInitiateDeletionOfRouteWithNameGivenFromDatabase() {
+    void addRoute_shouldNotInitiateCreationInDatabaseOfNewRouteWithNameGiven_whenSuchRouteAlreadyExists() {
+        // GIVEN
+        given(routeRepository.findRouteByName("Z51")).willReturn(new Route("Z51"));
+        // WHEN
+        adminService.addRoute("Z51");
+        // THEN
+        verifyNoMoreInteractions(routeRepository);
+    }
+
+    @Test
+    void deleteRoute_shouldInitiateDeletionFromDatabaseOfRouteWithNameGiven() {
         // GIVEN
         given(routeRepository.findRouteByName("I-60")).willReturn(new Route("I-60"));
         // WHEN
@@ -149,5 +161,25 @@ class AdminServiceTest {
         // THEN
         assertEquals(List.of(new Bus("U2", new Route("I-2")), new Bus("U52", new Route("I-2"))),
                 busesOnRoute);
+    }
+
+    @Test
+    void addBus_shouldInitiateCreationInDatabaseOfNewBusWithSerialGiven_whenNoSuchBusExists() {
+        // GIVEN
+        given(busRepository.findBusBySerialNumber("AA1420AO")).willReturn(null);
+        // WHEN
+        adminService.addBus("AA1420AO");
+        // THEN
+        verify(busRepository).createBus("AA1420AO");
+    }
+
+    @Test
+    void addBus_shouldNotInitiateCreationInDatabaseOfNewBusWithSerialGiven_whenSuchBusExists() {
+        // GIVEN
+        given(busRepository.findBusBySerialNumber("II9999II")).willReturn(new Bus("II9999II", null));
+        // WHEN
+        adminService.addBus("II9999II");
+        // THEN
+        verifyNoMoreInteractions(busRepository);
     }
 }

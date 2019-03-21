@@ -62,11 +62,6 @@ public class RouteRepository {
 
     public void createRoute(String routeName) {
         LOGGER.debug("about to create a route");
-        Route routeByName = findRouteByName(routeName);
-        if (routeByName != null) {
-            LOGGER.debug("such route already exists");
-            return;
-        }
         var sql = "INSERT INTO route (route_name) VALUE ((?));";
         try (var connection = dataSource.getConnection();
              var preparedStatement = connection.prepareStatement(sql)) {

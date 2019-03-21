@@ -1,12 +1,14 @@
 package com.papenko.project.repository;
 
 import com.papenko.project.entity.Route;
+import com.papenko.project.exception.route.RouteCreationException;
 import com.wix.mysql.EmbeddedMysql;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 
 import java.util.List;
 
@@ -14,8 +16,7 @@ import static com.wix.mysql.EmbeddedMysql.anEmbeddedMysql;
 import static com.wix.mysql.ScriptResolver.classPathScripts;
 import static com.wix.mysql.config.MysqldConfig.aMysqldConfig;
 import static com.wix.mysql.distribution.Version.v5_7_latest;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 class RouteRepositoryTest {
     private RouteRepository routeRepository;
@@ -84,14 +85,14 @@ class RouteRepositoryTest {
     }
 
     @Test
-    void createRoute_shouldNotInsertNewRouteIntoTableRoute_whenRouteWithNameGivenAlreadyExistsInTableRoute() {
+    void createRoute_shouldThrowRouteCreationException_whenRouteWithNameGivenAlreadyExistsInTableRoute() {
         // GIVEN
         embeddedMysql.executeScripts("depot_database",
                 () -> "INSERT INTO route (route_name) VALUE ('M8');");
         // WHEN
-        routeRepository.createRoute("M8");
+        Executable routeCreation = () -> routeRepository.createRoute("M8");
         // THEN
-        assertEquals(new Route("M8"), routeRepository.findRouteByName("M8"));
+        assertThrows(RouteCreationException.class, routeCreation);
     }
 
     @Test
@@ -104,5 +105,4 @@ class RouteRepositoryTest {
         // THEN
         assertNull(routeRepository.findRouteByName("Q8"));
     }
-
 }

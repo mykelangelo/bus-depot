@@ -63,4 +63,17 @@ public class AdminCreatingE2ETest implements ScreenShotGeneratingE2ETest {
         assertEquals("You added new route with name G9",
                 adminPage.findLastSubmitStatusMessage().getText());
     }
+
+    @Test
+    @DisplayName("Admin flow: create bus")
+    void shouldCreateNewBus_andGetCorrespondingMessage_andSeeThisBusInListOfBuses() {
+        assertThrows(NoSuchElementException.class, () -> adminPage.getBusesView().findBusSerial("LLP89"));
+
+        adminPage.getAddBusForm().findSerialNumberField().sendKeys("LLP89");
+        adminPage.getAddBusForm().findAddButton().click();
+
+        assertEquals("LLP89", adminPage.getBusesView().findBusSerial("LLP89").getText());
+        assertEquals("You added new bus with serial number LLP89",
+                adminPage.findLastSubmitStatusMessage().getText());
+    }
 }

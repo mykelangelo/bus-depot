@@ -2,12 +2,14 @@ package com.papenko.project.repository;
 
 import com.papenko.project.entity.Bus;
 import com.papenko.project.entity.Route;
+import com.papenko.project.exception.bus.BusCreationException;
 import com.wix.mysql.EmbeddedMysql;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 
 import java.util.List;
 
@@ -135,5 +137,25 @@ class BusRepositoryTest {
         // THEN
         assertEquals(List.of(new Bus("USA 8", new Route("11")), new Bus("USS 55", new Route("11"))),
                 busesByRoute);
+    }
+
+    @Test
+    void createBus_shouldInsertNewBusWithSerialGivenIntoTableBus_whenNoSuchBusExistsInTableBus() {
+        // GIVEN
+        // WHEN
+        busRepository.createBus("OW 144");
+        // THEN
+        assertEquals(new Bus("OW 144", null), busRepository.findBusBySerialNumber("OW 144"));
+    }
+
+    @Test
+    void createRoute_shouldThrowRouteCreationException_whenRouteWithNameGivenAlreadyExistsInTableRoute() {
+        // GIVEN
+        embeddedMysql.executeScripts("depot_database",
+                () -> "INSERT INTO bus (bus_serial, route_name) VALUE ('HMS 45', NULL);");
+        // WHEN
+        Executable routeCreation = () -> busRepository.createBus("HMS 45");
+        // THEN
+        assertThrows(BusCreationException.class, routeCreation);
     }
 }

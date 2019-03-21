@@ -14,5 +14,6 @@ public interface ApplicationEndpointsURLs {
         String ASSIGN_BUS_TO_ROUTE_FORM_URL = "http://localhost:8080/bus-to-route";
         String ADD_ROUTE_URL = "http://localhost:8080/add-route";
         String DELETE_ROUTE_URL = "http://localhost:8080/delete-route";
+        String ADD_BUS_URL = "http://localhost:8080/add-bus";
     }
 }

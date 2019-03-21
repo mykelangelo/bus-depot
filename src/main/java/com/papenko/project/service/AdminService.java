@@ -76,9 +76,14 @@ public class AdminService {
     }
 
     public void addRoute(String routeName) {
-        LOGGER.debug("about to create a route");
+        LOGGER.debug("about to add a route");
+        Route routeByName = routeRepository.findRouteByName(routeName);
+        if (routeByName != null) {
+            LOGGER.debug("such route already exists");
+            return;
+        }
         routeRepository.createRoute(routeName);
-        LOGGER.debug("finished creating a route");
+        LOGGER.debug("finished adding a route");
     }
 
     public void deleteRoute(String routeName) {
@@ -94,5 +99,16 @@ public class AdminService {
         List<Bus> busesOnRoute = busRepository.findBusesByRoute(route);
         LOGGER.debug("finished getting buses on route");
         return busesOnRoute;
+    }
+
+    public void addBus(String busSerial) {
+        LOGGER.debug("about to add a bus");
+        Bus busBySerial = busRepository.findBusBySerialNumber(busSerial);
+        if (busBySerial != null) {
+            LOGGER.debug("such bus already exists");
+            return;
+        }
+        busRepository.createBus(busSerial);
+        LOGGER.debug("finished adding a route");
     }
 }

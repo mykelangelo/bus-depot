@@ -3,6 +3,7 @@ package com.papenko.project.repository;
 import com.papenko.project.entity.Bus;
 import com.papenko.project.entity.Driver;
 import com.papenko.project.entity.Route;
+import com.papenko.project.exception.bus.BusCreationException;
 import com.papenko.project.exception.bus.BusRouteChangeException;
 import com.papenko.project.exception.bus.BusSearchException;
 import com.papenko.project.exception.bus.BusesSearchException;
@@ -110,5 +111,18 @@ public class BusRepository {
         }
         LOGGER.debug("found {} buses by route", buses.size());
         return buses;
+    }
+
+    public void createBus(String busSerial) {
+        LOGGER.debug("about to create a bus");
+        var sql = "INSERT INTO bus (bus_serial, route_name) VALUE ((?), NULL);";
+        try (var connection = dataSource.getConnection();
+             var preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1, busSerial);
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            throw new BusCreationException(busSerial, e);
+        }
+        LOGGER.debug("created a bus");
     }
 }

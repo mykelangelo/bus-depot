@@ -148,6 +148,15 @@
 </form>
 <hr>
 
+<form action="${pageContext.request.contextPath}/add-bus" method="post">
+    <label>
+        　Create new bus:
+        <input name="bus-serial" class="add-bus__serial-number" placeholder="input serial here, e.g. AI4520KM" required>
+    </label>
+    <input type="submit" class="add-bus__submit-button" value="Add bus">
+</form>
+<hr>
+
 <table>
     <tr>
         <td>　　</td>

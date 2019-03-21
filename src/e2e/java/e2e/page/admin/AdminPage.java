@@ -14,6 +14,7 @@ public class AdminPage {
     private final RoutesView routesView;
     private final AddRouteForm addRouteForm;
     private final DeleteRouteForm deleteRouteForm;
+    private final AddBusForm addBusForm;
 
     public AdminPage(WebDriver webDriver) {
         this.webDriver = webDriver;
@@ -25,6 +26,7 @@ public class AdminPage {
         routesView = new RoutesView(webDriver);
         addRouteForm = new AddRouteForm(webDriver);
         deleteRouteForm = new DeleteRouteForm(webDriver);
+        addBusForm = new AddBusForm(webDriver);
     }
 
 
@@ -58,6 +60,10 @@ public class AdminPage {
 
     public DeleteRouteForm getDeleteRouteForm() {
         return deleteRouteForm;
+    }
+
+    public AddBusForm getAddBusForm() {
+        return addBusForm;
     }
 
     public WebElement findLogoutButton() {
