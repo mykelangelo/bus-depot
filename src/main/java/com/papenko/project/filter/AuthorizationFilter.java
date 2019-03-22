@@ -32,6 +32,7 @@ public class AuthorizationFilter extends HttpFilter {
             DELETE_ROUTE_URI,
             ADD_BUS_URI,
             DELETE_BUS_URI,
+            ADD_DRIVER_URI,
             DELETE_DRIVER_URI
     };
     private static final String ADMIN_URIS_REGEX = StringUtils.join(ADMIN_URIS, '|');

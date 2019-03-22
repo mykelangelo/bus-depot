@@ -10,6 +10,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
+import static e2e.constant.ApplicationEndpointsURLs.DRIVER_PAGE_URL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -75,5 +76,27 @@ public class AdminCreatingE2ETest implements ScreenShotGeneratingE2ETest {
         assertEquals("LLP89", adminPage.getBusesView().findBusSerial("LLP89").getText());
         assertEquals("You added new bus with serial number LLP89",
                 adminPage.findLastSubmitStatusMessage().getText());
+    }
+
+    @Test
+    @DisplayName("Admin flow: create driver")
+    void shouldCreateDriver_andGetCorrespondingMessage_andSeeThisDriverInListOfDrivers_andMakeThisDriverAbleToLogin() {
+        assertThrows(NoSuchElementException.class, () -> adminPage.getDriversView().findUserEmail("john.whatson@baker.street"));
+
+        adminPage.getAddDriverForm().findDriverEmailField().sendKeys("john.whatson@baker.street");
+        adminPage.getAddDriverForm().findDriverPasswordField().sendKeys("correctPasswordWhyNotItsAGreatOne");
+        adminPage.getAddDriverForm().findAddButton().click();
+
+        assertEquals("You added new driver with email john.whatson@baker.street", adminPage.findLastSubmitStatusMessage().getText());
+        assertEquals("john.whatson@baker.street", adminPage.getDriversView().findUserEmail("john.whatson@baker.street").getText());
+
+
+        var loginPage = new LoginPage(webDriver);
+        loginPage.goToPage();
+        loginPage.findEmailField().sendKeys("john.whatson@baker.street");
+        loginPage.findPasswordField().sendKeys("correctPasswordWhyNotItsAGreatOne");
+        loginPage.findLogInButton().click();
+
+        assertEquals(DRIVER_PAGE_URL, webDriver.getCurrentUrl());
     }
 }

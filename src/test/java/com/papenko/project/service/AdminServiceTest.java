@@ -15,8 +15,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class AdminServiceTest {
@@ -195,6 +194,30 @@ class AdminServiceTest {
     }
 
     @Test
+    void addDriver_shouldInitiateCreationOfUserAndDriver_whenNeitherSuchUserNorDriverExists() {
+        // GIVEN
+        given(userRepository.findUserByEmail("new.driver@chumpany.champ")).willReturn(null);
+        given(driverRepository.findDriverByEmail("new.driver@chumpany.champ")).willReturn(null);
+        // WHEN
+        adminService.addDriver("new.driver@chumpany.champ", "correctPasswordWhyNotItsAGreatOne");
+        // THEN
+        verify(userRepository).createDriver(eq("new.driver@chumpany.champ"), anyString());
+        verify(driverRepository).createDriver("new.driver@chumpany.champ");
+    }
+
+    @Test
+    void addDriver_shouldNeitherInitiateCreationOfDriverNorUser_whenBothSuchUserExistsAndDriver() {
+        // GIVEN
+        given(userRepository.findUserByEmail("new.driver@chumpany.champ")).willReturn(new User("new.driver@chumpany.champ", UserType.BUS_DRIVER, "$2a$10$IjbakaL8jaGveRFlWFHcLuU00Dc0z3LsUkjrCRNtUia7pSzp3nnyy"));
+        given(driverRepository.findDriverByEmail("new.driver@chumpany.champ")).willReturn(new Driver("new.driver@chumpany.champ", null, true));
+        // WHEN
+        adminService.addDriver("new.driver@chumpany.champ", "correctPasswordWhyNotItsAGreatOne");
+        // THEN
+        verifyNoMoreInteractions(userRepository);
+        verifyNoMoreInteractions(driverRepository);
+    }
+
+    @Test
     void deleteDriver_shouldInitiateDeletionFromDatabaseBothDriverAndUserWithEmailGiven() {
         // GIVEN
         given(driverRepository.findDriverByEmail("Lord.Nibbler@cute.animal")).willReturn(new Driver("Lord.Nibbler@cute.animal", null, false));
@@ -203,6 +226,6 @@ class AdminServiceTest {
         adminService.deleteDriver("Lord.Nibbler@cute.animal");
         // THEN
         verify(driverRepository).deleteDriver(new Driver("Lord.Nibbler@cute.animal", null, false));
-        verify(userRepository).deleteUser(new User("Lord.Nibbler@cute.animal", UserType.BUS_DRIVER, "$2a$10$IjbakaL8jaGveRFlWFHcLuU00Dc0z3LsUkjrCRNtUia7pSzp3nnyy"));
+        verify(userRepository).deleteDriver(new User("Lord.Nibbler@cute.animal", UserType.BUS_DRIVER, "$2a$10$IjbakaL8jaGveRFlWFHcLuU00Dc0z3LsUkjrCRNtUia7pSzp3nnyy"));
     }
 }

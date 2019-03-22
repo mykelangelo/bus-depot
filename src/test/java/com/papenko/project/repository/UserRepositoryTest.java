@@ -2,19 +2,20 @@ package com.papenko.project.repository;
 
 import com.papenko.project.entity.User;
 import com.papenko.project.entity.UserType;
+import com.papenko.project.exception.user.UserCreationException;
 import com.wix.mysql.EmbeddedMysql;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 
 import static com.wix.mysql.EmbeddedMysql.anEmbeddedMysql;
 import static com.wix.mysql.ScriptResolver.classPathScripts;
 import static com.wix.mysql.config.MysqldConfig.aMysqldConfig;
 import static com.wix.mysql.distribution.Version.v5_7_latest;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 class UserRepositoryTest {
     private UserRepository userRepository;
@@ -65,13 +66,35 @@ class UserRepositoryTest {
     }
 
     @Test
-    void deleteUser_shouldDeleteUserFromTableDepotUser() {
+    void createDriver_shouldInsertNewDriverUserIntoTableUser_whenNoSuchUserExists() {
+        // GIVEN
+        // WHEN
+        userRepository.createDriver("thomas@jefferson.us", "$2a$10$rRsTiuqd3V5hQJwsLi3CneRCcKxK0eiKKO1JlGIxAnx9NIP4GsHbG");
+        // THEN
+        assertEquals(new User("thomas@jefferson.us", UserType.BUS_DRIVER, "$2a$10$rRsTiuqd3V5hQJwsLi3CneRCcKxK0eiKKO1JlGIxAnx9NIP4GsHbG"),
+                userRepository.findUserByEmail("thomas@jefferson.us"));
+    }
+
+    @Test
+    void createDriver_shouldThrowUserCreationException_whenSuchUserAlreadyExists() {
         // GIVEN
         embeddedMysql.executeScripts("depot_database",
                 () -> "INSERT INTO depot_user (email, user_type, password_hash)" +
                         " VALUE ('thomas@jefferson.us', 'BUS_DRIVER', '$2a$10$rRsTiuqd3V5hQJwsLi3CneRCcKxK0eiKKO1JlGIxAnx9NIP4GsHbG');");
         // WHEN
-        userRepository.deleteUser(new User("thomas@jefferson.us", UserType.BUS_DRIVER, "$2a$10$rRsTiuqd3V5hQJwsLi3CneRCcKxK0eiKKO1JlGIxAnx9NIP4GsHbG"));
+        Executable executable = () -> userRepository.createDriver("thomas@jefferson.us", "$2a$10$rRsTiuqd3V5hQJwsLi3CneRCcKxK0eiKKO1JlGIxAnx9NIP4GsHbG");
+        // THEN
+        assertThrows(UserCreationException.class, executable);
+    }
+
+    @Test
+    void deleteDriver_shouldDeleteUserFromTableDepotUser() {
+        // GIVEN
+        embeddedMysql.executeScripts("depot_database",
+                () -> "INSERT INTO depot_user (email, user_type, password_hash)" +
+                        " VALUE ('thomas@jefferson.us', 'BUS_DRIVER', '$2a$10$rRsTiuqd3V5hQJwsLi3CneRCcKxK0eiKKO1JlGIxAnx9NIP4GsHbG');");
+        // WHEN
+        userRepository.deleteDriver(new User("thomas@jefferson.us", UserType.BUS_DRIVER, "$2a$10$rRsTiuqd3V5hQJwsLi3CneRCcKxK0eiKKO1JlGIxAnx9NIP4GsHbG"));
         // THEN
         assertNull(userRepository.findUserByEmail("thomas@jefferson.us"));
     }

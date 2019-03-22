@@ -56,6 +56,11 @@ public class AdminViewingE2ETest implements ScreenShotGeneratingE2ETest {
                 adminPage.getBusesView().findBusSerial("AA2552IA").getText());
         assertEquals("7k",
                 adminPage.getBusesView().findRouteName("AA2552IA").getText());
+
+        assertEquals("UC4444NT",
+                adminPage.getBusesView().findBusSerial("UC4444NT").getText());
+        assertEquals("",
+                adminPage.getBusesView().findRouteName("UC4444NT").getText());
     }
 
     @Test

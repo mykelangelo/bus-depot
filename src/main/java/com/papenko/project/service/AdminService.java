@@ -8,6 +8,7 @@ import com.papenko.project.repository.BusRepository;
 import com.papenko.project.repository.DriverRepository;
 import com.papenko.project.repository.RouteRepository;
 import com.papenko.project.repository.UserRepository;
+import org.mindrot.jbcrypt.BCrypt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -123,12 +124,26 @@ public class AdminService {
         LOGGER.debug("finished deleting a bus");
     }
 
+    public void addDriver(String email, String password) {
+        LOGGER.debug("about to add a driver");
+        User user = userRepository.findUserByEmail(email);
+        Driver driver = driverRepository.findDriverByEmail(email);
+        if (user == null && driver == null) {
+            String passwordHash = BCrypt.hashpw(password, BCrypt.gensalt());
+            userRepository.createDriver(email, passwordHash);
+            driverRepository.createDriver(email);
+        } else {
+            LOGGER.debug("such driver already exists in database");
+        }
+        LOGGER.debug("finished adding a driver");
+    }
+
     public void deleteDriver(String driverEmail) {
         LOGGER.debug("about to delete a driver");
         Driver driver = driverRepository.findDriverByEmail(driverEmail);
         driverRepository.deleteDriver(driver);
         User user = userRepository.findUserByEmail(driverEmail);
-        userRepository.deleteUser(user);
+        userRepository.deleteDriver(user);
         LOGGER.debug("finished deleting a driver");
     }
 }

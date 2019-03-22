@@ -1,9 +1,10 @@
 package com.papenko.project.constant;
 
 public interface RequestParametersNames {
-    String PASSWORD = "password";
-    String EMAIL = "email";
+    String LOGIN_PASSWORD = "password";
+    String LOGIN_EMAIL = "email";
     String BUS_SERIAL = "bus-serial";
-    String DRIVER_EMAIL = "driver-email";
     String ROUTE_NAME = "route-name";
+    String DRIVER_EMAIL = "driver-email";
+    String DRIVER_PASSWORD = "driver-password";
 }

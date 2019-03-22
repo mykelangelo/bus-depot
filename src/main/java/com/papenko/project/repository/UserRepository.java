@@ -2,6 +2,7 @@ package com.papenko.project.repository;
 
 import com.papenko.project.entity.User;
 import com.papenko.project.entity.UserType;
+import com.papenko.project.exception.user.UserCreationException;
 import com.papenko.project.exception.user.UserDeletionException;
 import com.papenko.project.exception.user.UserSearchException;
 import org.slf4j.Logger;
@@ -39,16 +40,30 @@ public class UserRepository {
         return null;
     }
 
-    public void deleteUser(User user) {
-        LOGGER.debug("about to delete a user");
-        var sql = "DELETE FROM depot_user WHERE email = (?);";
+    public void createDriver(String email, String passwordHash) {
+        LOGGER.debug("about to create a driver");
+        var sql = "INSERT INTO depot_user (email, user_type, password_hash) VALUE ((?),'BUS_DRIVER', (?));";
         try (var connection = dataSource.getConnection();
              var preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setString(1, user.getEmail());
+            preparedStatement.setString(1, email);
+            preparedStatement.setString(2, passwordHash);
             preparedStatement.execute();
         } catch (SQLException e) {
-            throw new UserDeletionException(user, e);
+            throw new UserCreationException(email, e);
         }
-        LOGGER.debug("deleted a user");
+        LOGGER.debug("created a driver");
+    }
+
+    public void deleteDriver(User driverUser) {
+        LOGGER.debug("about to delete a driver");
+        var sql = "DELETE FROM depot_user WHERE user_type = 'BUS_DRIVER' AND email = (?);";
+        try (var connection = dataSource.getConnection();
+             var preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1, driverUser.getEmail());
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            throw new UserDeletionException(driverUser, e);
+        }
+        LOGGER.debug("deleted a driver");
     }
 }

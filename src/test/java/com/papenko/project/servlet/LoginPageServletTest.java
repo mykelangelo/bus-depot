@@ -21,8 +21,8 @@ import java.io.IOException;
 import static com.papenko.project.constant.ApplicationEndpointsURIs.AdminPage.ADMIN_PAGE_URI;
 import static com.papenko.project.constant.ApplicationEndpointsURIs.*;
 import static com.papenko.project.constant.RequestAttributesNames.LOGIN_ERROR_MESSAGE;
-import static com.papenko.project.constant.RequestParametersNames.EMAIL;
-import static com.papenko.project.constant.RequestParametersNames.PASSWORD;
+import static com.papenko.project.constant.RequestParametersNames.LOGIN_EMAIL;
+import static com.papenko.project.constant.RequestParametersNames.LOGIN_PASSWORD;
 import static com.papenko.project.constant.SessionAttributesNames.USER_DETAILS;
 import static org.mockito.Mockito.*;
 
@@ -75,8 +75,8 @@ class LoginPageServletTest {
     @Test
     void doPost_shouldRedirectAdminToAdminPage_andSetAuthenticatedUserDetailsToSession_whenCorrectCredentialsSubmitted() throws ServletException, IOException {
         //GIVEN
-        doReturn("correct@email.yes").when(httpServletRequest).getParameter(EMAIL);
-        doReturn("correct_password").when(httpServletRequest).getParameter(PASSWORD);
+        doReturn("correct@email.yes").when(httpServletRequest).getParameter(LOGIN_EMAIL);
+        doReturn("correct_password").when(httpServletRequest).getParameter(LOGIN_PASSWORD);
         doReturn(true).when(loginService).checkCredentials("correct@email.yes", "correct_password");
         doReturn(session).when(httpServletRequest).getSession();
         doReturn(UserType.DEPOT_ADMIN).when(loginService).getUserType("correct@email.yes");
@@ -91,8 +91,8 @@ class LoginPageServletTest {
     @Test
     void doPost_shouldRedirectDriverToDriverPage_andSetAuthenticatedUserDetailsToSession_whenCorrectCredentialsSubmitted() throws ServletException, IOException {
         //GIVEN
-        doReturn("correct@email.yes").when(httpServletRequest).getParameter(EMAIL);
-        doReturn("correct_password").when(httpServletRequest).getParameter(PASSWORD);
+        doReturn("correct@email.yes").when(httpServletRequest).getParameter(LOGIN_EMAIL);
+        doReturn("correct_password").when(httpServletRequest).getParameter(LOGIN_PASSWORD);
         doReturn(true).when(loginService).checkCredentials("correct@email.yes", "correct_password");
         doReturn(session).when(httpServletRequest).getSession();
         doReturn(UserType.BUS_DRIVER).when(loginService).getUserType("correct@email.yes");
@@ -107,8 +107,8 @@ class LoginPageServletTest {
     @Test
     void doPost_shouldForwardToLoginPage_andSetErrorMessageToRequest_whenWrongCredentialsSubmitted() throws ServletException, IOException {
         // GIVEN
-        doReturn("wrong@email.yes").when(httpServletRequest).getParameter(EMAIL);
-        doReturn("wrong_password").when(httpServletRequest).getParameter(PASSWORD);
+        doReturn("wrong@email.yes").when(httpServletRequest).getParameter(LOGIN_EMAIL);
+        doReturn("wrong_password").when(httpServletRequest).getParameter(LOGIN_PASSWORD);
         doReturn(servletContext).when(loginPageServlet).getServletContext();
         doReturn(requestDispatcher).when(servletContext).getRequestDispatcher(anyString());
         doReturn(false).when(loginService).checkCredentials(anyString(), anyString());

@@ -29,7 +29,7 @@ class AddBusServletTest {
     HttpServletResponse httpServletResponse;
 
     @Test
-    void doPost_shouldAddNewBusWithSerialGivenToDatabase_andRedirectToAdminPage_andSetLastSubmitStatusMessageAsParameter() throws IOException {
+    void doPost_shouldAddToDatabaseNewBusWithSerialGiven_andRedirectToAdminPage_andSetLastSubmitStatusMessageAsParameter() throws IOException {
         // GIVEN
         doReturn("AI2352IA").when(httpServletRequest).getParameter(BUS_SERIAL);
         // WHEN

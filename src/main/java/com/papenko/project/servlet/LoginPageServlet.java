@@ -18,8 +18,8 @@ import java.io.IOException;
 
 import static com.papenko.project.constant.ApplicationEndpointsURIs.*;
 import static com.papenko.project.constant.RequestAttributesNames.LOGIN_ERROR_MESSAGE;
-import static com.papenko.project.constant.RequestParametersNames.EMAIL;
-import static com.papenko.project.constant.RequestParametersNames.PASSWORD;
+import static com.papenko.project.constant.RequestParametersNames.LOGIN_EMAIL;
+import static com.papenko.project.constant.RequestParametersNames.LOGIN_PASSWORD;
 import static com.papenko.project.constant.SessionAttributesNames.USER_DETAILS;
 
 @WebServlet(urlPatterns = LOGIN_PAGE_URI)
@@ -53,8 +53,8 @@ public class LoginPageServlet extends HttpServlet {
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         LOGGER.debug("about to POST");
-        String email = request.getParameter(EMAIL);
-        String password = request.getParameter(PASSWORD);
+        String email = request.getParameter(LOGIN_EMAIL);
+        String password = request.getParameter(LOGIN_PASSWORD);
 
         if (loginService.checkCredentials(email, password)) {
             UserType userType = loginService.getUserType(email);

@@ -3,12 +3,14 @@ package com.papenko.project.repository;
 import com.papenko.project.entity.Bus;
 import com.papenko.project.entity.Driver;
 import com.papenko.project.entity.Route;
+import com.papenko.project.exception.driver.DriverCreationException;
 import com.wix.mysql.EmbeddedMysql;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 
 import java.util.List;
 
@@ -172,6 +174,30 @@ class DriverRepositoryTest {
         Driver driver = driverRepository.findDriverByBus(new Bus("IA9669SA", new Route("7L")));
         // THEN
         assertNull(driver);
+    }
+
+    @Test
+    void createDriver_shouldInsertNewDriverIntoTableBusDriver_whenNoSuchDriverExists() {
+        // GIVEN
+        // WHEN
+        driverRepository.createDriver("driver@surprise.me");
+        // THEN
+        assertEquals(new Driver("driver@surprise.me", null, false),
+                driverRepository.findDriverByEmail("driver@surprise.me"));
+    }
+
+    @Test
+    void createDriver_shouldThrowUserCreationException_whenSuchUserAlreadyExists() {
+        // GIVEN
+        embeddedMysql.executeScripts("depot_database",
+                () -> "INSERT INTO depot_user (email, user_type, password_hash)" +
+                        " VALUES ('driver@surprise.me', 'BUS_DRIVER', '$2a$10$rRsTiuqd3V5hQJwsLi3CneRCcKxK0eiKKO1JlGIxAnx9NIP4GsHbG');" +
+                        "INSERT INTO bus_driver (user_email, bus_serial, aware_of_assignment)" +
+                        " VALUE ('driver@surprise.me', NULL, TRUE);");
+        // WHEN
+        Executable executable = () -> driverRepository.createDriver("driver@surprise.me");
+        // THEN
+        assertThrows(DriverCreationException.class, executable);
     }
 
     @Test

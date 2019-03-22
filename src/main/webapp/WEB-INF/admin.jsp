@@ -177,6 +177,16 @@
 </form>
 <hr>
 
+<form action="${pageContext.request.contextPath}/add-driver" method="post">
+    <label>
+        　Create new driver:
+        <input type="email" name="driver-email" class="add-driver__email" placeholder="email" required>
+    </label>
+    <input type="password" name="driver-password" class="add-driver__password" placeholder="new password" required>
+    <input type="submit" class="add-driver__submit-button" value="Add driver">
+</form>
+<hr>
+
 <form action="${pageContext.request.contextPath}/delete-driver" method="post">
     <label>
         　Delete driver:

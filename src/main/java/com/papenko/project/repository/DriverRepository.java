@@ -121,6 +121,19 @@ public class DriverRepository {
         return null;
     }
 
+    public void createDriver(String email) {
+        LOGGER.debug("about to create a driver");
+        var sql = "INSERT INTO bus_driver (user_email, bus_serial, aware_of_assignment) VALUE ((?), NULL, FALSE);";
+        try (var connection = dataSource.getConnection();
+             var preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1, email);
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            throw new DriverCreationException(email, e);
+        }
+        LOGGER.debug("created a driver");
+    }
+
     public void deleteDriver(Driver driver) {
         LOGGER.debug("about to delete a driver");
         var sql = "DELETE FROM bus_driver WHERE user_email = (?)";
