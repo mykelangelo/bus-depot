@@ -3,7 +3,10 @@ package com.papenko.project.entity;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-public class AuthenticatedUserDetails {
+import java.io.Serializable;
+import java.util.Objects;
+
+public class AuthenticatedUserDetails implements Serializable {
     private String email;
     private UserType userType;
 
@@ -37,5 +40,10 @@ public class AuthenticatedUserDetails {
                 .append(email, that.email)
                 .append(userType, that.userType)
                 .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(email, userType);
     }
 }

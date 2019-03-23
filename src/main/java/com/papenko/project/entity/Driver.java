@@ -3,6 +3,8 @@ package com.papenko.project.entity;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import java.util.Objects;
+
 public class Driver {
     private final String userEmail;
     private final Bus bus;
@@ -43,5 +45,10 @@ public class Driver {
                 .append("userEmail", userEmail)
                 .append("bus", bus)
                 .toString();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userEmail, bus, awareOfAssignment);
     }
 }

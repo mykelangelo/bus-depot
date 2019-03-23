@@ -3,6 +3,8 @@ package com.papenko.project.entity;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import java.util.Objects;
+
 import static org.apache.commons.lang3.builder.ToStringStyle.SHORT_PREFIX_STYLE;
 
 public class User {
@@ -46,5 +48,10 @@ public class User {
                 .append("email", email)
                 .append("userType", userType)
                 .toString();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(email, userType, passwordHash);
     }
 }

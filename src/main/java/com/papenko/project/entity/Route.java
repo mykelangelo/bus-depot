@@ -3,6 +3,8 @@ package com.papenko.project.entity;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import java.util.Objects;
+
 
 public class Route {
     private final String name;
@@ -30,5 +32,10 @@ public class Route {
         return new ToStringBuilder(this)
                 .append("name", name)
                 .toString();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
     }
 }
