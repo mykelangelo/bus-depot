@@ -233,7 +233,7 @@
                 </thead>
                 <tr>
                     <th>
-                        Name
+                        <fmt:message key="admin_route-name" bundle="${texts}"/>
                     </th>
                 </tr>
                 <c:forEach var="route" items="${routes}">
