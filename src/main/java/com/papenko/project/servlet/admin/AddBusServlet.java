@@ -1,4 +1,4 @@
-package com.papenko.project.servlet;
+package com.papenko.project.servlet.admin;
 
 import com.papenko.project.DataSourceHolder;
 import com.papenko.project.repository.BusRepository;
@@ -16,15 +16,14 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.io.IOException;
 
-import static com.papenko.project.constant.ApplicationEndpointsURIs.AdminPage.ASSIGN_BUS_TO_ROUTE_FORM_URI;
+import static com.papenko.project.constant.ApplicationEndpointsURIs.AdminPage.ADD_BUS_URI;
 import static com.papenko.project.constant.RequestParametersNames.BUS_SERIAL;
-import static com.papenko.project.constant.RequestParametersNames.ROUTE_NAME;
 
-
-@WebServlet(urlPatterns = ASSIGN_BUS_TO_ROUTE_FORM_URI)
-public class AssignBusToRouteServlet extends HttpServlet {
-    private static final Logger LOGGER = LoggerFactory.getLogger(AssignBusToRouteServlet.class);
+@WebServlet(urlPatterns = ADD_BUS_URI)
+public class AddBusServlet extends HttpServlet {
+    private static final Logger LOGGER = LoggerFactory.getLogger(AddBusServlet.class);
     private AdminService adminService;
+    private AdminMessagesLocalization localization;
 
     @Override
     public void init() {
@@ -45,23 +44,20 @@ public class AssignBusToRouteServlet extends HttpServlet {
                         getDataSource()
                 )
         );
+        localization = new AdminMessagesLocalization();
     }
-
 
     private DataSource getDataSource() {
         return DataSourceHolder.getInstance();
     }
 
-
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         LOGGER.debug("about to POST");
         String busSerial = request.getParameter(BUS_SERIAL);
-        String routeName = request.getParameter(ROUTE_NAME);
-        adminService.assignBusToRoute(busSerial, routeName);
+        adminService.addBus(busSerial);
         LOGGER.debug("redirecting...");
-        response.sendRedirect("/admin?lastSubmitStatusMessage=You assigned bus with serial number " +
-                busSerial + " to route with name " + routeName);
+        response.sendRedirect("/admin?lastSubmitStatusMessage=" + localization.getMessage(request, "status_add-bus", busSerial));
         LOGGER.debug("finished POST");
     }
 }

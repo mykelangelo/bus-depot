@@ -66,8 +66,8 @@ public class AuthorizationE2ETest implements ScreenShotGeneratingE2ETest {
     @ParameterizedTest
     @ValueSource(strings = {LOGIN_PAGE_URL, LOGOUT_FORM_URL})
     @DisplayName("Security check: unauthorized user can perform actions that do not need authorization")
-    void shouldLetUnauthorizedUserVisitLoginPageOrSubmitLoginFormOrTryToLogout(String loginOrLogoutURL) {
-        webDriver.get(loginOrLogoutURL);
+    void shouldLetUnauthorizedUserVisitLoginPageOrSubmitLoginFormOrTryToLogoutOrSubmitLocalizationForm(String loginOrLogoutOrLocalizeURL) {
+        webDriver.get(loginOrLogoutOrLocalizeURL);
 
         assertEquals(LOGIN_PAGE_URL, webDriver.getCurrentUrl());
     }
@@ -125,7 +125,7 @@ public class AuthorizationE2ETest implements ScreenShotGeneratingE2ETest {
         webDriver.get(LOGIN_PAGE_URL);
 
         assertEquals(LOGIN_PAGE_URL, webDriver.getCurrentUrl());
-        assertEquals("Welcome to The Bus Depot!", webDriver.findElement(By.tagName("h1")).getText());
+        assertEquals("Welcome to The Bus Depot!", loginPage.findGreetingMessage().getText());
     }
 
     @ParameterizedTest
@@ -140,6 +140,6 @@ public class AuthorizationE2ETest implements ScreenShotGeneratingE2ETest {
         webDriver.get(LOGOUT_FORM_URL);
 
         assertEquals(LOGIN_PAGE_URL, webDriver.getCurrentUrl());
-        assertEquals("Welcome to The Bus Depot!", webDriver.findElement(By.tagName("h1")).getText());
+        assertEquals("Welcome to The Bus Depot!", loginPage.findGreetingMessage().getText());
     }
 }

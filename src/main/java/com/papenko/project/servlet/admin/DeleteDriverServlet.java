@@ -1,7 +1,6 @@
-package com.papenko.project.servlet;
+package com.papenko.project.servlet.admin;
 
 import com.papenko.project.DataSourceHolder;
-import com.papenko.project.entity.Driver;
 import com.papenko.project.repository.BusRepository;
 import com.papenko.project.repository.DriverRepository;
 import com.papenko.project.repository.RouteRepository;
@@ -17,15 +16,14 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.io.IOException;
 
-import static com.papenko.project.constant.ApplicationEndpointsURIs.AdminPage.ASSIGN_DRIVER_TO_BUS_FORM_URI;
-import static com.papenko.project.constant.RequestParametersNames.BUS_SERIAL;
+import static com.papenko.project.constant.ApplicationEndpointsURIs.AdminPage.DELETE_DRIVER_URI;
 import static com.papenko.project.constant.RequestParametersNames.DRIVER_EMAIL;
 
-
-@WebServlet(urlPatterns = ASSIGN_DRIVER_TO_BUS_FORM_URI)
-public class AssignDriverToBusServlet extends HttpServlet {
-    private static final Logger LOGGER = LoggerFactory.getLogger(AssignDriverToBusServlet.class);
+@WebServlet(urlPatterns = DELETE_DRIVER_URI)
+public class DeleteDriverServlet extends HttpServlet {
+    private static final Logger LOGGER = LoggerFactory.getLogger(DeleteDriverServlet.class);
     private AdminService adminService;
+    private AdminMessagesLocalization localization;
 
     @Override
     public void init() {
@@ -46,8 +44,8 @@ public class AssignDriverToBusServlet extends HttpServlet {
                         getDataSource()
                 )
         );
+        localization = new AdminMessagesLocalization();
     }
-
 
     private DataSource getDataSource() {
         return DataSourceHolder.getInstance();
@@ -57,18 +55,9 @@ public class AssignDriverToBusServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         LOGGER.debug("about to POST");
         String driverEmail = request.getParameter(DRIVER_EMAIL);
-        String busSerial = request.getParameter(BUS_SERIAL);
-        Driver driverAlreadyInBus = adminService.getDriverInBus(busSerial);
+        adminService.deleteDriver(driverEmail);
         LOGGER.debug("redirecting...");
-        if (driverAlreadyInBus == null) {
-            adminService.assignDriverToBus(driverEmail, busSerial);
-            response.sendRedirect("/admin?lastSubmitStatusMessage=You assigned driver with email " +
-                    driverEmail + " to bus with serial number " + busSerial);
-        } else {
-            response.sendRedirect("/admin?lastSubmitStatusMessage=You tried to assign driver with email " +
-                    driverEmail + " to bus with serial number " + busSerial +
-                    ", but this bus is already used by driver with email " + driverAlreadyInBus.getUserEmail());
-        }
+        response.sendRedirect("/admin?lastSubmitStatusMessage=" + localization.getMessage(request, "status_delete-driver", driverEmail));
         LOGGER.debug("finished POST");
     }
 }

@@ -52,7 +52,7 @@ public class DriverViewingE2ETest implements ScreenShotGeneratingE2ETest {
         loginPage.findPasswordField().sendKeys("correctPasswordWhyNotItsAGreatOne");
         loginPage.findLogInButton().click();
 
-        assertEquals("You're free of any work currently. Have fun on your vacation!", driverPage.findVacatedMessage().getText());
+        assertEquals("You're free of any work currently.", driverPage.findVacatedMessage().getText());
     }
 
     @Test
@@ -90,6 +90,6 @@ public class DriverViewingE2ETest implements ScreenShotGeneratingE2ETest {
         assertEquals("You have been assigned to a new bus and/or route.",
                 driverPage.findUnawareMessage().getText());
         driverPage.findConfirmButton().click();
-        assertEquals("You're free of any work currently. Have fun on your vacation!", driverPage.findVacatedMessage().getText());
+        assertEquals("You're free of any work currently.", driverPage.findVacatedMessage().getText());
     }
 }

@@ -76,7 +76,7 @@ public class AdminDeletingE2ETest implements ScreenShotGeneratingE2ETest {
         adminPage.getDeleteRouteForm().findDeleteButton().click();
 
         assertEquals("72", adminPage.getRoutesView().findRouteName("72").getText());
-        assertEquals("You tried to delete route with name 72 but it's used - please assign bus(es) AI7007AA to other route(s) before deleting this route",
+        assertEquals("You tried to delete route with name 72 but it is used - please assign bus(es) AI7007AA to other route(s) before deleting this route",
                 adminPage.findLastSubmitStatusMessage().getText());
     }
 
@@ -105,7 +105,7 @@ public class AdminDeletingE2ETest implements ScreenShotGeneratingE2ETest {
         adminPage.getDeleteBusForm().findDeleteButton().click();
 
         assertEquals("UC4444NT", adminPage.getBusesView().findBusSerial("UC4444NT").getText());
-        assertEquals("You tried to delete bus with serial number UC4444NT but it's used - please assign driver zoidberg@company.com to other bus before deleting this bus",
+        assertEquals("You tried to delete bus with serial number UC4444NT but it is used - please assign driver zoidberg@company.com to other bus before deleting this bus",
                 adminPage.findLastSubmitStatusMessage().getText());
     }
 

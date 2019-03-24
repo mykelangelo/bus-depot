@@ -1,7 +1,6 @@
-package com.papenko.project.servlet;
+package com.papenko.project.servlet.admin;
 
 import com.papenko.project.DataSourceHolder;
-import com.papenko.project.entity.Driver;
 import com.papenko.project.repository.BusRepository;
 import com.papenko.project.repository.DriverRepository;
 import com.papenko.project.repository.RouteRepository;
@@ -17,13 +16,14 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.io.IOException;
 
-import static com.papenko.project.constant.ApplicationEndpointsURIs.AdminPage.DELETE_BUS_URI;
-import static com.papenko.project.constant.RequestParametersNames.BUS_SERIAL;
+import static com.papenko.project.constant.ApplicationEndpointsURIs.AdminPage.ADD_ROUTE_URI;
+import static com.papenko.project.constant.RequestParametersNames.ROUTE_NAME;
 
-@WebServlet(urlPatterns = DELETE_BUS_URI)
-public class DeleteBusServlet extends HttpServlet {
-    private static final Logger LOGGER = LoggerFactory.getLogger(DeleteBusServlet.class);
+@WebServlet(urlPatterns = ADD_ROUTE_URI)
+public class AddRouteServlet extends HttpServlet {
+    private static final Logger LOGGER = LoggerFactory.getLogger(AddRouteServlet.class);
     private AdminService adminService;
+    private AdminMessagesLocalization localization;
 
     @Override
     public void init() {
@@ -44,6 +44,7 @@ public class DeleteBusServlet extends HttpServlet {
                         getDataSource()
                 )
         );
+        localization = new AdminMessagesLocalization();
     }
 
     private DataSource getDataSource() {
@@ -53,19 +54,10 @@ public class DeleteBusServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         LOGGER.debug("about to POST");
-        String busSerial = request.getParameter(BUS_SERIAL);
-        Driver driverInBus = adminService.getDriverInBus(busSerial);
-        final String lastSubmitStatusMessage;
-        if (driverInBus == null) {
-            adminService.deleteBus(busSerial);
-            lastSubmitStatusMessage = "You deleted bus with serial number " + busSerial;
-        } else {
-            LOGGER.debug("can't delete - route is used");
-            lastSubmitStatusMessage = "You tried to delete bus with serial number " + busSerial +
-                    " but it's used - please assign driver " + driverInBus.getUserEmail() + " to other bus before deleting this bus";
-        }
+        String routeName = request.getParameter(ROUTE_NAME);
+        adminService.addRoute(routeName);
         LOGGER.debug("redirecting...");
-        response.sendRedirect("/admin?lastSubmitStatusMessage=" + lastSubmitStatusMessage);
+        response.sendRedirect("/admin?lastSubmitStatusMessage=" + localization.getMessage(request, "status_add-route", routeName));
         LOGGER.debug("finished POST");
     }
 }

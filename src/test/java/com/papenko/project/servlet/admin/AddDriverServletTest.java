@@ -1,4 +1,4 @@
-package com.papenko.project.servlet;
+package com.papenko.project.servlet.admin;
 
 import com.papenko.project.service.AdminService;
 import org.junit.jupiter.api.Test;
@@ -28,10 +28,13 @@ class AddDriverServletTest {
     HttpServletRequest httpServletRequest;
     @Mock
     HttpServletResponse httpServletResponse;
+    @Mock
+    AdminMessagesLocalization localization;
 
     @Test
     void doPost_shouldAddToDatabaseNewDriverWithEmailAndPasswordGiven_andRedirectToAdminPage_andSetLastSubmitStatusMessageAsParameter() throws IOException {
         // GIVEN
+        doReturn("You added new driver with email black@mirror.com").when(localization).getMessage(httpServletRequest, "status_add-driver", "black@mirror.com");
         doReturn("black@mirror.com").when(httpServletRequest).getParameter(DRIVER_EMAIL);
         doReturn("somePasswordThatIsBlackInMirror").when(httpServletRequest).getParameter(DRIVER_PASSWORD);
         // WHEN

@@ -1,4 +1,4 @@
-package com.papenko.project.servlet;
+package com.papenko.project.servlet.admin;
 
 import com.papenko.project.DataSourceHolder;
 import com.papenko.project.repository.BusRepository;
@@ -9,6 +9,7 @@ import com.papenko.project.service.AdminService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -16,13 +17,13 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.io.IOException;
 
-import static com.papenko.project.constant.ApplicationEndpointsURIs.AdminPage.VACATE_DRIVER_FORM_URI;
-import static com.papenko.project.constant.RequestParametersNames.DRIVER_EMAIL;
+import static com.papenko.project.constant.ApplicationEndpointsURIs.AdminPage.ADMIN_JSP_PATH;
+import static com.papenko.project.constant.ApplicationEndpointsURIs.AdminPage.ADMIN_PAGE_URI;
+import static com.papenko.project.constant.RequestAttributesNames.*;
 
-
-@WebServlet(urlPatterns = VACATE_DRIVER_FORM_URI)
-public class VacateDriverServlet extends HttpServlet {
-    private static final Logger LOGGER = LoggerFactory.getLogger(VacateDriverServlet.class);
+@WebServlet(urlPatterns = ADMIN_PAGE_URI)
+public class AdminPageServlet extends HttpServlet {
+    private static final Logger LOGGER = LoggerFactory.getLogger(AdminPageServlet.class);
     private AdminService adminService;
 
     @Override
@@ -51,12 +52,14 @@ public class VacateDriverServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        LOGGER.debug("about to POST");
-        String driverEmail = request.getParameter(DRIVER_EMAIL);
-        adminService.vacateDriverFromBus(driverEmail);
-        LOGGER.debug("redirecting...");
-        response.sendRedirect("/admin?lastSubmitStatusMessage=You vacated driver with email " + driverEmail);
-        LOGGER.debug("finished POST");
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        LOGGER.debug("about to GET");
+        request.setAttribute(LAST_SUBMIT_STATUS_MESSAGE, request.getParameter(LAST_SUBMIT_STATUS_MESSAGE));
+        request.setAttribute(DRIVERS, adminService.getDrivers());
+        request.setAttribute(BUSES, adminService.getBuses());
+        request.setAttribute(ROUTES, adminService.getRoutes());
+        LOGGER.debug("forwarding...");
+        getServletContext().getRequestDispatcher(ADMIN_JSP_PATH).forward(request, response);
+        LOGGER.debug("finished GET");
     }
 }

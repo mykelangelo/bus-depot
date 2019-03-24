@@ -5,6 +5,7 @@ import com.papenko.project.entity.UserType;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -18,6 +19,7 @@ import java.io.IOException;
 
 import static com.papenko.project.constant.ApplicationEndpointsURIs.AdminPage.*;
 import static com.papenko.project.constant.ApplicationEndpointsURIs.DRIVER_PAGE_URI;
+import static com.papenko.project.constant.MDCKeys.ENDPOINT;
 import static com.papenko.project.constant.SessionAttributesNames.USER_DETAILS;
 
 @WebFilter(urlPatterns = "*")
@@ -39,11 +41,12 @@ public class AuthorizationFilter extends HttpFilter {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        LOGGER.debug("about to filter a request");
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
-
         String requestURI = request.getRequestURI();
+        MDC.put(ENDPOINT, requestURI);
+
+        LOGGER.debug("about to filter a request");
         AuthenticatedUserDetails userDetails = (AuthenticatedUserDetails) request.getSession().getAttribute(USER_DETAILS);
 
         if (userDetails == null) {

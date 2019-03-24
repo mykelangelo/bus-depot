@@ -1,4 +1,4 @@
-package com.papenko.project.servlet;
+package com.papenko.project.servlet.admin;
 
 import com.papenko.project.entity.Bus;
 import com.papenko.project.entity.Driver;
@@ -28,10 +28,13 @@ class DeleteBusServletTest {
     HttpServletRequest httpServletRequest;
     @Mock
     HttpServletResponse httpServletResponse;
+    @Mock
+    AdminMessagesLocalization localization;
 
     @Test
     void doPost_shouldDeleteFromDatabaseBusWithSerialGiven_andRedirectToAdminPage_andSetLastSubmitStatusMessageAsParameter_whenBusIsUnused() throws IOException {
         // GIVEN
+        doReturn("You deleted bus with serial number MY F8").when(localization).getMessage(httpServletRequest, "status_delete-bus", "MY F8");
         doReturn("MY F8").when(httpServletRequest).getParameter(BUS_SERIAL);
         doReturn(null).when(adminService).getDriverInBus("MY F8");
         // WHEN
@@ -44,12 +47,14 @@ class DeleteBusServletTest {
     @Test
     void doPost_shouldNotDeleteFromDatabaseBusWithSerialGiven_andRedirectToAdminPage_andSetLastSubmitStatusMessageAsParameter_whenBusIsUsed() throws IOException {
         // GIVEN
+        doReturn("You tried to delete bus with serial number KY73 but it is used - please assign driver dude@drives.car to other bus before deleting this bus")
+                .when(localization).getMessage(httpServletRequest, "status_try-delete-bus", "KY73", "dude@drives.car");
         doReturn("KY73").when(httpServletRequest).getParameter(BUS_SERIAL);
         doReturn(new Driver("dude@drives.car", new Bus("KY73", null), false)).when(adminService).getDriverInBus("KY73");
         // WHEN
         deleteBusServlet.doPost(httpServletRequest, httpServletResponse);
         // THEN
         verifyNoMoreInteractions(adminService);
-        verify(httpServletResponse).sendRedirect("/admin?lastSubmitStatusMessage=You tried to delete bus with serial number KY73 but it's used - please assign driver dude@drives.car to other bus before deleting this bus");
+        verify(httpServletResponse).sendRedirect("/admin?lastSubmitStatusMessage=You tried to delete bus with serial number KY73 but it is used - please assign driver dude@drives.car to other bus before deleting this bus");
     }
 }

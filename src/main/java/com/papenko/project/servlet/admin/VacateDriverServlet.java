@@ -1,4 +1,4 @@
-package com.papenko.project.servlet;
+package com.papenko.project.servlet.admin;
 
 import com.papenko.project.DataSourceHolder;
 import com.papenko.project.repository.BusRepository;
@@ -9,7 +9,6 @@ import com.papenko.project.service.AdminService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -17,14 +16,15 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.io.IOException;
 
-import static com.papenko.project.constant.ApplicationEndpointsURIs.AdminPage.ADMIN_JSP_PATH;
-import static com.papenko.project.constant.ApplicationEndpointsURIs.AdminPage.ADMIN_PAGE_URI;
-import static com.papenko.project.constant.RequestAttributesNames.*;
+import static com.papenko.project.constant.ApplicationEndpointsURIs.AdminPage.VACATE_DRIVER_FORM_URI;
+import static com.papenko.project.constant.RequestParametersNames.DRIVER_EMAIL;
 
-@WebServlet(urlPatterns = ADMIN_PAGE_URI)
-public class AdminPageServlet extends HttpServlet {
-    private static final Logger LOGGER = LoggerFactory.getLogger(AdminPageServlet.class);
+
+@WebServlet(urlPatterns = VACATE_DRIVER_FORM_URI)
+public class VacateDriverServlet extends HttpServlet {
+    private static final Logger LOGGER = LoggerFactory.getLogger(VacateDriverServlet.class);
     private AdminService adminService;
+    private AdminMessagesLocalization localization;
 
     @Override
     public void init() {
@@ -45,6 +45,7 @@ public class AdminPageServlet extends HttpServlet {
                         getDataSource()
                 )
         );
+        localization = new AdminMessagesLocalization();
     }
 
     private DataSource getDataSource() {
@@ -52,14 +53,12 @@ public class AdminPageServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        LOGGER.debug("about to GET");
-        request.setAttribute(LAST_SUBMIT_STATUS_MESSAGE, request.getParameter(LAST_SUBMIT_STATUS_MESSAGE));
-        request.setAttribute(DRIVERS, adminService.getDrivers());
-        request.setAttribute(BUSES, adminService.getBuses());
-        request.setAttribute(ROUTES, adminService.getRoutes());
-        LOGGER.debug("forwarding...");
-        getServletContext().getRequestDispatcher(ADMIN_JSP_PATH).forward(request, response);
-        LOGGER.debug("finished GET");
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        LOGGER.debug("about to POST");
+        String driverEmail = request.getParameter(DRIVER_EMAIL);
+        adminService.vacateDriverFromBus(driverEmail);
+        LOGGER.debug("redirecting...");
+        response.sendRedirect("/admin?lastSubmitStatusMessage=" + localization.getMessage(request, "status_vacate-driver", driverEmail));
+        LOGGER.debug("finished POST");
     }
 }

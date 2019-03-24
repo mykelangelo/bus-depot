@@ -1,4 +1,4 @@
-package com.papenko.project.servlet;
+package com.papenko.project.servlet.admin;
 
 import com.papenko.project.DataSourceHolder;
 import com.papenko.project.repository.BusRepository;
@@ -16,13 +16,15 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.io.IOException;
 
-import static com.papenko.project.constant.ApplicationEndpointsURIs.AdminPage.ADD_ROUTE_URI;
-import static com.papenko.project.constant.RequestParametersNames.ROUTE_NAME;
+import static com.papenko.project.constant.ApplicationEndpointsURIs.AdminPage.ADD_DRIVER_URI;
+import static com.papenko.project.constant.RequestParametersNames.DRIVER_EMAIL;
+import static com.papenko.project.constant.RequestParametersNames.DRIVER_PASSWORD;
 
-@WebServlet(urlPatterns = ADD_ROUTE_URI)
-public class AddRouteServlet extends HttpServlet {
-    private static final Logger LOGGER = LoggerFactory.getLogger(AddRouteServlet.class);
+@WebServlet(urlPatterns = ADD_DRIVER_URI)
+public class AddDriverServlet extends HttpServlet {
+    private static final Logger LOGGER = LoggerFactory.getLogger(AddDriverServlet.class);
     private AdminService adminService;
+    private AdminMessagesLocalization localization;
 
     @Override
     public void init() {
@@ -43,6 +45,7 @@ public class AddRouteServlet extends HttpServlet {
                         getDataSource()
                 )
         );
+        localization = new AdminMessagesLocalization();
     }
 
     private DataSource getDataSource() {
@@ -52,10 +55,11 @@ public class AddRouteServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         LOGGER.debug("about to POST");
-        String routeName = request.getParameter(ROUTE_NAME);
-        adminService.addRoute(routeName);
+        String driverEmail = request.getParameter(DRIVER_EMAIL);
+        String driverPassword = request.getParameter(DRIVER_PASSWORD);
+        adminService.addDriver(driverEmail, driverPassword);
         LOGGER.debug("redirecting...");
-        response.sendRedirect("/admin?lastSubmitStatusMessage=You added new route with name " + routeName);
+        response.sendRedirect("/admin?lastSubmitStatusMessage=" + localization.getMessage(request, "status_add-driver", driverEmail));
         LOGGER.debug("finished POST");
     }
 }

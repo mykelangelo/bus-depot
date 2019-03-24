@@ -15,11 +15,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.io.IOException;
+import java.util.Locale;
 
 import static com.papenko.project.constant.ApplicationEndpointsURIs.*;
-import static com.papenko.project.constant.RequestAttributesNames.LOGIN_ERROR_MESSAGE;
+import static com.papenko.project.constant.RequestAttributesNames.DISPLAY_LOGIN_ERROR_MESSAGE;
 import static com.papenko.project.constant.RequestParametersNames.LOGIN_EMAIL;
 import static com.papenko.project.constant.RequestParametersNames.LOGIN_PASSWORD;
+import static com.papenko.project.constant.SessionAttributesNames.CURRENT_LANGUAGE;
 import static com.papenko.project.constant.SessionAttributesNames.USER_DETAILS;
 
 @WebServlet(urlPatterns = LOGIN_PAGE_URI)
@@ -43,11 +45,27 @@ public class LoginPageServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         LOGGER.debug("about to GET");
+
         Object userDetails = request.getSession().getAttribute(USER_DETAILS);
-        String path = (userDetails == null) ? LOGIN_JSP_PATH : LOGOUT_FORM_URI;
+        final String path;
+        if (userDetails == null) {
+            setBrowserLanguage(request);
+            path = LOGIN_JSP_PATH;
+        } else {
+            path = LOGOUT_FORM_URI;
+        }
         LOGGER.debug("forwarding...");
         this.getServletContext().getRequestDispatcher(path).forward(request, response);
         LOGGER.debug("finished GET");
+    }
+
+    private void setBrowserLanguage(HttpServletRequest request) {
+        Object currentLanguage = request.getSession().getAttribute(CURRENT_LANGUAGE);
+        if (currentLanguage == null) {
+            Locale locale = request.getLocale();
+            String browserLanguage = locale.getLanguage();
+            request.getSession().setAttribute(CURRENT_LANGUAGE, browserLanguage);
+        }
     }
 
     @Override
@@ -66,7 +84,7 @@ public class LoginPageServlet extends HttpServlet {
             LOGGER.debug("redirecting...");
             response.sendRedirect(pageURI);
         } else {
-            request.setAttribute(LOGIN_ERROR_MESSAGE, "Invalid email or password");
+            request.setAttribute(DISPLAY_LOGIN_ERROR_MESSAGE, true);
             LOGGER.debug("forwarding...");
             this.getServletContext().getRequestDispatcher(LOGIN_JSP_PATH).forward(request, response);
         }

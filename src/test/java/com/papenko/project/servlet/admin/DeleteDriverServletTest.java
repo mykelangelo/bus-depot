@@ -1,4 +1,4 @@
-package com.papenko.project.servlet;
+package com.papenko.project.servlet.admin;
 
 import com.papenko.project.service.AdminService;
 import org.junit.jupiter.api.Test;
@@ -27,10 +27,13 @@ class DeleteDriverServletTest {
     HttpServletRequest httpServletRequest;
     @Mock
     HttpServletResponse httpServletResponse;
+    @Mock
+    AdminMessagesLocalization localization;
 
     @Test
     void doPost_shouldDeleteFromDatabaseDriverWithEmailGiven_andRedirectToAdminPage_andSetLastSubmitStatusMessageAsParameter() throws IOException {
         // GIVEN
+        doReturn("You deleted driver with email jackie.Jr@janitor.com").when(localization).getMessage(httpServletRequest, "status_delete-driver", "jackie.Jr@janitor.com");
         doReturn("jackie.Jr@janitor.com").when(httpServletRequest).getParameter(DRIVER_EMAIL);
         // WHEN
         deleteDriverServlet.doPost(httpServletRequest, httpServletResponse);

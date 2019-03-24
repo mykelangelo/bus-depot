@@ -1,4 +1,4 @@
-package com.papenko.project.servlet;
+package com.papenko.project.servlet.admin;
 
 import com.papenko.project.service.AdminService;
 import org.junit.jupiter.api.Test;
@@ -27,10 +27,13 @@ class AddBusServletTest {
     HttpServletRequest httpServletRequest;
     @Mock
     HttpServletResponse httpServletResponse;
+    @Mock
+    AdminMessagesLocalization localization;
 
     @Test
     void doPost_shouldAddToDatabaseNewBusWithSerialGiven_andRedirectToAdminPage_andSetLastSubmitStatusMessageAsParameter() throws IOException {
         // GIVEN
+        doReturn("You added new bus with serial number AI2352IA").when(localization).getMessage(httpServletRequest, "status_add-bus", "AI2352IA");
         doReturn("AI2352IA").when(httpServletRequest).getParameter(BUS_SERIAL);
         // WHEN
         addBusServlet.doPost(httpServletRequest, httpServletResponse);

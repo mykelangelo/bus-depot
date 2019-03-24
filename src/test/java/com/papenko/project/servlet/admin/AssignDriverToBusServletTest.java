@@ -1,4 +1,4 @@
-package com.papenko.project.servlet;
+package com.papenko.project.servlet.admin;
 
 import com.papenko.project.entity.Bus;
 import com.papenko.project.entity.Driver;
@@ -28,10 +28,14 @@ class AssignDriverToBusServletTest {
     HttpServletRequest httpServletRequest;
     @Mock
     HttpServletResponse httpServletResponse;
+    @Mock
+    AdminMessagesLocalization localization;
 
     @Test
     void doPost_shouldSetDriverToBus_andRedirectToAdminPage_andSetLastSubmitStatusMessageAsParameter_whenBusWasPreviouslyEmpty() throws IOException {
         // GIVEN
+        doReturn("You assigned driver with email bob.jenkins@gmail.com to bus with serial number AA4444AA")
+                .when(localization).getMessage(httpServletRequest, "status_assign-driver-to-bus", "bob.jenkins@gmail.com", "AA4444AA");
         doReturn("bob.jenkins@gmail.com").when(httpServletRequest).getParameter(DRIVER_EMAIL);
         doReturn("AA4444AA").when(httpServletRequest).getParameter(BUS_SERIAL);
         doReturn(null).when(adminService).getDriverInBus("AA4444AA");
@@ -45,6 +49,8 @@ class AssignDriverToBusServletTest {
     @Test
     void doPost_shouldRedirectToAdminPage_andSetLastSubmitStatusMessageAsParameter_whenBusWasAlreadyOccupied() throws IOException {
         // GIVEN
+        doReturn("You tried to assign driver with email new@driver to bus with serial number OI0102OI, but this bus is already used by driver with email old@driver")
+                .when(localization).getMessage(httpServletRequest, "status_try-assign-driver-to-bus", "new@driver", "OI0102OI", "old@driver");
         doReturn("new@driver").when(httpServletRequest).getParameter(DRIVER_EMAIL);
         doReturn("OI0102OI").when(httpServletRequest).getParameter(BUS_SERIAL);
         doReturn(new Driver("old@driver", new Bus("OI0102OI", new Route("999")), true))

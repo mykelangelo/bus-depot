@@ -7,4 +7,5 @@ public interface RequestParametersNames {
     String ROUTE_NAME = "route-name";
     String DRIVER_EMAIL = "driver-email";
     String DRIVER_PASSWORD = "driver-password";
+    String SELECTED_LANGUAGE = "language";
 }

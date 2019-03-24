@@ -7,6 +7,7 @@ public interface ApplicationEndpointsURIs {
     String LOGIN_JSP_PATH = "/WEB-INF/login.jsp";
     String LOGOUT_FORM_URI = "/logout";
     String GO_HOME_URI = "/go-home";
+    String LOCALIZE_URI = "/localize";
 
     interface AdminPage {
         String ADMIN_PAGE_URI = "/admin";

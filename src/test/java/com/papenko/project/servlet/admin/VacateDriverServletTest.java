@@ -1,4 +1,4 @@
-package com.papenko.project.servlet;
+package com.papenko.project.servlet.admin;
 
 import com.papenko.project.service.AdminService;
 import org.junit.jupiter.api.Test;
@@ -25,10 +25,13 @@ class VacateDriverServletTest {
     HttpServletRequest httpServletRequest;
     @Mock
     HttpServletResponse httpServletResponse;
+    @Mock
+    AdminMessagesLocalization localization;
 
     @Test
     void doPost_shouldVacateDriverFromBus_andRedirectToAdminPage_andSetLastSubmitStatusMessageAsParameter() throws IOException {
         // GIVEN
+        doReturn("You vacated driver with email bob.jenkins@gmail.com").when(localization).getMessage(httpServletRequest, "status_vacate-driver", "bob.jenkins@gmail.com");
         doReturn("bob.jenkins@gmail.com").when(httpServletRequest).getParameter(DRIVER_EMAIL);
         // WHEN
         vacateDriver.doPost(httpServletRequest, httpServletResponse);

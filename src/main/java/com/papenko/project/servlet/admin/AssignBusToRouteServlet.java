@@ -1,4 +1,4 @@
-package com.papenko.project.servlet;
+package com.papenko.project.servlet.admin;
 
 import com.papenko.project.DataSourceHolder;
 import com.papenko.project.repository.BusRepository;
@@ -16,14 +16,16 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.io.IOException;
 
-import static com.papenko.project.constant.ApplicationEndpointsURIs.AdminPage.ADD_DRIVER_URI;
-import static com.papenko.project.constant.RequestParametersNames.DRIVER_EMAIL;
-import static com.papenko.project.constant.RequestParametersNames.DRIVER_PASSWORD;
+import static com.papenko.project.constant.ApplicationEndpointsURIs.AdminPage.ASSIGN_BUS_TO_ROUTE_FORM_URI;
+import static com.papenko.project.constant.RequestParametersNames.BUS_SERIAL;
+import static com.papenko.project.constant.RequestParametersNames.ROUTE_NAME;
 
-@WebServlet(urlPatterns = ADD_DRIVER_URI)
-public class AddDriverServlet extends HttpServlet {
-    private static final Logger LOGGER = LoggerFactory.getLogger(AddDriverServlet.class);
+
+@WebServlet(urlPatterns = ASSIGN_BUS_TO_ROUTE_FORM_URI)
+public class AssignBusToRouteServlet extends HttpServlet {
+    private static final Logger LOGGER = LoggerFactory.getLogger(AssignBusToRouteServlet.class);
     private AdminService adminService;
+    private AdminMessagesLocalization localization;
 
     @Override
     public void init() {
@@ -44,20 +46,23 @@ public class AddDriverServlet extends HttpServlet {
                         getDataSource()
                 )
         );
+        localization = new AdminMessagesLocalization();
     }
+
 
     private DataSource getDataSource() {
         return DataSourceHolder.getInstance();
     }
 
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         LOGGER.debug("about to POST");
-        String driverEmail = request.getParameter(DRIVER_EMAIL);
-        String driverPassword = request.getParameter(DRIVER_PASSWORD);
-        adminService.addDriver(driverEmail, driverPassword);
+        String busSerial = request.getParameter(BUS_SERIAL);
+        String routeName = request.getParameter(ROUTE_NAME);
+        adminService.assignBusToRoute(busSerial, routeName);
         LOGGER.debug("redirecting...");
-        response.sendRedirect("/admin?lastSubmitStatusMessage=You added new driver with email " + driverEmail);
+        response.sendRedirect("/admin?lastSubmitStatusMessage=" + localization.getMessage(request, "status_assign-bus-to-route", busSerial, routeName));
         LOGGER.debug("finished POST");
     }
 }

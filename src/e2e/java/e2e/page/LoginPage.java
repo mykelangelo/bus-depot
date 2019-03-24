@@ -31,4 +31,16 @@ public class LoginPage {
     public WebElement findLoginErrorMessage() {
         return webDriver.findElement(By.className("login__error-message"));
     }
+
+    public WebElement findGreetingMessage() {
+        return webDriver.findElement(By.className("login__greeting-message"));
+    }
+
+    public WebElement findLanguagesDropdown() {
+        return webDriver.findElement(By.className("login__language-dropdown"));
+    }
+
+    public WebElement findLanguagesDropdownOption(String language) {
+        return webDriver.findElement(By.className("login__language-dropdown-option-" + language));
+    }
 }
