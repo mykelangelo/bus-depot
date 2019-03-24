@@ -51,7 +51,7 @@ public class DeleteRouteServlet extends HttpServlet {
         localization = new AdminMessagesLocalization();
     }
 
-    private DataSource getDataSource() {
+    DataSource getDataSource() {
         return DataSourceHolder.getInstance();
     }
 

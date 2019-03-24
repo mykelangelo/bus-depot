@@ -16,14 +16,14 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.sql.DataSource;
 import java.io.IOException;
 import java.util.List;
 
 import static com.papenko.project.constant.ApplicationEndpointsURIs.AdminPage.ADMIN_JSP_PATH;
 import static com.papenko.project.constant.RequestAttributesNames.*;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class AdminPageServletTest {
@@ -40,6 +40,13 @@ class AdminPageServletTest {
     ServletContext servletContext;
     @Mock
     RequestDispatcher requestDispatcher;
+
+    @Test
+    void init_shouldBeInitialized() {
+        doReturn(mock(DataSource.class)).when(adminPageServlet).getDataSource();
+
+        adminPageServlet.init();
+    }
 
     @Test
     void doGet_shouldForwardToAdminPage_andSetDriversEmailsAndBusesSerialsAndRoutesNamesToRequest_andNotSetLastSubmitMessage_whenLastSubmitMessageIsNotPresentInQueryParam() throws ServletException, IOException {

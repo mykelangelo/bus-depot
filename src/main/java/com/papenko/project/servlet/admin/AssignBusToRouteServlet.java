@@ -50,7 +50,7 @@ public class AssignBusToRouteServlet extends HttpServlet {
     }
 
 
-    private DataSource getDataSource() {
+    DataSource getDataSource() {
         return DataSourceHolder.getInstance();
     }
 

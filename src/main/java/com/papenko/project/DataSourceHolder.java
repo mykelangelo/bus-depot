@@ -37,7 +37,7 @@ public class DataSourceHolder {
             dataScriptsDirectoryURL = "classpath:db/e2e-tests-data";
             LOGGER.warn("CI database is being used");
             hikariConfig = new HikariConfig();
-            String username = getenv("MYSQL_USER");
+            String username = getenv(CI_DB_USER_ENV_PROPERTY);
             String password = getenv("MYSQL_PASSWORD");
             LOGGER.debug("CI database username: [{}] password: [{}]", username, password);
             hikariConfig.setUsername(username);

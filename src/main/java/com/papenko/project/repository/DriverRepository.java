@@ -23,9 +23,7 @@ public class DriverRepository {
 
     public void updateDriverSetBus(Driver driver, Bus bus) {
         LOGGER.debug("about to update driver with a new bus");
-        var sql = "UPDATE bus_driver " +
-                "SET bus_serial = (?), aware_of_assignment = FALSE " +
-                "WHERE user_email = (?);";
+        var sql = "UPDATE bus_driver SET bus_serial = (?), aware_of_assignment = FALSE WHERE user_email = (?);";
         try (var connection = dataSource.getConnection();
              var preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setString(1, bus.getSerialNumber());
@@ -39,8 +37,7 @@ public class DriverRepository {
 
     public Driver findDriverByEmail(String driverEmail) {
         LOGGER.debug("about to find a driver by email");
-        var sql = "SELECT bus_serial, aware_of_assignment FROM bus_driver " +
-                "WHERE user_email = (?);";
+        var sql = "SELECT bus_serial, aware_of_assignment FROM bus_driver WHERE user_email = (?);";
         try (var connection = dataSource.getConnection();
              var preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setString(1, driverEmail);
@@ -85,9 +82,7 @@ public class DriverRepository {
 
     public void updateDriverSetAwareness(Driver driver, boolean isAwareOfAssignment) {
         LOGGER.debug("about to update driver with new awareness status");
-        var sql = "UPDATE bus_driver " +
-                "SET aware_of_assignment = (?) " +
-                "WHERE user_email = (?);";
+        var sql = "UPDATE bus_driver SET aware_of_assignment = (?) WHERE user_email = (?);";
         try (var connection = dataSource.getConnection();
              var preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setBoolean(1, isAwareOfAssignment);
@@ -101,8 +96,7 @@ public class DriverRepository {
 
     public Driver findDriverByBus(Bus bus) {
         LOGGER.debug("about to find a driver by bus");
-        var sql = "SELECT user_email, aware_of_assignment FROM bus_driver " +
-                "WHERE bus_serial = (?);";
+        var sql = "SELECT user_email, aware_of_assignment FROM bus_driver WHERE bus_serial = (?);";
         try (var connection = dataSource.getConnection();
              var preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setString(1, bus.getSerialNumber());

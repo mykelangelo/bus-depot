@@ -15,6 +15,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.sql.DataSource;
 import java.io.IOException;
 
 import static com.papenko.project.constant.ApplicationEndpointsURIs.DRIVER_JSP_PATH;
@@ -22,8 +23,7 @@ import static com.papenko.project.constant.ApplicationEndpointsURIs.DRIVER_PAGE_
 import static com.papenko.project.constant.RequestAttributesNames.DRIVER;
 import static com.papenko.project.constant.SessionAttributesNames.USER_DETAILS;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class DriverPageServletTest {
@@ -42,6 +42,13 @@ class DriverPageServletTest {
     RequestDispatcher requestDispatcher;
     @Mock
     HttpSession httpSession;
+
+    @Test
+    void init_shouldBeInitialized() {
+        doReturn(mock(DataSource.class)).when(driverPageServlet).getDataSource();
+
+        driverPageServlet.init();
+    }
 
     @Test
     void doGet_shouldForwardToAdminPage_andSetDriverToRequest() throws ServletException, IOException {

@@ -51,7 +51,7 @@ public class AssignDriverToBusServlet extends HttpServlet {
     }
 
 
-    private DataSource getDataSource() {
+    DataSource getDataSource() {
         return DataSourceHolder.getInstance();
     }
 

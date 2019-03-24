@@ -16,6 +16,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.sql.DataSource;
 import java.io.IOException;
 import java.util.Locale;
 
@@ -47,6 +48,13 @@ class LoginPageServletTest {
     HttpSession session;
     private String language = "en";
     private Locale locale = new Locale(language);
+
+    @Test
+    void init_shouldBeInitialized() {
+        doReturn(mock(DataSource.class)).when(loginPageServlet).getDataSource();
+
+        loginPageServlet.init();
+    }
 
     @Test
     void doGet_shouldForwardToLoginPage_andSetBrowserLanguageToSession_whenUserIsNotLoggedIn_andCurrentLanguageIsNull() throws Exception {

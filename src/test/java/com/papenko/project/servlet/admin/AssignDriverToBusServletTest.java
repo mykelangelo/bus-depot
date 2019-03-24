@@ -12,6 +12,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.sql.DataSource;
 import java.io.IOException;
 
 import static com.papenko.project.constant.RequestParametersNames.BUS_SERIAL;
@@ -30,6 +31,13 @@ class AssignDriverToBusServletTest {
     HttpServletResponse httpServletResponse;
     @Mock
     AdminMessagesLocalization localization;
+
+    @Test
+    void init_shouldBeInitialized() {
+        doReturn(mock(DataSource.class)).when(assignDriverToBusServlet).getDataSource();
+
+        assignDriverToBusServlet.init();
+    }
 
     @Test
     void doPost_shouldSetDriverToBus_andRedirectToAdminPage_andSetLastSubmitStatusMessageAsParameter_whenBusWasPreviouslyEmpty() throws IOException {

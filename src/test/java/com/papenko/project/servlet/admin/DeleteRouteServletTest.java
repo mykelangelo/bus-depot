@@ -12,6 +12,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.sql.DataSource;
 import java.io.IOException;
 import java.util.List;
 
@@ -31,6 +32,13 @@ class DeleteRouteServletTest {
     HttpServletResponse httpServletResponse;
     @Mock
     AdminMessagesLocalization localization;
+
+    @Test
+    void init_shouldBeInitialized() {
+        doReturn(mock(DataSource.class)).when(deleteRouteServlet).getDataSource();
+
+        deleteRouteServlet.init();
+    }
 
     @Test
     void doPost_shouldDeleteFromDatabaseRouteWithNameGiven_andRedirectToAdminPage_andSetLastSubmitStatusMessageAsParameter_whenRouteIsUnused() throws IOException {

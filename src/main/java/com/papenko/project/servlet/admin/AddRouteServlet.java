@@ -47,7 +47,7 @@ public class AddRouteServlet extends HttpServlet {
         localization = new AdminMessagesLocalization();
     }
 
-    private DataSource getDataSource() {
+    DataSource getDataSource() {
         return DataSourceHolder.getInstance();
     }
 

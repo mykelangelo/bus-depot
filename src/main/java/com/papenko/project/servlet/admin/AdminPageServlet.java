@@ -47,7 +47,7 @@ public class AdminPageServlet extends HttpServlet {
         );
     }
 
-    private DataSource getDataSource() {
+    DataSource getDataSource() {
         return DataSourceHolder.getInstance();
     }
 
