@@ -17,6 +17,8 @@ import javax.sql.DataSource;
 import java.io.IOException;
 
 import static com.papenko.project.constant.ApplicationEndpointsURIs.AdminPage.ADD_ROUTE_URI;
+import static com.papenko.project.constant.ApplicationEndpointsURIs.AdminPage.ADMIN_PAGE_URI;
+import static com.papenko.project.constant.RequestAttributesNames.LAST_SUBMIT_STATUS_MESSAGE;
 import static com.papenko.project.constant.RequestParametersNames.ROUTE_NAME;
 
 @WebServlet(urlPatterns = ADD_ROUTE_URI)
@@ -56,8 +58,10 @@ public class AddRouteServlet extends HttpServlet {
         LOGGER.debug("about to POST");
         String routeName = request.getParameter(ROUTE_NAME);
         adminService.addRoute(routeName);
+        String statusMessage = localization.getMessage(request, "status_add-route", routeName);
+        request.getSession().setAttribute(LAST_SUBMIT_STATUS_MESSAGE, statusMessage);
         LOGGER.debug("redirecting...");
-        response.sendRedirect("/admin?lastSubmitStatusMessage=" + localization.getMessage(request, "status_add-route", routeName));
+        response.sendRedirect(ADMIN_PAGE_URI);
         LOGGER.debug("finished POST");
     }
 }

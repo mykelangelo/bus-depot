@@ -17,6 +17,8 @@ import javax.sql.DataSource;
 import java.io.IOException;
 
 import static com.papenko.project.constant.ApplicationEndpointsURIs.AdminPage.ADD_BUS_URI;
+import static com.papenko.project.constant.ApplicationEndpointsURIs.AdminPage.ADMIN_PAGE_URI;
+import static com.papenko.project.constant.RequestAttributesNames.LAST_SUBMIT_STATUS_MESSAGE;
 import static com.papenko.project.constant.RequestParametersNames.BUS_SERIAL;
 
 @WebServlet(urlPatterns = ADD_BUS_URI)
@@ -56,8 +58,10 @@ public class AddBusServlet extends HttpServlet {
         LOGGER.debug("about to POST");
         String busSerial = request.getParameter(BUS_SERIAL);
         adminService.addBus(busSerial);
+        String statusMessage = localization.getMessage(request, "status_add-bus", busSerial);
+        request.getSession().setAttribute(LAST_SUBMIT_STATUS_MESSAGE, statusMessage);
         LOGGER.debug("redirecting...");
-        response.sendRedirect("/admin?lastSubmitStatusMessage=" + localization.getMessage(request, "status_add-bus", busSerial));
+        response.sendRedirect(ADMIN_PAGE_URI);
         LOGGER.debug("finished POST");
     }
 }

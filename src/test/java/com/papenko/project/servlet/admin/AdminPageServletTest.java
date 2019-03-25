@@ -16,6 +16,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.util.List;
@@ -40,6 +41,8 @@ class AdminPageServletTest {
     ServletContext servletContext;
     @Mock
     RequestDispatcher requestDispatcher;
+    @Mock
+    HttpSession session;
 
     @Test
     void init_shouldBeInitialized() {
@@ -49,8 +52,9 @@ class AdminPageServletTest {
     }
 
     @Test
-    void doGet_shouldForwardToAdminPage_andSetDriversEmailsAndBusesSerialsAndRoutesNamesToRequest_andNotSetLastSubmitMessage_whenLastSubmitMessageIsNotPresentInQueryParam() throws ServletException, IOException {
+    void doGet_shouldForwardToAdminPage_andSetDriversEmailsAndBusesSerialsAndRoutesNamesToRequest_andSetLastSubmitMessageToRequest_andRemoveLastSubmitMessageFromSession() throws ServletException, IOException {
         // GIVEN
+        doReturn(session).when(httpServletRequest).getSession();
         doReturn(servletContext).when(adminPageServlet).getServletContext();
         doReturn(requestDispatcher).when(servletContext).getRequestDispatcher(anyString());
         doReturn(List.of(
@@ -62,37 +66,7 @@ class AdminPageServletTest {
                 new Bus("Il1171lI", new Route("7R")))
         ).when(adminService).getBuses();
         doReturn(List.of(new Route("7L"), new Route("7k"), new Route("71"))).when(adminService).getRoutes();
-        // WHEN
-        adminPageServlet.doGet(httpServletRequest, httpServletResponse);
-        // THEN
-        verify(servletContext).getRequestDispatcher(ADMIN_JSP_PATH);
-        verify(requestDispatcher).forward(httpServletRequest, httpServletResponse);
-        verify(httpServletRequest).setAttribute(DRIVERS, List.of(
-                new Driver("alexa@company.com", new Bus("AA4444AA", new Route("7u")), true),
-                new Driver("bob.jenkins@gmail.com", new Bus("Il1171lI", new Route("7R")), false))
-        );
-        verify(httpServletRequest).setAttribute(BUSES, List.of(
-                new Bus("AA4444AA", new Route("7u")),
-                new Bus("Il1171lI", new Route("7R")))
-        );
-        verify(httpServletRequest).setAttribute(ROUTES, List.of(new Route("7L"), new Route("7k"), new Route("71")));
-    }
-
-    @Test
-    void doGet_shouldForwardToAdminPage_andSetDriversEmailsAndBusesSerialsAndRoutesNamesToRequest_andSetLastSubmitMessage_whenLastSubmitMessageIsPresentInQueryParam() throws ServletException, IOException {
-        // GIVEN
-        doReturn(servletContext).when(adminPageServlet).getServletContext();
-        doReturn(requestDispatcher).when(servletContext).getRequestDispatcher(anyString());
-        doReturn(List.of(
-                new Driver("alexa@company.com", new Bus("AA4444AA", new Route("7u")), true),
-                new Driver("bob.jenkins@gmail.com", new Bus("Il1171lI", new Route("7R")), false))
-        ).when(adminService).getDrivers();
-        doReturn(List.of(
-                new Bus("AA4444AA", new Route("7u")),
-                new Bus("Il1171lI", new Route("7R")))
-        ).when(adminService).getBuses();
-        doReturn(List.of(new Route("7L"), new Route("7k"), new Route("71"))).when(adminService).getRoutes();
-        doReturn("Jokes are not funny").when(httpServletRequest).getParameter(LAST_SUBMIT_STATUS_MESSAGE);
+        doReturn("Jokes are not funny").when(session).getAttribute(LAST_SUBMIT_STATUS_MESSAGE);
         // WHEN
         adminPageServlet.doGet(httpServletRequest, httpServletResponse);
         // THEN
@@ -108,5 +82,6 @@ class AdminPageServletTest {
         );
         verify(httpServletRequest).setAttribute(ROUTES, List.of(new Route("7L"), new Route("7k"), new Route("71")));
         verify(httpServletRequest).setAttribute(LAST_SUBMIT_STATUS_MESSAGE, "Jokes are not funny");
+        verify(session).removeAttribute(LAST_SUBMIT_STATUS_MESSAGE);
     }
 }

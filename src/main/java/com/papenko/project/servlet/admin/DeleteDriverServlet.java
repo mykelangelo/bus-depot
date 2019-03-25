@@ -16,7 +16,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.io.IOException;
 
+import static com.papenko.project.constant.ApplicationEndpointsURIs.AdminPage.ADMIN_PAGE_URI;
 import static com.papenko.project.constant.ApplicationEndpointsURIs.AdminPage.DELETE_DRIVER_URI;
+import static com.papenko.project.constant.RequestAttributesNames.LAST_SUBMIT_STATUS_MESSAGE;
 import static com.papenko.project.constant.RequestParametersNames.DRIVER_EMAIL;
 
 @WebServlet(urlPatterns = DELETE_DRIVER_URI)
@@ -56,8 +58,10 @@ public class DeleteDriverServlet extends HttpServlet {
         LOGGER.debug("about to POST");
         String driverEmail = request.getParameter(DRIVER_EMAIL);
         adminService.deleteDriver(driverEmail);
+        String statusMessage = localization.getMessage(request, "status_delete-driver", driverEmail);
+        request.getSession().setAttribute(LAST_SUBMIT_STATUS_MESSAGE, statusMessage);
         LOGGER.debug("redirecting...");
-        response.sendRedirect("/admin?lastSubmitStatusMessage=" + localization.getMessage(request, "status_delete-driver", driverEmail));
+        response.sendRedirect(ADMIN_PAGE_URI);
         LOGGER.debug("finished POST");
     }
 }

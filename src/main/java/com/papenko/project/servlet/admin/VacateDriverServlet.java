@@ -16,7 +16,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.io.IOException;
 
+import static com.papenko.project.constant.ApplicationEndpointsURIs.AdminPage.ADMIN_PAGE_URI;
 import static com.papenko.project.constant.ApplicationEndpointsURIs.AdminPage.VACATE_DRIVER_FORM_URI;
+import static com.papenko.project.constant.RequestAttributesNames.LAST_SUBMIT_STATUS_MESSAGE;
 import static com.papenko.project.constant.RequestParametersNames.DRIVER_EMAIL;
 
 
@@ -57,8 +59,10 @@ public class VacateDriverServlet extends HttpServlet {
         LOGGER.debug("about to POST");
         String driverEmail = request.getParameter(DRIVER_EMAIL);
         adminService.vacateDriverFromBus(driverEmail);
+        String statusMessage = localization.getMessage(request, "status_vacate-driver", driverEmail);
+        request.getSession().setAttribute(LAST_SUBMIT_STATUS_MESSAGE, statusMessage);
         LOGGER.debug("redirecting...");
-        response.sendRedirect("/admin?lastSubmitStatusMessage=" + localization.getMessage(request, "status_vacate-driver", driverEmail));
+        response.sendRedirect(ADMIN_PAGE_URI);
         LOGGER.debug("finished POST");
     }
 }

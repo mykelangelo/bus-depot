@@ -17,7 +17,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.io.IOException;
 
+import static com.papenko.project.constant.ApplicationEndpointsURIs.AdminPage.ADMIN_PAGE_URI;
 import static com.papenko.project.constant.ApplicationEndpointsURIs.AdminPage.ASSIGN_DRIVER_TO_BUS_FORM_URI;
+import static com.papenko.project.constant.RequestAttributesNames.LAST_SUBMIT_STATUS_MESSAGE;
 import static com.papenko.project.constant.RequestParametersNames.BUS_SERIAL;
 import static com.papenko.project.constant.RequestParametersNames.DRIVER_EMAIL;
 
@@ -61,17 +63,17 @@ public class AssignDriverToBusServlet extends HttpServlet {
         String driverEmail = request.getParameter(DRIVER_EMAIL);
         String busSerial = request.getParameter(BUS_SERIAL);
         Driver driverAlreadyInBus = adminService.getDriverInBus(busSerial);
-        final String redirectURI;
+        final String statusMessage;
         if (driverAlreadyInBus == null) {
             adminService.assignDriverToBus(driverEmail, busSerial);
-            redirectURI = "/admin?lastSubmitStatusMessage=" + localization.getMessage(request, "status_assign-driver-to-bus", driverEmail, busSerial);
+            statusMessage = localization.getMessage(request, "status_assign-driver-to-bus", driverEmail, busSerial);
         } else {
             LOGGER.debug("can't assign driver - bus is used");
-            String driverInBusEmail = driverAlreadyInBus.getUserEmail();
-            redirectURI = "/admin?lastSubmitStatusMessage=" + localization.getMessage(request, "status_try-assign-driver-to-bus", driverEmail, busSerial, driverInBusEmail);
+            statusMessage = localization.getMessage(request, "status_try-assign-driver-to-bus", driverEmail, busSerial, driverAlreadyInBus.getUserEmail());
         }
+        request.getSession().setAttribute(LAST_SUBMIT_STATUS_MESSAGE, statusMessage);
         LOGGER.debug("redirecting...");
-        response.sendRedirect(redirectURI);
+        response.sendRedirect(ADMIN_PAGE_URI);
         LOGGER.debug("finished POST");
     }
 }

@@ -20,7 +20,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.papenko.project.constant.ApplicationEndpointsURIs.AdminPage.ADMIN_PAGE_URI;
 import static com.papenko.project.constant.ApplicationEndpointsURIs.AdminPage.DELETE_ROUTE_URI;
+import static com.papenko.project.constant.RequestAttributesNames.LAST_SUBMIT_STATUS_MESSAGE;
 import static com.papenko.project.constant.RequestParametersNames.ROUTE_NAME;
 
 @WebServlet(urlPatterns = DELETE_ROUTE_URI)
@@ -60,18 +62,22 @@ public class DeleteRouteServlet extends HttpServlet {
         LOGGER.debug("about to POST");
         String routeName = request.getParameter(ROUTE_NAME);
         List<Bus> busesOnRoute = adminService.getBusesOnRoute(routeName);
-        final String lastSubmitStatusMessage;
+        final String statusMessage;
         if (busesOnRoute.isEmpty()) {
             adminService.deleteRoute(routeName);
-            lastSubmitStatusMessage = localization.getMessage(request, "status_delete-route", routeName);
+            statusMessage = localization.getMessage(request, "status_delete-route", routeName);
         } else {
             LOGGER.debug("can't delete - route is used");
-            List<String> busesSerials = busesOnRoute.stream().map(Bus::getSerialNumber).collect(Collectors.toList());
-            String busesSerialsString = StringUtils.join(busesSerials, ", ");
-            lastSubmitStatusMessage = localization.getMessage(request, "status_try-delete-route", routeName, busesSerialsString);
+            statusMessage = localization.getMessage(request, "status_try-delete-route", routeName, toString(busesOnRoute));
         }
+        request.getSession().setAttribute(LAST_SUBMIT_STATUS_MESSAGE, statusMessage);
         LOGGER.debug("redirecting...");
-        response.sendRedirect("/admin?lastSubmitStatusMessage=" + lastSubmitStatusMessage);
+        response.sendRedirect(ADMIN_PAGE_URI);
         LOGGER.debug("finished POST");
+    }
+
+    private String toString(List<Bus> buses) {
+        List<String> busesSerials = buses.stream().map(Bus::getSerialNumber).collect(Collectors.toList());
+        return StringUtils.join(busesSerials, ", ");
     }
 }

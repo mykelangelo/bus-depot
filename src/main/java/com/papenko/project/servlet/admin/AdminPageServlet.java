@@ -14,6 +14,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 import java.io.IOException;
 
@@ -54,7 +55,10 @@ public class AdminPageServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         LOGGER.debug("about to GET");
-        request.setAttribute(LAST_SUBMIT_STATUS_MESSAGE, request.getParameter(LAST_SUBMIT_STATUS_MESSAGE));
+        HttpSession session = request.getSession();
+        String submitMessage = (String) session.getAttribute(LAST_SUBMIT_STATUS_MESSAGE);
+        session.removeAttribute(LAST_SUBMIT_STATUS_MESSAGE);
+        request.setAttribute(LAST_SUBMIT_STATUS_MESSAGE, submitMessage);
         request.setAttribute(DRIVERS, adminService.getDrivers());
         request.setAttribute(BUSES, adminService.getBuses());
         request.setAttribute(ROUTES, adminService.getRoutes());

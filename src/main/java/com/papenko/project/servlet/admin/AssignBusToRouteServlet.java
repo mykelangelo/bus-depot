@@ -16,7 +16,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.io.IOException;
 
+import static com.papenko.project.constant.ApplicationEndpointsURIs.AdminPage.ADMIN_PAGE_URI;
 import static com.papenko.project.constant.ApplicationEndpointsURIs.AdminPage.ASSIGN_BUS_TO_ROUTE_FORM_URI;
+import static com.papenko.project.constant.RequestAttributesNames.LAST_SUBMIT_STATUS_MESSAGE;
 import static com.papenko.project.constant.RequestParametersNames.BUS_SERIAL;
 import static com.papenko.project.constant.RequestParametersNames.ROUTE_NAME;
 
@@ -61,8 +63,10 @@ public class AssignBusToRouteServlet extends HttpServlet {
         String busSerial = request.getParameter(BUS_SERIAL);
         String routeName = request.getParameter(ROUTE_NAME);
         adminService.assignBusToRoute(busSerial, routeName);
+        String statusMessage = localization.getMessage(request, "status_assign-bus-to-route", busSerial, routeName);
+        request.getSession().setAttribute(LAST_SUBMIT_STATUS_MESSAGE, statusMessage);
         LOGGER.debug("redirecting...");
-        response.sendRedirect("/admin?lastSubmitStatusMessage=" + localization.getMessage(request, "status_assign-bus-to-route", busSerial, routeName));
+        response.sendRedirect(ADMIN_PAGE_URI);
         LOGGER.debug("finished POST");
     }
 }

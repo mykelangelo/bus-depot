@@ -17,6 +17,8 @@ import javax.sql.DataSource;
 import java.io.IOException;
 
 import static com.papenko.project.constant.ApplicationEndpointsURIs.AdminPage.ADD_DRIVER_URI;
+import static com.papenko.project.constant.ApplicationEndpointsURIs.AdminPage.ADMIN_PAGE_URI;
+import static com.papenko.project.constant.RequestAttributesNames.LAST_SUBMIT_STATUS_MESSAGE;
 import static com.papenko.project.constant.RequestParametersNames.DRIVER_EMAIL;
 import static com.papenko.project.constant.RequestParametersNames.DRIVER_PASSWORD;
 
@@ -58,8 +60,10 @@ public class AddDriverServlet extends HttpServlet {
         String driverEmail = request.getParameter(DRIVER_EMAIL);
         String driverPassword = request.getParameter(DRIVER_PASSWORD);
         adminService.addDriver(driverEmail, driverPassword);
+        String statusMessage = localization.getMessage(request, "status_add-driver", driverEmail);
+        request.getSession().setAttribute(LAST_SUBMIT_STATUS_MESSAGE, statusMessage);
         LOGGER.debug("redirecting...");
-        response.sendRedirect("/admin?lastSubmitStatusMessage=" + localization.getMessage(request, "status_add-driver", driverEmail));
+        response.sendRedirect(ADMIN_PAGE_URI);
         LOGGER.debug("finished POST");
     }
 }

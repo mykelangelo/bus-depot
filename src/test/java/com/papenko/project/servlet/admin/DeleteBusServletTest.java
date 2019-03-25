@@ -12,9 +12,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 import java.io.IOException;
 
+import static com.papenko.project.constant.ApplicationEndpointsURIs.AdminPage.ADMIN_PAGE_URI;
+import static com.papenko.project.constant.RequestAttributesNames.LAST_SUBMIT_STATUS_MESSAGE;
 import static com.papenko.project.constant.RequestParametersNames.BUS_SERIAL;
 import static org.mockito.Mockito.*;
 
@@ -31,6 +34,8 @@ class DeleteBusServletTest {
     HttpServletResponse httpServletResponse;
     @Mock
     AdminMessagesLocalization localization;
+    @Mock
+    HttpSession session;
 
     @Test
     void init_shouldBeInitialized() {
@@ -42,6 +47,7 @@ class DeleteBusServletTest {
     @Test
     void doPost_shouldDeleteFromDatabaseBusWithSerialGiven_andRedirectToAdminPage_andSetLastSubmitStatusMessageAsParameter_whenBusIsUnused() throws IOException {
         // GIVEN
+        doReturn(session).when(httpServletRequest).getSession();
         doReturn("You deleted bus with serial number MY F8").when(localization).getMessage(httpServletRequest, "status_delete-bus", "MY F8");
         doReturn("MY F8").when(httpServletRequest).getParameter(BUS_SERIAL);
         doReturn(null).when(adminService).getDriverInBus("MY F8");
@@ -49,12 +55,14 @@ class DeleteBusServletTest {
         deleteBusServlet.doPost(httpServletRequest, httpServletResponse);
         // THEN
         verify(adminService).deleteBus("MY F8");
-        verify(httpServletResponse).sendRedirect("/admin?lastSubmitStatusMessage=You deleted bus with serial number MY F8");
+        verify(session).setAttribute(LAST_SUBMIT_STATUS_MESSAGE, "You deleted bus with serial number MY F8");
+        verify(httpServletResponse).sendRedirect(ADMIN_PAGE_URI);
     }
 
     @Test
     void doPost_shouldNotDeleteFromDatabaseBusWithSerialGiven_andRedirectToAdminPage_andSetLastSubmitStatusMessageAsParameter_whenBusIsUsed() throws IOException {
         // GIVEN
+        doReturn(session).when(httpServletRequest).getSession();
         doReturn("You tried to delete bus with serial number KY73 but it is used - please assign driver dude@drives.car to other bus before deleting this bus")
                 .when(localization).getMessage(httpServletRequest, "status_try-delete-bus", "KY73", "dude@drives.car");
         doReturn("KY73").when(httpServletRequest).getParameter(BUS_SERIAL);
@@ -63,6 +71,7 @@ class DeleteBusServletTest {
         deleteBusServlet.doPost(httpServletRequest, httpServletResponse);
         // THEN
         verifyNoMoreInteractions(adminService);
-        verify(httpServletResponse).sendRedirect("/admin?lastSubmitStatusMessage=You tried to delete bus with serial number KY73 but it is used - please assign driver dude@drives.car to other bus before deleting this bus");
+        verify(session).setAttribute(LAST_SUBMIT_STATUS_MESSAGE, "You tried to delete bus with serial number KY73 but it is used - please assign driver dude@drives.car to other bus before deleting this bus");
+        verify(httpServletResponse).sendRedirect(ADMIN_PAGE_URI);
     }
 }

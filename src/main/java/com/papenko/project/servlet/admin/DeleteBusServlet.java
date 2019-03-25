@@ -17,7 +17,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.io.IOException;
 
+import static com.papenko.project.constant.ApplicationEndpointsURIs.AdminPage.ADMIN_PAGE_URI;
 import static com.papenko.project.constant.ApplicationEndpointsURIs.AdminPage.DELETE_BUS_URI;
+import static com.papenko.project.constant.RequestAttributesNames.LAST_SUBMIT_STATUS_MESSAGE;
 import static com.papenko.project.constant.RequestParametersNames.BUS_SERIAL;
 
 @WebServlet(urlPatterns = DELETE_BUS_URI)
@@ -57,17 +59,17 @@ public class DeleteBusServlet extends HttpServlet {
         LOGGER.debug("about to POST");
         String busSerial = request.getParameter(BUS_SERIAL);
         Driver driverInBus = adminService.getDriverInBus(busSerial);
-        final String lastSubmitStatusMessage;
+        final String statusMessage;
         if (driverInBus == null) {
             adminService.deleteBus(busSerial);
-            lastSubmitStatusMessage = localization.getMessage(request, "status_delete-bus", busSerial);
+            statusMessage = localization.getMessage(request, "status_delete-bus", busSerial);
         } else {
             LOGGER.debug("can't delete - route is used");
-            String driverInBusEmail = driverInBus.getUserEmail();
-            lastSubmitStatusMessage = localization.getMessage(request, "status_try-delete-bus", busSerial, driverInBusEmail);
+            statusMessage = localization.getMessage(request, "status_try-delete-bus", busSerial, driverInBus.getUserEmail());
         }
+        request.getSession().setAttribute(LAST_SUBMIT_STATUS_MESSAGE, statusMessage);
         LOGGER.debug("redirecting...");
-        response.sendRedirect("/admin?lastSubmitStatusMessage=" + lastSubmitStatusMessage);
+        response.sendRedirect(ADMIN_PAGE_URI);
         LOGGER.debug("finished POST");
     }
 
