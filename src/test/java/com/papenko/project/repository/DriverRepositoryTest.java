@@ -179,6 +179,9 @@ class DriverRepositoryTest {
     @Test
     void createDriver_shouldInsertNewDriverIntoTableBusDriver_whenNoSuchDriverExists() {
         // GIVEN
+        embeddedMysql.executeScripts("depot_database",
+                () -> "INSERT INTO depot_user (email, user_type, password_hash)" +
+                        " VALUES ('driver@surprise.me', 'BUS_DRIVER', '$2a$10$rRsTiuqd3V5hQJwsLi3CneRCcKxK0eiKKO1JlGIxAnx9NIP4GsHbG');");
         // WHEN
         driverRepository.createDriver("driver@surprise.me");
         // THEN
