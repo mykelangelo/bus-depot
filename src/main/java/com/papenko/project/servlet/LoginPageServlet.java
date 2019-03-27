@@ -46,7 +46,7 @@ public class LoginPageServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         LOGGER.debug("about to GET");
 
-        Object userDetails = request.getSession().getAttribute(USER_DETAILS);
+        AuthenticatedUserDetails userDetails = (AuthenticatedUserDetails) request.getSession().getAttribute(USER_DETAILS);
         final String path;
         if (userDetails == null) {
             setBrowserLanguage(request);
