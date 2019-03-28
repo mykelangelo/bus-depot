@@ -21,8 +21,10 @@ import static com.papenko.project.constant.ApplicationEndpointsURIs.AdminPage.*;
 import static com.papenko.project.constant.ApplicationEndpointsURIs.DRIVER_PAGE_URI;
 import static com.papenko.project.constant.ApplicationEndpointsURIs.LOGIN_PAGE_URI;
 import static com.papenko.project.constant.MDCKeys.ENDPOINT;
+import static com.papenko.project.constant.MDCKeys.LOGGED_USER_EMAIL;
 import static com.papenko.project.constant.SessionAttributesNames.USER_DETAILS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -39,7 +41,7 @@ class AuthorizationFilterTest {
 
     @BeforeEach
     @AfterEach
-    public void clearMDC() {
+    void clearMDC() {
         MDC.clear();
     }
 
@@ -56,6 +58,7 @@ class AuthorizationFilterTest {
         verify(httpServletResponse).sendError(HttpServletResponse.SC_FORBIDDEN);
         verifyZeroInteractions(filterChain);
         assertEquals(DRIVER_PAGE_URI, MDC.get(ENDPOINT));
+        assertEquals("flexo.22@bending.unit", MDC.get(LOGGED_USER_EMAIL));
     }
 
 
@@ -72,6 +75,8 @@ class AuthorizationFilterTest {
         // THEN
         verify(filterChain).doFilter(httpServletRequest, httpServletResponse);
         verifyZeroInteractions(httpServletResponse);
+        assertEquals(adminURI, MDC.get(ENDPOINT));
+        assertEquals("rodríguez.22@bending.unit", MDC.get(LOGGED_USER_EMAIL));
     }
 
     @ParameterizedTest
@@ -87,6 +92,8 @@ class AuthorizationFilterTest {
         // THEN
         verify(httpServletResponse).sendError(HttpServletResponse.SC_FORBIDDEN);
         verifyZeroInteractions(filterChain);
+        assertEquals(adminURI, MDC.get(ENDPOINT));
+        assertEquals("scruffy.janitor@office.staff", MDC.get(LOGGED_USER_EMAIL));
     }
 
 
@@ -103,6 +110,8 @@ class AuthorizationFilterTest {
         // THEN
         verify(filterChain).doFilter(httpServletRequest, httpServletResponse);
         verifyZeroInteractions(httpServletResponse);
+        assertEquals(loginOrDriverURI, MDC.get(ENDPOINT));
+        assertEquals("amy@wong.mars", MDC.get(LOGGED_USER_EMAIL));
     }
 
     @ParameterizedTest
@@ -117,6 +126,8 @@ class AuthorizationFilterTest {
         // THEN
         verify(httpServletResponse).sendError(HttpServletResponse.SC_UNAUTHORIZED);
         verifyZeroInteractions(filterChain);
+        assertEquals(driverOrAdminURI, MDC.get(ENDPOINT));
+        assertNull(MDC.get(LOGGED_USER_EMAIL));
     }
 
 
@@ -131,5 +142,7 @@ class AuthorizationFilterTest {
         // THEN
         verify(filterChain).doFilter(httpServletRequest, httpServletResponse);
         verifyZeroInteractions(httpServletResponse);
+        assertEquals(LOGIN_PAGE_URI, MDC.get(ENDPOINT));
+        assertNull(MDC.get(LOGGED_USER_EMAIL));
     }
 }

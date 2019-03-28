@@ -129,7 +129,7 @@
 <form action="${pageContext.request.contextPath}/add-route" method="post">
     <label>
         　<fmt:message key="admin_create-route" bundle="${texts}"/>:
-        <input name="route-name" class="add-route__route-name"
+        <input type="text" name="route-name" class="add-route__route-name"
                placeholder="<fmt:message key="admin_input-route-name" bundle="${texts}"/>" required>
     </label>
     <input type="submit" class="add-route__submit-button"
@@ -161,7 +161,7 @@
 <form action="${pageContext.request.contextPath}/add-bus" method="post">
     <label>
         　<fmt:message key="admin_create-bus" bundle="${texts}"/>:
-        <input name="bus-serial" class="add-bus__serial-number"
+        <input type="text" name="bus-serial" class="add-bus__serial-number"
                placeholder="<fmt:message key="admin_input-serial-number" bundle="${texts}"/>" required>
     </label>
     <input type="submit" class="add-bus__submit-button" value="<fmt:message key="admin_create-bus" bundle="${texts}"/>">

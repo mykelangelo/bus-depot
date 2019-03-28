@@ -20,6 +20,7 @@ import java.io.IOException;
 import static com.papenko.project.constant.ApplicationEndpointsURIs.AdminPage.*;
 import static com.papenko.project.constant.ApplicationEndpointsURIs.DRIVER_PAGE_URI;
 import static com.papenko.project.constant.MDCKeys.ENDPOINT;
+import static com.papenko.project.constant.MDCKeys.LOGGED_USER_EMAIL;
 import static com.papenko.project.constant.SessionAttributesNames.USER_DETAILS;
 
 @WebFilter(urlPatterns = "*")
@@ -57,6 +58,7 @@ public class AuthorizationFilter extends HttpFilter {
             }
         } else {
             UserType userType = userDetails.getUserType();
+            MDC.put(LOGGED_USER_EMAIL, userDetails.getEmail());
             if (userType == UserType.BUS_DRIVER && isAdminPageOrFormURI(requestURI)
                     || userType == UserType.DEPOT_ADMIN && isDriverPageOrFormURI(requestURI)) {
                 LOGGER.warn("{} is trying to access forbidden URI: {}", userType, requestURI);
