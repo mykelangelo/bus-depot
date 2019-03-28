@@ -54,5 +54,6 @@ b) with mysql pre-installed
  2. create `Remote` configuration in the IDEA
  3. click `debug` on this new configuration
 
+#### PS: for all of the above to work you also need Java 11 or higher installed
 
 [repo]: https://github.com/mykelangelo/bus-depot
