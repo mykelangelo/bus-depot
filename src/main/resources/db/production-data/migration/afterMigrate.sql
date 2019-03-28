@@ -1,5 +1,5 @@
 INSERT IGNORE INTO depot_user
-  (email, user_type, password_hash)
+    (email, user_type, password_hash)
 VALUES ('human.admin@bus-depot.com', 'DEPOT_ADMIN', '$2a$10$BTrA6YQEY1JiSh5rLPheq.U89JgbCtXcr06ignTdA93bg5mp9OHLW'),
        -- password: openThePodBayDoorHal
        ('HAL9000@bus-depot.com', 'DEPOT_ADMIN', '$2a$10$WCSo6X64uMsx7rp4edWuz.p9CKd/WfU/APMXtMk.1g/hnBUEAqi2C'),
