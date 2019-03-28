@@ -75,8 +75,6 @@ tasks.stage.dependsOn(copyToLib)
 dependencies {
 /* Apache Commons BEGIN */
     implementation "org.apache.commons:commons-lang3:3.8.1"
-    implementation "org.apache.commons:commons-collections4:4.3"
-    implementation "commons-io:commons-io:2.6"
 /* Apache Commons END */
 
 /* JEE dependencies BEGIN */
@@ -95,7 +93,7 @@ dependencies {
 /* Database Connectivity BEGIN */
     implementation "mysql:mysql-connector-java:8.0.15"
     implementation "com.zaxxer:HikariCP:3.3.1"
-    implementation 'org.flywaydb:flyway-core:6.0.0-beta'
+    implementation "org.flywaydb:flyway-core:6.0.0-beta"
 /* Database Connectivity END */
 
 /* Password Hashing library BEGIN */
@@ -119,7 +117,7 @@ dependencies {
 /* E2E testing END */
 
 /* Heroku Gradle buildpack support BEGIN */
-    stage 'com.github.jsimone:webapp-runner:9.0.17.0'
+    stage "com.github.jsimone:webapp-runner:9.0.17.0"
 /* Heroku Gradle buildpack support END */
 }
 
