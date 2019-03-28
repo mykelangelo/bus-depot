@@ -15,11 +15,11 @@
 
 # How to run locally
 a) with docker pre-installed
- 1. clone [this](https://github.com/mykelangelo/bus-depot) repository
+ 1. clone [this][repo]
  2. run `./gradlew clean startDependencies appRun`
 
 b) with mysql pre-installed
- 1. clone [this](https://github.com/mykelangelo/bus-depot) repository
+ 1. clone [this][repo] repository
  2. set up mysql as in /src/main/resources/connection-pool.properties
  3. run `./gradlew clean appRun`
 
@@ -36,9 +36,23 @@ b) with mysql pre-installed
     or
     - _while being logged in as an admin_ **add new driver** with new email and password and use these credentials to log in as that driver
 
+
+# How to run tests
+a) with docker pre-installed
+ 1. clone [this][repo]
+ 2. run `./gradlew clean startDependencies build`
+
+b) with mysql pre-installed
+ 1. clone [this][repo] repository
+ 2. set up mysql as in /src/main/resources/connection-pool.properties
+ 3. run `./gradlew clean build`
+
+
 # How to debug in Intellij Idea while running app
-(One can easily debug unit tests, but with tomcat it's a bit tricky)
+(One can easily debug tests, but with running app on tomcat it's tricky)
  1. run gradle command appRunDebug
  2. create `Remote` configuration in the IDEA
  3. click `debug` on this new configuration
 
+
+[repo]: https://github.com/mykelangelo/bus-depot
