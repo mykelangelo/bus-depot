@@ -74,7 +74,7 @@ tasks.stage.dependsOn(copyToLib)
 
 dependencies {
 /* Apache Commons BEGIN */
-    implementation "org.apache.commons:commons-lang3:3.8.1"
+    implementation "org.apache.commons:commons-lang3:3.9"
 /* Apache Commons END */
 
 /* JEE dependencies BEGIN */
