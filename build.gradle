@@ -112,7 +112,7 @@ dependencies {
 
 /* E2E testing BEGIN */
     testImplementation "org.seleniumhq.selenium:selenium-java:3.141.59"
-    testImplementation "io.github.bonigarcia:webdrivermanager:3.4.0"
+    testImplementation "io.github.bonigarcia:webdrivermanager:3.8.1"
     testImplementation "org.seleniumhq.selenium:selenium-chrome-driver:3.141.59"
 /* E2E testing END */
 
