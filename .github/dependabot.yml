@@ -1,0 +1,29 @@
+version: 2
+updates:
+- package-ecosystem: gradle
+  directory: "/"
+  schedule:
+    interval: daily
+  open-pull-requests-limit: 10
+  assignees:
+  - mykelangelo
+  ignore:
+  - dependency-name: io.github.bonigarcia:webdrivermanager
+    versions:
+    - 4.3.1
+    - 4.4.0
+  - dependency-name: org.mockito:mockito-junit-jupiter
+    versions:
+    - 3.7.7
+  - dependency-name: mysql:mysql-connector-java
+    versions:
+    - 8.0.23
+  - dependency-name: org.junit.jupiter:junit-jupiter-api
+    versions:
+    - 5.7.0
+  - dependency-name: org.junit.jupiter:junit-jupiter-params
+    versions:
+    - 5.7.0
+  - dependency-name: org.junit.jupiter:junit-jupiter-engine
+    versions:
+    - 5.7.0
